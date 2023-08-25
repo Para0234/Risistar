@@ -2,6 +2,10 @@
 
 Risistar is a free Space Browsergame based on JKroepke's 2Moons, with many more functionalities, including an implementation of OPBE.
 
+Please note that the installation is currently not operational, as the install.sql doesn't reflect the actual state of the game.
+
+WARNING : FRENCH IS THE ONLY WORKING LANGUAGE AS OF RIGHT NOW
+
 ## Status of this project
 
 This project is under active development.
