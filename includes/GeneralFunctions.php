@@ -277,6 +277,8 @@ function CheckNoobProtec($OwnerPlayer, $TargetPlayer, $Player)
 		|| $config->noobprotectionmulti == 0 
 		|| $Player['banaday'] > TIMESTAMP
 		|| $Player['onlinetime'] < TIMESTAMP - INACTIVE
+		 || $Player['authlevel'] >= 2
+		|| $OwnerPlayer['authlevel'] >= 3
 	) {
 		return array('NoobPlayer' => false, 'StrongPlayer' => false);
 	}
@@ -441,7 +443,7 @@ function clearGIF() {
 function exceptionHandler($exception)
 {
 	/** @var $exception ErrorException|Exception */
-
+//	include 'classes/Config.class.php';	
 	if(!headers_sent()) {
 		if (!class_exists('HTTP', false)) {
 			require_once('includes/classes/HTTP.class.php');
@@ -503,7 +505,7 @@ function exceptionHandler($exception)
 <!--[if IE 9 ]>    <html lang="de" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="de" class="no-js"> <!--<![endif]-->
 <head>
-	<title>'.$gameName.' - '.$errorType[$errno].'</title>
+	<title>'.$gameName.' - </title>-->
 	<meta name="generator" content="2Moons '.$VERSION.'">
 	<!-- 
 		This website is powered by 2Moons '.$VERSION.'
@@ -549,7 +551,6 @@ function exceptionHandler($exception)
 <body id="overview" class="full">
 <table width="960">
 	<tr>
-		<th>'.$errorType[$errno].'</th>
 	</tr>
 	<tr>
 		<td class="left">

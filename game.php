@@ -55,3 +55,5 @@ if(!is_callable(array($pageObj, $mode))) {
 }
 
 $pageObj->{$mode}();
+
+//test

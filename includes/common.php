@@ -48,6 +48,7 @@ require 'includes/GeneralFunctions.php';
 set_exception_handler('exceptionHandler');
 set_error_handler('errorHandler');
 
+require 'includes/classes/Universe.class.php';
 require 'includes/classes/ArrayUtil.class.php';
 require 'includes/classes/Cache.class.php';
 require 'includes/classes/Database.class.php';
@@ -57,7 +58,6 @@ require 'includes/classes/HTTP.class.php';
 require 'includes/classes/Language.class.php';
 require 'includes/classes/PlayerUtil.class.php';
 require 'includes/classes/Session.class.php';
-require 'includes/classes/Universe.class.php';
 
 require 'includes/classes/class.theme.php';
 require 'includes/classes/class.template.php';
@@ -212,8 +212,8 @@ elseif(MODE === 'CHAT')
 {
 	$session	= Session::load();
 
-	if(!$session->isValidSession())
+/*	if(!$session->isValidSession())
 	{
 		HTTP::redirectTo('index.php?code=3');
-	}
+	}*/
 }

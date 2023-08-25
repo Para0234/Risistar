@@ -21,7 +21,7 @@ class CleanerCronjob implements CronjobTask
 {
 	function run()
 	{
-        $config	= Config::get(ROOT_UNI);
+/*        $config	= Config::get(ROOT_UNI);
 
 		$unis	= Universe::availableUniverses();
 	
@@ -30,6 +30,7 @@ class CleanerCronjob implements CronjobTask
 		$del_inactive 	= TIMESTAMP - ($config->del_user_automatic * 86400);
 		$del_deleted 	= TIMESTAMP - ($config->del_user_manually * 86400);
 		$del_messages 	= TIMESTAMP - ($config->message_delete_days * 86400);
+		$del_planetes 	= TIMESTAMP - 86400;
 
 		if($del_inactive === TIMESTAMP)
 		{
@@ -109,6 +110,12 @@ class CleanerCronjob implements CronjobTask
 		$sql	= 'DELETE FROM %%MESSAGES%% WHERE `messages_deleted` < :time;';
 		Database::get()->delete($sql, array(
 			':time'	=> $del_messages
+			
+		));*/
+		$sql	= 'DELETE FROM %%PLANETS%% WHERE `destruyed` != :time AND `destruyed` > 1000000;';
+		Database::get()->delete($sql, array(
+			':time'	=> TIMESTAMP
 		));
+		ClearCache();
 	}
 }

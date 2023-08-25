@@ -1,18 +1,27 @@
-Olá {USERNAME},
+Bonjour, {USERNAME},
 
 
-Obrigada por registares em {GAMENAME}
+Merci pour votre inscription sur {GAMENAME}
 
-Para completar o seu registo por favor clique no seguinte link:
+Before we can activate your account, one more step is needed.
+Please note that this step is mandatory in order to become a 
+registered user. You have to press the link below only once to 
+verify your identity.
+
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
+
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
 
 {VERTIFYURL}
 
-Dados de Login:
 
-Username : {USERNAME}
-Password : {PASSWORD}
 
-Se houver problemas em ativar a conta por favor contacte:
-{GAMEMAIL}
 
-{GAMENAME} Team
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
+
+Cordialement,
+l'équipe d'administration {GAMENAME}

@@ -35,12 +35,13 @@ class ShowStatisticsPage extends AbstractGamePage
 
         switch ($type)
         {
+
             case 2:
                 $Order   = "fleet_rank";
                 $Points  = "fleet_points";
                 $Rank    = "fleet_rank";
                 $OldRank = "fleet_old_rank";
-            break;
+           break;
             case 3:
                 $Order   = "tech_rank";
                 $Points  = "tech_points";
@@ -58,7 +59,7 @@ class ShowStatisticsPage extends AbstractGamePage
                 $Points  = "defs_points";
                 $Rank    = "defs_rank";
                 $OldRank = "defs_old_rank";
-            break;
+           break;
             default:
                 $Order   = "total_rank";
                 $Points  = "total_points";
@@ -121,6 +122,11 @@ class ShowStatisticsPage extends AbstractGamePage
                         'id'		=> $StatRow['id'],
                         'name'		=> $StatRow['username'],
                         'points'	=> pretty_number($StatRow[$Points]),
+						'fleet'		=> pretty_number($StatRow['fleet_points']),
+						'build'		=> pretty_number($StatRow['build_points']),
+						'total'		=> pretty_number($StatRow['total_points']),
+						'defs'		=> pretty_number($StatRow['defs_points']),
+						'tech'		=> pretty_number($StatRow['tech_points']),
                         'allyid'	=> $StatRow['ally_id'],
                         'rank'		=> $StatRow[$Rank],
                         'allyname'	=> $StatRow['ally_name'],

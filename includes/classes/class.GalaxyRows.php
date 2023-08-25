@@ -46,7 +46,7 @@ class GalaxyRows
 
         $sql	= 'SELECT SQL_BIG_RESULT DISTINCT
 		p.galaxy, p.system, p.planet, p.id, p.id_owner, p.name, p.image, p.last_update, p.diameter, p.temp_min, p.destruyed, p.der_metal, p.der_crystal, p.id_luna, 
-		u.id as userid, u.ally_id, u.username, u.onlinetime, u.urlaubs_modus, u.banaday, 
+		u.id as userid, u.ally_id, u.username, u.onlinetime, u.urlaubs_modus, u.banaday, u.authlevel, 
 		m.id as m_id, m.diameter as m_diameter, m.name as m_name, m.temp_min as m_temp_min, m.last_update as m_last_update,
 		s.total_points, s.total_rank, 
 		a.id as allyid, a.ally_tag, a.ally_web, a.ally_members, a.ally_name, 
@@ -137,7 +137,9 @@ class GalaxyRows
 			5	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && isModuleAvailable(MODULE_MISSION_HOLD),
 			6	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && isModuleAvailable(MODULE_MISSION_SPY),
 			8	=> isModuleAvailable(MODULE_MISSION_RECYCLE),
-			9	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && $PLANET[$resource[214]] > 0 && isModuleAvailable(MODULE_MISSION_DESTROY),
+			// j'ai rajouté le quatsansdisse dans la formule pour que cela apparaisse dans la vue galaxie
+			9	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && $PLANET[$resource[214]] || $PLANET[$resource[233]]  > 0 && isModuleAvailable(MODULE_MISSION_DESTROY),
+			12	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && $PLANET[$resource[233]] > 0 && isModuleAvailable(MODULE_MISSION_DESTROY),
 			10	=> !$this->galaxyData[$this->galaxyRow['planet']]['ownPlanet'] && $PLANET[$resource[503]] > 0 && isModuleAvailable(MODULE_MISSION_ATTACK) && isModuleAvailable(MODULE_MISSILEATTACK) && $this->inMissileRange(),
 		);
 	}
@@ -174,7 +176,7 @@ class GalaxyRows
 	protected function getPlayerData()
 	{
 		global $USER, $LNG;
-
+		
 		$IsNoobProtec		= CheckNoobProtec($USER, $this->galaxyRow, $this->galaxyRow);
 		$Class		 		= array();
 

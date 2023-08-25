@@ -20,6 +20,7 @@ class ShowRegisterPage extends AbstractLoginPage
 	function __construct() 
 	{
 		parent::__construct();
+        $this->setWindow('light');
 	}
 	
 	function show()
@@ -309,13 +310,11 @@ class ShowRegisterPage extends AbstractLoginPage
 			$MailRAW		= $LNG->getTemplate('email_vaild_reg');
 			$MailContent	= str_replace(array(
 				'{USERNAME}',
-				'{PASSWORD}',
 				'{GAMENAME}',
 				'{VERTIFYURL}',
 				'{GAMEMAIL}',
 			), array(
 				$userName,
-				$password,
 				$config->game_name.' - '.$config->uni_name,
 				HTTP_PATH.$verifyURL,
 				$config->smtp_sendmail,

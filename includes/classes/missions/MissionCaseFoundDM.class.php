@@ -63,7 +63,7 @@ class MissionCaseFoundDM extends MissionFunctions implements Mission
 				$LNG['tech'][921]
 			);
 
-			$this->UpdateFleet('fleet_array', '220,0;');
+//			$this->UpdateFleet('fleet_array', '220,0;');
 		}
 		else
 		{

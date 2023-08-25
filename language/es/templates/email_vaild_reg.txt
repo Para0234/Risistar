@@ -1,25 +1,27 @@
-Hola {USERNAME},
-Gracias por registrarte al juego {GAMENAME}. 
-Antes de que su cuenta sea activada y el registro esté completado,
-usted debe realizar un paso más.
+Bonjour, {USERNAME},
 
-Tenga en cuenta que este es un paso absolutamente necesario para ser
-un usuario registrado. Es necesario que se dirija al enlace que aparece a
-continuación, una vez realizado esto usted habrá activado la cuenta..
 
-Para completar el registro haga click en el siguiente enlace:
+Merci pour votre inscription sur {GAMENAME}
+
+Before we can activate your account, one more step is needed.
+Please note that this step is mandatory in order to become a 
+registered user. You have to press the link below only once to 
+verify your identity.
+
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
+
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
 
 {VERTIFYURL}
 
-Sus datos de acceso son:
 
-Usuario : {USERNAME}
-Contraseña : {PASSWORD}
 
-Si aún tiene problemas con el registro, por favor no dude en comunicarse
-con el administrador a esta dirección: 
-{GAMEMAIL}
 
-Saludos cordiales,
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
 
-El Equipo de {GAMENAME}.
+Cordialement,
+l'équipe d'administration {GAMENAME}

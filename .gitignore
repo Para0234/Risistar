@@ -1,6 +1,9 @@
 includes/config.php
+includes/config.php.beta
+includes/config.php.main
 includes/error.log
 cache/*
+logs/*
 
 !cache/.htaccess
 

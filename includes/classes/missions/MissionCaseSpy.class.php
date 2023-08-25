@@ -56,7 +56,7 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 		$planetUpdater 						= new ResourceUpdate();
 		list($targetUser, $targetPlanet)	= $planetUpdater->CalcResource($targetUser, $targetPlanet, true, $this->_fleet['fleet_start_time']);
 
-		$sql	= 'SELECT * FROM %%FLEETS%% WHERE fleet_end_id = :planetId AND fleet_mission = 5 AND fleet_end_stay > :time;';
+		$sql	= 'SELECT * FROM %%FLEETS%% WHERE fleet_end_id = :planetId AND fleet_mission = 5 AND fleet_start_time < :time;';
 
 		$targetStayFleets	= $db->select($sql, array(
 			':planetId'	=> $this->_fleet['fleet_end_id'],
@@ -73,7 +73,12 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 		}
 		
 		$fleetAmount	= $this->_fleet['fleet_amount'] * (1 + $senderUser['factor']['SpyPower']);
-
+		
+		if ($fleetAmount >= 10)
+		{
+			$fleetAmount = 10;
+		}
+		
 		$senderSpyTech	= max($senderUser['spy_tech'], 1);
 		$targetSpyTech	= max($targetUser['spy_tech'], 1);
 
@@ -191,7 +196,7 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 		{
 			$config		= Config::get($this->_fleet['fleet_universe']);
 			$whereCol	= $this->_fleet['fleet_end_type'] == 3 ? "id_luna" : "id";
-
+			$fleetAmount	= $this->_fleet['fleet_amount'];
 			$sql		= 'UPDATE %%PLANETS%% SET
 			der_metal	= der_metal + :metal,
 			der_crystal = der_crystal + :crystal

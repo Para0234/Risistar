@@ -40,7 +40,7 @@ class MissionCaseColonisation extends MissionFunctions implements Mission
 			$this->_fleet['fleet_end_system'], $this->_fleet['fleet_end_planet']);
 		$isPositionFree	= PlayerUtil::isPositionFree($this->_fleet['fleet_universe'], $this->_fleet['fleet_end_galaxy'],
 			$this->_fleet['fleet_end_system'], $this->_fleet['fleet_end_planet']);
-
+		$eventSize		= mt_rand(0, 100);
 		if (!$isPositionFree || !$checkPosition)
 		{
 			$message = sprintf($LNG['sys_colo_notfree'], GetTargetAddressLink($this->_fleet, ''));
@@ -67,48 +67,62 @@ class MissionCaseColonisation extends MissionFunctions implements Mission
 				), 'state');
 
 				$maxPlanetCount		= PlayerUtil::maxPlanetCount($senderUser);
-
-				if($currentPlanetCount >= $maxPlanetCount)
+				$senderUser['lang'];
+				if($senderUser['class_lone'] >= 1)
 				{
-					$message = sprintf($LNG['sys_colo_maxcolo'], GetTargetAddressLink($this->_fleet, ''), $maxPlanetCount);
+					$message = sprintf($LNG['sys_colo_maxcolo'], GetTargetAddressLink($this->_fleet, ''), 1);
 				}
 				else
 				{
-					$NewOwnerPlanet = PlayerUtil::createPlanet($this->_fleet['fleet_end_galaxy'], $this->_fleet['fleet_end_system'],
-						$this->_fleet['fleet_end_planet'], $this->_fleet['fleet_universe'], $this->_fleet['fleet_owner'],
-						$LNG['fcp_colony'], false, $senderUser['authlevel']);
-
-					if($NewOwnerPlanet === false)
+					if($currentPlanetCount >= $maxPlanetCount)
 					{
-						$message = sprintf($LNG['sys_colo_badpos'], GetTargetAddressLink($this->_fleet, ''));
-						$this->setState(FLEET_RETURN);
+						$message = sprintf($LNG['sys_colo_maxcolo'], GetTargetAddressLink($this->_fleet, ''), $maxPlanetCount);
 					}
 					else
 					{
-						$this->_fleet['fleet_end_id']	= $NewOwnerPlanet;
-						$message = sprintf($LNG['sys_colo_allisok'], GetTargetAddressLink($this->_fleet, ''));
-						$this->StoreGoodsToPlanet();
-						if ($this->_fleet['fleet_amount'] == 1) {
-							$this->KillFleet();
-						} else {
-							$CurrentFleet = explode(";", $this->_fleet['fleet_array']);
-							$NewFleet     = '';
-							foreach ($CurrentFleet as $Group)
+						if($eventSize>=5){
+							$NewOwnerPlanet = PlayerUtil::createPlanet($this->_fleet['fleet_end_galaxy'], $this->_fleet['fleet_end_system'],
+								$this->_fleet['fleet_end_planet'], $this->_fleet['fleet_universe'], $this->_fleet['fleet_owner'],
+								$LNG['fcp_colony'], false, $senderUser['authlevel']);
+		
+							if($NewOwnerPlanet === false)
 							{
-								if (empty($Group)) continue;
-
-								$Class = explode (",", $Group);
-								if ($Class[0] == 208 && $Class[1] > 1)
-									$NewFleet  .= $Class[0].",".($Class[1] - 1).";";
-								elseif ($Class[0] != 208 && $Class[1] > 0)
-									$NewFleet  .= $Class[0].",".$Class[1].";";
+								$message = sprintf($LNG['sys_colo_badpos'], GetTargetAddressLink($this->_fleet, ''));
+								$this->setState(FLEET_RETURN);
 							}
+							else
+							{
+									$this->_fleet['fleet_end_id']	= $NewOwnerPlanet;
+									$message = sprintf($LNG['sys_colo_allisok'], GetTargetAddressLink($this->_fleet, ''));
+									$this->StoreGoodsToPlanet();
+									if ($this->_fleet['fleet_amount'] == 1) {
+										$this->KillFleet();
+									} 
+									else {
+										$CurrentFleet = explode(";", $this->_fleet['fleet_array']);
+										$NewFleet     = '';
+										foreach ($CurrentFleet as $Group)
+										{
+											if (empty($Group)) continue;
 
-							$this->UpdateFleet('fleet_array', $NewFleet);
-							$this->UpdateFleet('fleet_amount', ($this->_fleet['fleet_amount'] - 1));
-							$this->UpdateFleet('fleet_resource_metal', 0);
-							$this->UpdateFleet('fleet_resource_crystal', 0);
-							$this->UpdateFleet('fleet_resource_deuterium', 0);
+											$Class = explode (",", $Group);
+											if ($Class[0] == 208 && $Class[1] > 1)
+												$NewFleet  .= $Class[0].",".($Class[1] - 1).";";
+											elseif ($Class[0] != 208 && $Class[1] > 0)
+												$NewFleet  .= $Class[0].",".$Class[1].";";
+										}
+
+										$this->UpdateFleet('fleet_array', $NewFleet);
+										$this->UpdateFleet('fleet_amount', ($this->_fleet['fleet_amount'] - 1));
+										$this->UpdateFleet('fleet_resource_metal', 0);
+										$this->UpdateFleet('fleet_resource_crystal', 0);
+										$this->UpdateFleet('fleet_resource_deuterium', 0);
+									}
+							}
+						}
+						else
+						{
+							$message = sprintf($LNG['sys_colo_badluck'], GetTargetAddressLink($this->_fleet, ''));
 						}
 					}
 				}
@@ -117,9 +131,11 @@ class MissionCaseColonisation extends MissionFunctions implements Mission
 
 		PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_colo_mess_from'], 4, $LNG['sys_colo_mess_report'],
 			$message, $this->_fleet['fleet_start_time'], NULL, 1, $this->_fleet['fleet_universe']);
-
-		$this->setState(FLEET_RETURN);
-		$this->SaveFleet();
+		if($eventSize>=2)
+		{
+			$this->setState(FLEET_RETURN);
+			$this->SaveFleet();
+		}
 	}
 	
 	function EndStayEvent()

@@ -1,0 +1,1455 @@
+Tuesday 15th of August 2023 06:25:12 PM
+Exception: Negative currentShield! in /homepages/5/d708340154/htdocs/includes/libs/opbe/models/ShipType.php:432
+Stack trace:
+#0 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/Fleet.php(148): ShipType->inflictDamage()
+#1 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/Player.php(147): Fleet->inflictDamage()
+#2 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/PlayerGroup.php(106): Player->inflictDamage()
+#3 /homepages/5/d708340154/htdocs/includes/libs/opbe/core/Round.php(111): PlayerGroup->inflictDamage()
+#4 /homepages/5/d708340154/htdocs/includes/libs/opbe/core/Battle.php(80): Round->startRound()
+#5 /homepages/5/d708340154/htdocs/includes/libs/opbe/utils/DebugManager.php(60): Battle->startBattle()
+#6 /homepages/5/d708340154/htdocs/includes/libs/opbe/implementations/2Moons/1_7_2_injectionMode/calculateAttack.php(116): DebugManager::{closure}()
+#7 /homepages/5/d708340154/htdocs/includes/classes/missions/MissionCaseAttack.class.php(278): calculateAttack()
+#8 /homepages/5/d708340154/htdocs/includes/classes/class.FlyingFleetHandler.php(80): MissionCaseAttack->TargetEvent()
+#9 /homepages/5/d708340154/htdocs/includes/FleetHandler.php(31): FlyingFleetHandler->run()
+#10 /homepages/5/d708340154/htdocs/includes/common.php(127): require('/homepages/5/d7...')
+#11 /homepages/5/d708340154/htdocs/game.php(24): require('/homepages/5/d7...')
+#12 {main}
+$_POST =
+$_GET =
+[log]attackers =         <table class="lined widthFull">
+    <caption> <br> 580% - 500% - 570%</caption>
+    <thead>
+        <tr>
+                            <th>Croiseur Lourd</th>
+                            <th>Demolisher</th>
+                            <th>Porte-chasseur amélioré</th>
+                            <th>Intercepteur avancé</th>
+                            <th>Torpilleur avancé</th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>426863395</td>                   
+                
+                <td>277880537</td>                   
+                
+                <td>41997340</td>                   
+                
+                <td>419973400</td>                   
+                
+                <td>419973400</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+[log]defenders =         <table class="lined widthFull">
+    <caption> <br> 570% - 520% - 550%</caption>
+    <thead>
+        <tr>
+                            <th>Destructeur de Lunes</th>
+                            <th>Recycleur ultime</th>
+                            <th>Vaisseau de Classe Thanatos</th>
+                            <th>Chantier Orbital</th>
+                            <th>Lanceur de missiles</th>
+                            <th>Canon laser léger</th>
+                            <th>Canon laser lourd</th>
+                            <th>Canon de Gauss</th>
+                            <th>Petit Bouclier</th>
+                            <th>Grand Bouclier</th>
+                            <th>Bouclier HOASH</th>
+                            <th>Drone de recyclage amélioré</th>
+                            <th>Intercepteur avancé</th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>2000000</td>                   
+                
+                <td>1</td>                   
+                
+                <td>58000000</td>                   
+                
+                <td>1</td>                   
+                
+                <td>442</td>                   
+                
+                <td>66</td>                   
+                
+                <td>2</td>                   
+                
+                <td>2</td>                   
+                
+                <td>1</td>                   
+                
+                <td>1</td>                   
+                
+                <td>1</td>                   
+                
+                <td>10</td>                   
+                
+                <td>2900000000</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+--- Round 1 ---<br><br>[log]calculating fire from attacker 224<br>
+[log]$max = 4.3500000648594<br>
+[log]$min = 2.9000000432396<br>
+[log]$mean = 3.6250000540495<br>
+[log]$tmpshots = 1388592208<br>
+[log]$this->shots = 1815455603<br>
+[log]calculating fire from attacker 237<br>
+[log]$max = 2.4081077132365E-8<br>
+[log]$min = 1.6054051421577E-8<br>
+[log]$mean = 2.0067564276971E-8<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 277880537<br>
+[log]calculating fire from attacker 272<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 41997340<br>
+[log]calculating fire from attacker 262<br>
+[log]$max = 1.152317490312<br>
+[log]$min = 0.76821166020798<br>
+[log]$mean = 0.96026457525997<br>
+[log]$tmpshots = 411004131<br>
+[log]$this->shots = 830977531<br>
+[log]calculating fire from attacker 263<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 419973400<br>
+[log]calculating fire from attacker 214<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 2000000<br>
+[log]calculating fire from attacker 219<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+[log]calculating fire from attacker 225<br>
+[log]$max = 7.8479112341553<br>
+[log]$min = 5.2319408227702<br>
+[log]$mean = 6.5399260284627<br>
+[log]$tmpshots = 290000000<br>
+[log]$this->shots = 348000000<br>
+[log]calculating fire from attacker 231<br>
+[log]$max = 0.031955931071098<br>
+[log]$min = 0.021303954047399<br>
+[log]$mean = 0.026629942559248<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+[log]calculating fire from attacker 401<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 442<br>
+[log]calculating fire from attacker 402<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 66<br>
+[log]calculating fire from attacker 403<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 2<br>
+[log]calculating fire from attacker 404<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 2<br>
+[log]calculating fire from attacker 407<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+[log]calculating fire from attacker 408<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+[log]calculating fire from attacker 412<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+[log]calculating fire from attacker 258<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 10<br>
+[log]calculating fire from attacker 262<br>
+[log]$max = 0.59333846551497<br>
+[log]$min = 0.39555897700998<br>
+[log]$mean = 0.49444872126247<br>
+[log]$tmpshots = 1199848659<br>
+[log]$this->shots = 4099848659<br>
+***** firing to defenders *****<br>---------** firing to player with ID = 75 **---------- <br>------- firing to fleet with ID = 0 -------- <br>[log]---- firing from 224 to 214 ----<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 6200000000<br>
+[log]currentLife before = 117000000000<br>
+[log]damage = 4760<br>
+[log]count = 1226658<br>
+[log]$ps->getAssorbedDamage() = 3802639800<br>
+[log]currentShield after = 2397360200<br>
+[log]currentLife after = 114963747720<br>
+[log]lastShipHit after = 1226658<br>
+[log]lastShots after = 1226658<br>
+[log]$xs = result=1226658;rest=0.97282118955627;<br>
+[log]---- firing from 224 to 219 ----<br>
+[log]$xs = result=0;rest=0.61332948641059;<br>
+[log]---- firing from 224 to 225 ----<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17980000000000<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 4760<br>
+[log]count = 35573110<br>
+[log]$ps->getAssorbedDamage() = 169328003600<br>
+[log]currentShield after = 17810671996400<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 35573110<br>
+[log]lastShots after = 35573110<br>
+[log]$xs = result=35573110;rest=0.21181450039148;<br>
+[log]---- firing from 224 to 231 ----<br>
+[log]$xs = result=0;rest=0.61332948641059;<br>
+[log]---- firing from 224 to 258 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 10<br>
+[log]currentShield before = 0<br>
+[log]currentLife before = 6.5<br>
+[log]damage = 4760<br>
+[log]count = 6<br>
+[log]$ps->getAssorbedDamage() = 0<br>
+[log]currentShield after = 0<br>
+[log]currentLife after = 2.6<br>
+[log]lastShipHit after = 6<br>
+[log]lastShots after = 6<br>
+[log]$xs = result=6;rest=0.13329486410595;<br>
+[log]---- firing from 224 to 262 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 269700000000<br>
+[log]currentLife before = 1885000000<br>
+[log]damage = 4760<br>
+[log]count = 1778655510<br>
+[log]$ps->getAssorbedDamage() = 165414962430<br>
+[log]currentShield after = 104285037570<br>
+[log]currentLife after = 728873918.5<br>
+[log]lastShipHit after = 1778655510<br>
+[log]lastShots after = 1778655510<br>
+[log]$xs = result=1778655510;rest=0.59072494506836;<br>
+[log]---- firing from 224 to 401 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 442<br>
+[log]currentShield before = 54808<br>
+[log]currentLife before = 574600<br>
+[log]damage = 4760<br>
+[log]count = 271<br>
+[log]$ps->getAssorbedDamage() = 33604<br>
+[log]currentShield after = 21204<br>
+[log]currentLife after = 222300<br>
+[log]lastShipHit after = 271<br>
+[log]lastShots after = 271<br>
+[log]$xs = result=271;rest=0.091632993482904;<br>
+[log]---- firing from 224 to 402 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 66<br>
+[log]currentShield before = 10230<br>
+[log]currentLife before = 85800<br>
+[log]damage = 4760<br>
+[log]count = 40<br>
+[log]$ps->getAssorbedDamage() = 6200<br>
+[log]currentShield after = 4030<br>
+[log]currentLife after = 33800<br>
+[log]lastShipHit after = 40<br>
+[log]lastShots after = 40<br>
+[log]$xs = result=40;rest=0.47974610309926;<br>
+[log]---- firing from 224 to 403 ----<br>
+[log]Defender single hull = 5200<br>
+[log]Defender count = 2<br>
+[log]currentShield before = 1240<br>
+[log]currentLife before = 10400<br>
+[log]damage = 4760<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 620<br>
+[log]currentShield after = 620<br>
+[log]currentLife after = 6260<br>
+[log]lastShipHit after = 1<br>
+[log]lastShots after = 1<br>
+[log]$xs = result=1;rest=0.22665897282119;<br>
+[log]---- firing from 224 to 404 ----<br>
+[log]Defender single hull = 22750<br>
+[log]Defender count = 2<br>
+[log]currentShield before = 2480<br>
+[log]currentLife before = 45500<br>
+[log]damage = 4760<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1240<br>
+[log]currentShield after = 1240<br>
+[log]currentLife after = 41980<br>
+[log]lastShipHit after = 1<br>
+[log]lastShots after = 1<br>
+[log]$xs = result=1;rest=0.22665897282119;<br>
+[log]---- firing from 224 to 407 ----<br>
+[log]$xs = result=0;rest=0.61332948641059;<br>
+[log]---- firing from 224 to 408 ----<br>
+[log]$xs = result=0;rest=0.61332948641059;<br>
+[log]---- firing from 224 to 412 ----<br>
+[log]$xs = result=0;rest=0.61332948641059;<br>
+array (
+  214 => 0.9728211895562708,
+  219 => 0.6133294864105948,
+  225 => 0.2118145003914833,
+  231 => 0.6133294864105948,
+  258 => 0.13329486410594793,
+  262 => 0.5907249450683594,
+  401 => 0.09163299348290366,
+  402 => 0.47974610309925936,
+  403 => 0.22665897282118963,
+  404 => 0.22665897282118963,
+  407 => 0.6133294864105948,
+  408 => 0.6133294864105948,
+  412 => 0.6133294864105948,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 2397360200<br>
+[log]currentLife before = 114963747720<br>
+[log]damage = 4760<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1198.6801<br>
+[log]currentShield after = 2397359001.3199<br>
+[log]currentLife after = 114963744158.68<br>
+[log]lastShipHit after = 1226659<br>
+[log]lastShots after = 1226659<br>
+[log]---- firing from 237 to 214 ----<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 2397359001.3199<br>
+[log]currentLife before = 114963744158.68<br>
+[log]damage = 18360<br>
+[log]count = 187757<br>
+[log]$ps->getAssorbedDamage() = 225060467.00541<br>
+[log]currentShield after = 2172298534.3145<br>
+[log]currentLife after = 111741586105.69<br>
+[log]lastShipHit after = 1414416<br>
+[log]lastShots after = 1414416<br>
+[log]$xs = result=187757;rest=0.086166221473832;<br>
+[log]---- firing from 237 to 219 ----<br>
+[log]$xs = result=0;rest=0.093878543083111;<br>
+[log]---- firing from 237 to 225 ----<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17810671996400<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 18360<br>
+[log]count = 5444955<br>
+[log]$ps->getAssorbedDamage() = 99969373800<br>
+[log]currentShield after = 17710702622600<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 41018065<br>
+[log]lastShots after = 41018065<br>
+[log]$xs = result=5444955;rest=0.49882042221725;<br>
+[log]---- firing from 237 to 231 ----<br>
+[log]$xs = result=0;rest=0.093878543083111;<br>
+[log]---- firing from 237 to 258 ----<br>
+[log]$xs = result=0;rest=0.93878543083111;<br>
+[log]---- firing from 237 to 262 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 104285037570<br>
+[log]currentLife before = 728873918.5<br>
+[log]damage = 18360<br>
+[log]count = 272247774<br>
+[log]$ps->getAssorbedDamage() = 9790127358.5996<br>
+[log]currentShield after = 94494910211.4<br>
+[log]currentLife after = 660448297.17645<br>
+[log]lastShipHit after = 2050903284<br>
+[log]lastShots after = 2050903284<br>
+[log]$xs = result=272247774;rest=0.94102114439011;<br>
+[log]---- firing from 237 to 401 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 442<br>
+[log]currentShield before = 21204<br>
+[log]currentLife before = 222300<br>
+[log]damage = 18360<br>
+[log]count = 41<br>
+[log]$ps->getAssorbedDamage() = 1966.8868778281<br>
+[log]currentShield after = 19237.113122172<br>
+[log]currentLife after = 201679.41176471<br>
+[log]lastShipHit after = 312<br>
+[log]lastShots after = 312<br>
+[log]$xs = result=41;rest=0.49431604273494;<br>
+[log]---- firing from 237 to 402 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 66<br>
+[log]currentShield before = 4030<br>
+[log]currentLife before = 33800<br>
+[log]damage = 18360<br>
+[log]count = 6<br>
+[log]$ps->getAssorbedDamage() = 366.36363636364<br>
+[log]currentShield after = 3663.6363636364<br>
+[log]currentLife after = 30727.272727273<br>
+[log]lastShipHit after = 46<br>
+[log]lastShots after = 46<br>
+[log]$xs = result=6;rest=0.19598384348531;<br>
+[log]---- firing from 237 to 403 ----<br>
+[log]$xs = result=0;rest=0.18775708616622;<br>
+[log]---- firing from 237 to 404 ----<br>
+[log]$xs = result=0;rest=0.18775708616622;<br>
+[log]---- firing from 237 to 407 ----<br>
+[log]$xs = result=0;rest=0.093878543083111;<br>
+[log]---- firing from 237 to 408 ----<br>
+[log]$xs = result=0;rest=0.093878543083111;<br>
+[log]---- firing from 237 to 412 ----<br>
+[log]$xs = result=0;rest=0.093878543083111;<br>
+array (
+  214 => 0.08616622147383168,
+  219 => 0.09387854308311074,
+  225 => 0.49882042221724987,
+  231 => 0.09387854308311074,
+  258 => 0.9387854308311073,
+  262 => 0.9410211443901062,
+  401 => 0.494316042734944,
+  402 => 0.19598384348530828,
+  403 => 0.18775708616622147,
+  404 => 0.18775708616622147,
+  407 => 0.09387854308311074,
+  408 => 0.09387854308311074,
+  412 => 0.09387854308311074,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 94494910211.4<br>
+[log]currentLife before = 660448297.17645<br>
+[log]damage = 18360<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 32.584451797035<br>
+[log]currentShield after = 94494910178.816<br>
+[log]currentLife after = 660448296.94871<br>
+[log]lastShipHit after = 2050903285<br>
+[log]lastShots after = 2050903285<br>
+[log]---- firing from 272 to 214 ----<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 2172298534.3145<br>
+[log]currentLife before = 111741586105.69<br>
+[log]damage = 136<br>
+[log]count = 28376<br>
+[log]$ps->getAssorbedDamage() = 3859136<br>
+[log]currentShield after = 2168439398.3145<br>
+[log]currentLife after = 111741586105.69<br>
+[log]lastShipHit after = 1442792<br>
+[log]lastShots after = 1442792<br>
+[log]$xs = result=28376;rest=0.57602890014823;<br>
+[log]---- firing from 272 to 219 ----<br>
+[log]$xs = result=0;rest=0.01418828801445;<br>
+[log]---- firing from 272 to 225 ----<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17710702622600<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 136<br>
+[log]count = 822920<br>
+[log]$ps->getAssorbedDamage() = 111917120<br>
+[log]currentShield after = 17710590705480<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 41840985<br>
+[log]lastShots after = 41840985<br>
+[log]$xs = result=822920;rest=0.70483810431324;<br>
+[log]---- firing from 272 to 231 ----<br>
+[log]$xs = result=0;rest=0.01418828801445;<br>
+[log]---- firing from 272 to 258 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+[log]---- firing from 272 to 262 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 94494910178.816<br>
+[log]currentLife before = 660448296.94871<br>
+[log]damage = 136<br>
+[log]count = 41146035<br>
+[log]$ps->getAssorbedDamage() = 1340720993.6343<br>
+[log]currentShield after = 93154189185.182<br>
+[log]currentLife after = 651077666.34804<br>
+[log]lastShipHit after = 2092049320<br>
+[log]lastShots after = 2092049320<br>
+[log]$xs = result=41146035;rest=0.24190521240234;<br>
+[log]---- firing from 272 to 401 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 442<br>
+[log]currentShield before = 19237.113122172<br>
+[log]currentLife before = 201679.41176471<br>
+[log]damage = 136<br>
+[log]count = 6<br>
+[log]$ps->getAssorbedDamage() = 261.13728220143<br>
+[log]currentShield after = 18975.975839971<br>
+[log]currentLife after = 201124.54904691<br>
+[log]lastShipHit after = 318<br>
+[log]lastShots after = 318<br>
+[log]$xs = result=6;rest=0.27122330238693;<br>
+[log]---- firing from 272 to 402 ----<br>
+[log]$xs = result=0;rest=0.9364270089537;<br>
+[log]---- firing from 272 to 403 ----<br>
+[log]$xs = result=0;rest=0.0283765760289;<br>
+[log]---- firing from 272 to 404 ----<br>
+[log]$xs = result=0;rest=0.0283765760289;<br>
+[log]---- firing from 272 to 407 ----<br>
+[log]$xs = result=0;rest=0.01418828801445;<br>
+[log]---- firing from 272 to 408 ----<br>
+[log]$xs = result=0;rest=0.01418828801445;<br>
+[log]---- firing from 272 to 412 ----<br>
+[log]$xs = result=0;rest=0.01418828801445;<br>
+array (
+  214 => 0.5760289001482306,
+  219 => 0.014188288014450073,
+  225 => 0.7048381043132395,
+  231 => 0.014188288014450073,
+  258 => 0.14188288014450073,
+  262 => 0.24190521240234375,
+  401 => 0.2712233023869324,
+  402 => 0.9364270089537048,
+  403 => 0.028376576028900147,
+  404 => 0.028376576028900147,
+  407 => 0.014188288014450073,
+  408 => 0.014188288014450073,
+  412 => 0.014188288014450073,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 66<br>
+[log]currentShield before = 3663.6363636364<br>
+[log]currentLife before = 30727.272727273<br>
+[log]damage = 136<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 55.509641873278<br>
+[log]currentShield after = 3608.1267217631<br>
+[log]currentLife after = 30646.782369146<br>
+[log]lastShipHit after = 47<br>
+[log]lastShots after = 47<br>
+[log]---- firing from 262 to 214 ----<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 2168439398.3145<br>
+[log]currentLife before = 111741586105.69<br>
+[log]damage = 136<br>
+[log]count = 561471<br>
+[log]$ps->getAssorbedDamage() = 76360056<br>
+[log]currentShield after = 2092079342.3145<br>
+[log]currentLife after = 111741586105.69<br>
+[log]lastShipHit after = 2004263<br>
+[log]lastShots after = 2004263<br>
+[log]$xs = result=561471;rest=0.20476509293076;<br>
+[log]---- firing from 262 to 219 ----<br>
+[log]$xs = result=0;rest=0.28073560238255;<br>
+[log]---- firing from 262 to 225 ----<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17710590705480<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 136<br>
+[log]count = 16282664<br>
+[log]$ps->getAssorbedDamage() = 2214442304<br>
+[log]currentShield after = 17708376263176<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 58123649<br>
+[log]lastShots after = 58123649<br>
+[log]$xs = result=16282664;rest=0.93818769603968;<br>
+[log]---- firing from 262 to 231 ----<br>
+[log]$xs = result=0;rest=0.28073560238255;<br>
+[log]---- firing from 262 to 258 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 10<br>
+[log]currentShield before = 0<br>
+[log]currentLife before = 2.6<br>
+[log]damage = 136<br>
+[log]count = 2<br>
+[log]$ps->getAssorbedDamage() = 0<br>
+[log]currentShield after = 0<br>
+[log]currentLife after = 2.08<br>
+[log]lastShipHit after = 8<br>
+[log]lastShots after = 8<br>
+[log]$xs = result=2;rest=0.80735602382546;<br>
+[log]---- firing from 262 to 262 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 93154189185.182<br>
+[log]currentLife before = 651077666.34804<br>
+[log]damage = 136<br>
+[log]count = 814133246<br>
+[log]$ps->getAssorbedDamage() = 26151697386.148<br>
+[log]currentShield after = 67002491799.033<br>
+[log]currentLife after = 468296985.69217<br>
+[log]lastShipHit after = 2906182566<br>
+[log]lastShots after = 2906182566<br>
+[log]$xs = result=814133246;rest=0.90938472747803;<br>
+[log]---- firing from 262 to 401 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 442<br>
+[log]currentShield before = 18975.975839971<br>
+[log]currentLife before = 201124.54904691<br>
+[log]damage = 136<br>
+[log]count = 124<br>
+[log]$ps->getAssorbedDamage() = 5323.5769324804<br>
+[log]currentShield after = 13652.39890749<br>
+[log]currentLife after = 189584.12597939<br>
+[log]lastShipHit after = 442<br>
+[log]lastShots after = 442<br>
+[log]$xs = result=124;rest=0.085136253085537;<br>
+[log]---- firing from 262 to 402 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 66<br>
+[log]currentShield before = 3608.1267217631<br>
+[log]currentLife before = 30646.782369146<br>
+[log]damage = 136<br>
+[log]count = 18<br>
+[log]$ps->getAssorbedDamage() = 984.03456048084<br>
+[log]currentShield after = 2624.0921612822<br>
+[log]currentLife after = 29182.816929627<br>
+[log]lastShipHit after = 65<br>
+[log]lastShots after = 65<br>
+[log]$xs = result=18;rest=0.52854975724807;<br>
+[log]---- firing from 262 to 403 ----<br>
+[log]$xs = result=0;rest=0.56147120476509;<br>
+[log]---- firing from 262 to 404 ----<br>
+[log]$xs = result=0;rest=0.56147120476509;<br>
+[log]---- firing from 262 to 407 ----<br>
+[log]$xs = result=0;rest=0.28073560238255;<br>
+[log]---- firing from 262 to 408 ----<br>
+[log]$xs = result=0;rest=0.28073560238255;<br>
+[log]---- firing from 262 to 412 ----<br>
+[log]$xs = result=0;rest=0.28073560238255;<br>
+array (
+  214 => 0.2047650929307565,
+  219 => 0.28073560238254647,
+  225 => 0.9381876960396767,
+  231 => 0.28073560238254647,
+  258 => 0.8073560238254647,
+  262 => 0.9093847274780273,
+  401 => 0.08513625308553685,
+  402 => 0.5285497572480651,
+  403 => 0.5614712047650929,
+  404 => 0.5614712047650929,
+  407 => 0.28073560238254647,
+  408 => 0.28073560238254647,
+  412 => 0.28073560238254647,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17708376263176<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 136<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 136<br>
+[log]currentShield after = 17708376263040<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 58123650<br>
+[log]lastShots after = 58123650<br>
+[log]---- firing from 263 to 214 ----<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 2092079342.3145<br>
+[log]currentLife before = 111741586105.69<br>
+[log]damage = 1700<br>
+[log]count = 283765<br>
+[log]$ps->getAssorbedDamage() = 296829447.28594<br>
+[log]currentShield after = 1795249895.0286<br>
+[log]currentLife after = 111556015052.97<br>
+[log]lastShipHit after = 2288028<br>
+[log]lastShots after = 2288028<br>
+[log]$xs = result=283765;rest=0.7602890014532;<br>
+[log]---- firing from 263 to 219 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+[log]---- firing from 263 to 225 ----<br>
+[log]Defender single hull = 5850000<br>
+[log]Defender count = 58000000<br>
+[log]currentShield before = 17708376263040<br>
+[log]currentLife before = 3.393E+14<br>
+[log]damage = 1700<br>
+[log]count = 8229207<br>
+[log]$ps->getAssorbedDamage() = 13989651900<br>
+[log]currentShield after = 17694386611140<br>
+[log]currentLife after = 3.393E+14<br>
+[log]lastShipHit after = 66352857<br>
+[log]lastShots after = 66352857<br>
+[log]$xs = result=8229207;rest=0.048381042666733;<br>
+[log]---- firing from 263 to 231 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+[log]---- firing from 263 to 258 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 10<br>
+[log]currentShield before = 0<br>
+[log]currentLife before = 2.08<br>
+[log]damage = 1700<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 0<br>
+[log]currentShield after = 0<br>
+[log]currentLife after = 1.872<br>
+[log]lastShipHit after = 9<br>
+[log]lastShots after = 9<br>
+[log]$xs = result=1;rest=0.41882880144501;<br>
+[log]---- firing from 263 to 262 ----<br>
+[log]Defender single hull = 0.65<br>
+[log]Defender count = 2900000000<br>
+[log]currentShield before = 67002491799.033<br>
+[log]currentLife before = 468296985.69217<br>
+[log]damage = 1700<br>
+[log]count = 411460352<br>
+[log]$ps->getAssorbedDamage() = 9506506503.6232<br>
+[log]currentShield after = 57495985295.41<br>
+[log]currentLife after = 401853660.66684<br>
+[log]lastShipHit after = 3317642918<br>
+[log]lastShots after = 3317642918<br>
+[log]$xs = result=411460352;rest=0.41905212402344;<br>
+[log]---- firing from 263 to 401 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 442<br>
+[log]currentShield before = 13652.39890749<br>
+[log]currentLife before = 189584.12597939<br>
+[log]damage = 1700<br>
+[log]count = 62<br>
+[log]$ps->getAssorbedDamage() = 1915.0423806887<br>
+[log]currentShield after = 11737.356526801<br>
+[log]currentLife after = 162990.87753884<br>
+[log]lastShipHit after = 504<br>
+[log]lastShots after = 504<br>
+[log]$xs = result=62;rest=0.71223302386932;<br>
+[log]---- firing from 263 to 402 ----<br>
+[log]Defender single hull = 1300<br>
+[log]Defender count = 66<br>
+[log]currentShield before = 2624.0921612822<br>
+[log]currentLife before = 29182.816929627<br>
+[log]damage = 1700<br>
+[log]count = 9<br>
+[log]$ps->getAssorbedDamage() = 357.83074926576<br>
+[log]currentShield after = 2266.2614120165<br>
+[log]currentLife after = 25203.341893769<br>
+[log]lastShipHit after = 74<br>
+[log]lastShots after = 74<br>
+[log]$xs = result=9;rest=0.36427008953705;<br>
+[log]---- firing from 263 to 403 ----<br>
+[log]$xs = result=0;rest=0.283765760289;<br>
+[log]---- firing from 263 to 404 ----<br>
+[log]$xs = result=0;rest=0.283765760289;<br>
+[log]---- firing from 263 to 407 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+[log]---- firing from 263 to 408 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+[log]---- firing from 263 to 412 ----<br>
+[log]$xs = result=0;rest=0.1418828801445;<br>
+array (
+  214 => 0.7602890014532022,
+  219 => 0.14188288014450073,
+  225 => 0.048381042666733265,
+  231 => 0.14188288014450073,
+  258 => 0.4188288014450072,
+  262 => 0.4190521240234375,
+  401 => 0.7122330238693237,
+  402 => 0.3642700895370492,
+  403 => 0.28376576028900147,
+  404 => 0.28376576028900147,
+  407 => 0.14188288014450073,
+  408 => 0.14188288014450073,
+  412 => 0.14188288014450073,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 58500<br>
+[log]Defender count = 2000000<br>
+[log]currentShield before = 1795249895.0286<br>
+[log]currentLife before = 111556015052.97<br>
+[log]damage = 1700<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 897.62494751428<br>
+[log]currentShield after = 1795248997.4036<br>
+[log]currentLife after = 111556014250.6<br>
+[log]lastShipHit after = 2288029<br>
+[log]lastShots after = 2288029<br>
+***** firing to attackers *****<br>---------** firing to player with ID = 77 **---------- <br>------- firing to fleet with ID = 55238 -------- <br>[log]---- firing from 214 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 1024472148000<br>
+[log]currentLife before = 15443917631100<br>
+[log]damage = 1340<br>
+[log]count = 538055<br>
+[log]$ps->getAssorbedDamage() = 720993700<br>
+[log]currentShield after = 1023751154300<br>
+[log]currentLife after = 15443917631100<br>
+[log]lastShipHit after = 538055<br>
+[log]lastShots after = 538055<br>
+[log]$xs = result=538055;rest=0.84416090580635;<br>
+[log]---- firing from 214 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2834381477400<br>
+[log]currentLife before = 24203394772700<br>
+[log]damage = 1340<br>
+[log]count = 350264<br>
+[log]$ps->getAssorbedDamage() = 469353760<br>
+[log]currentShield after = 2833912123640<br>
+[log]currentLife after = 24203394772700<br>
+[log]lastShipHit after = 350264<br>
+[log]lastShots after = 350264<br>
+[log]$xs = result=350264;rest=0.85911592585035;<br>
+[log]---- firing from 214 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 37797606000<br>
+[log]currentLife before = 281382178<br>
+[log]damage = 1340<br>
+[log]count = 529371<br>
+[log]$ps->getAssorbedDamage() = 47643390<br>
+[log]currentShield after = 37749962610<br>
+[log]currentLife after = 281027499.43<br>
+[log]lastShipHit after = 529371<br>
+[log]lastShots after = 529371<br>
+[log]$xs = result=529371;rest=0.093677699216641;<br>
+[log]---- firing from 214 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 37797606000<br>
+[log]currentLife before = 281382178<br>
+[log]damage = 1340<br>
+[log]count = 529371<br>
+[log]$ps->getAssorbedDamage() = 47643390<br>
+[log]currentShield after = 37749962610<br>
+[log]currentLife after = 281027499.43<br>
+[log]lastShipHit after = 529371<br>
+[log]lastShots after = 529371<br>
+[log]$xs = result=529371;rest=0.093677699216641;<br>
+[log]---- firing from 214 to 272 ----<br>
+[log]Defender single hull = 33500<br>
+[log]Defender count = 41997340<br>
+[log]currentShield before = 62996010000<br>
+[log]currentLife before = 1406910890000<br>
+[log]damage = 1340<br>
+[log]count = 52937<br>
+[log]$ps->getAssorbedDamage() = 70935580<br>
+[log]currentShield after = 62925074420<br>
+[log]currentLife after = 1406910890000<br>
+[log]lastShipHit after = 52937<br>
+[log]lastShots after = 52937<br>
+[log]$xs = result=52937;rest=0.10936776992457;<br>
+array (
+  224 => 0.8441609058063477,
+  237 => 0.8591159258503467,
+  262 => 0.09367769921664149,
+  263 => 0.09367769921664149,
+  272 => 0.10936776992457453,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2833912123640<br>
+[log]currentLife before = 24203394772700<br>
+[log]damage = 1340<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1340<br>
+[log]currentShield after = 2833912122300<br>
+[log]currentLife after = 24203394772700<br>
+[log]lastShipHit after = 350265<br>
+[log]lastShots after = 350265<br>
+[log]---- firing from 219 to 224 ----<br>
+[log]$xs = result=0;rest=0.26902792208045;<br>
+[log]---- firing from 219 to 237 ----<br>
+[log]$xs = result=0;rest=0.17513242955796;<br>
+[log]---- firing from 219 to 262 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 219 to 263 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 219 to 272 ----<br>
+[log]$xs = result=0;rest=0.026468554683885;<br>
+array (
+  224 => 0.2690279220804529,
+  237 => 0.17513242955796293,
+  262 => 0.2646855468388496,
+  263 => 0.2646855468388496,
+  272 => 0.02646855468388496,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 1023751154300<br>
+[log]currentLife before = 15443917631100<br>
+[log]damage = 6.7<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 6.7<br>
+[log]currentShield after = 1023751154293.3<br>
+[log]currentLife after = 15443917631100<br>
+[log]lastShipHit after = 538056<br>
+[log]lastShots after = 538056<br>
+[log]---- firing from 225 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 1023751154293.3<br>
+[log]currentLife before = 15443917631100<br>
+[log]damage = 737000<br>
+[log]count = 93621716<br>
+[log]$ps->getAssorbedDamage() = 224533986620.99<br>
+[log]currentShield after = 799217167672.31<br>
+[log]currentLife after = 12056683946220<br>
+[log]lastShipHit after = 94159772<br>
+[log]lastShots after = 94159772<br>
+[log]$xs = result=93621716;rest=0.88399758934975;<br>
+[log]---- firing from 225 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2833912122300<br>
+[log]currentLife before = 24203394772700<br>
+[log]damage = 737000<br>
+[log]count = 60946085<br>
+[log]$ps->getAssorbedDamage() = 621547125800.42<br>
+[log]currentShield after = 2212364996499.6<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 61296350<br>
+[log]lastShots after = 61296350<br>
+[log]$xs = result=60946085;rest=0.48617109656334;<br>
+[log]---- firing from 225 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 37749962610<br>
+[log]currentLife before = 281027499.43<br>
+[log]damage = 737000<br>
+[log]count = 92110570<br>
+[log]$ps->getAssorbedDamage() = 8279501924.3738<br>
+[log]currentShield after = 29470460685.626<br>
+[log]currentLife after = 219391207.32633<br>
+[log]lastShipHit after = 92639941<br>
+[log]lastShots after = 92639941<br>
+[log]$xs = result=92110570;rest=0.29991966485977;<br>
+[log]---- firing from 225 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 37749962610<br>
+[log]currentLife before = 281027499.43<br>
+[log]damage = 737000<br>
+[log]count = 92110570<br>
+[log]$ps->getAssorbedDamage() = 8279501924.3738<br>
+[log]currentShield after = 29470460685.626<br>
+[log]currentLife after = 219391207.32633<br>
+[log]lastShipHit after = 92639941<br>
+[log]lastShots after = 92639941<br>
+[log]$xs = result=92110570;rest=0.29991966485977;<br>
+[log]---- firing from 225 to 272 ----<br>
+[log]Defender single hull = 33500<br>
+[log]Defender count = 41997340<br>
+[log]currentShield before = 62925074420<br>
+[log]currentLife before = 1406910890000<br>
+[log]damage = 737000<br>
+[log]count = 9211057<br>
+[log]$ps->getAssorbedDamage() = 13801027570.124<br>
+[log]currentShield after = 49124046849.876<br>
+[log]currentLife after = 1098340480500<br>
+[log]lastShipHit after = 9263994<br>
+[log]lastShots after = 9263994<br>
+[log]$xs = result=9211057;rest=0.029991965740919;<br>
+array (
+  224 => 0.8839975893497467,
+  237 => 0.48617109656333923,
+  262 => 0.29991966485977173,
+  263 => 0.29991966485977173,
+  272 => 0.029991965740919113,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217167672.31<br>
+[log]currentLife before = 12056683946220<br>
+[log]damage = 737000<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1872.3019519449<br>
+[log]currentShield after = 799217165800.01<br>
+[log]currentLife after = 12056683917975<br>
+[log]lastShipHit after = 94159773<br>
+[log]lastShots after = 94159773<br>
+[log]---- firing from 231 to 224 ----<br>
+[log]$xs = result=0;rest=0.26902792208045;<br>
+[log]---- firing from 231 to 237 ----<br>
+[log]$xs = result=0;rest=0.17513242955796;<br>
+[log]---- firing from 231 to 262 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 231 to 263 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 231 to 272 ----<br>
+[log]$xs = result=0;rest=0.026468554683885;<br>
+array (
+  224 => 0.2690279220804529,
+  237 => 0.17513242955796293,
+  262 => 0.2646855468388496,
+  263 => 0.2646855468388496,
+  272 => 0.02646855468388496,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217165800.01<br>
+[log]currentLife before = 12056683917975<br>
+[log]damage = 134000<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1872.3019475587<br>
+[log]currentShield after = 799217163927.71<br>
+[log]currentLife after = 12056683889730<br>
+[log]lastShipHit after = 94159774<br>
+[log]lastShots after = 94159774<br>
+[log]---- firing from 401 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217163927.71<br>
+[log]currentLife before = 12056683889730<br>
+[log]damage = 536<br>
+[log]count = 118<br>
+[log]$ps->getAssorbedDamage() = 63248<br>
+[log]currentShield after = 799217100679.71<br>
+[log]currentLife after = 12056683889730<br>
+[log]lastShipHit after = 94159892<br>
+[log]lastShots after = 94159892<br>
+[log]$xs = result=118;rest=0.91034155956017;<br>
+[log]---- firing from 401 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2212364996499.6<br>
+[log]currentLife before = 18894990769200<br>
+[log]damage = 536<br>
+[log]count = 77<br>
+[log]$ps->getAssorbedDamage() = 41272<br>
+[log]currentShield after = 2212364955227.6<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 61296427<br>
+[log]lastShots after = 61296427<br>
+[log]$xs = result=77;rest=0.40853386461961;<br>
+[log]---- firing from 401 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470460685.626<br>
+[log]currentLife before = 219391207.32633<br>
+[log]damage = 536<br>
+[log]count = 116<br>
+[log]$ps->getAssorbedDamage() = 8139.9761021356<br>
+[log]currentShield after = 29470452545.65<br>
+[log]currentLife after = 219391146.72873<br>
+[log]lastShipHit after = 92640057<br>
+[log]lastShots after = 92640057<br>
+[log]$xs = result=116;rest=0.99101170277153;<br>
+[log]---- firing from 401 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470460685.626<br>
+[log]currentLife before = 219391207.32633<br>
+[log]damage = 536<br>
+[log]count = 116<br>
+[log]$ps->getAssorbedDamage() = 8139.9761021356<br>
+[log]currentShield after = 29470452545.65<br>
+[log]currentLife after = 219391146.72873<br>
+[log]lastShipHit after = 92640057<br>
+[log]lastShots after = 92640057<br>
+[log]$xs = result=116;rest=0.99101170277153;<br>
+[log]---- firing from 401 to 272 ----<br>
+[log]Defender single hull = 33500<br>
+[log]Defender count = 41997340<br>
+[log]currentShield before = 49124046849.876<br>
+[log]currentLife before = 1098340480500<br>
+[log]damage = 536<br>
+[log]count = 11<br>
+[log]$ps->getAssorbedDamage() = 5896<br>
+[log]currentShield after = 49124040953.876<br>
+[log]currentLife after = 1098340480500<br>
+[log]lastShipHit after = 9264005<br>
+[log]lastShots after = 9264005<br>
+[log]$xs = result=11;rest=0.69910117027715;<br>
+array (
+  224 => 0.910341559560166,
+  237 => 0.4085338646196135,
+  262 => 0.9910117027715302,
+  263 => 0.9910117027715302,
+  272 => 0.699101170277153,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470452545.65<br>
+[log]currentLife before = 219391146.72873<br>
+[log]damage = 536<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 70.172188394908<br>
+[log]currentShield after = 29470452475.478<br>
+[log]currentLife after = 219391146.20634<br>
+[log]lastShipHit after = 92640058<br>
+[log]lastShots after = 92640058<br>
+[log]---- firing from 402 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217100679.71<br>
+[log]currentLife before = 12056683889730<br>
+[log]damage = 670<br>
+[log]count = 17<br>
+[log]$ps->getAssorbedDamage() = 11390<br>
+[log]currentShield after = 799217089289.71<br>
+[log]currentLife after = 12056683889730<br>
+[log]lastShipHit after = 94159909<br>
+[log]lastShots after = 94159909<br>
+[log]$xs = result=17;rest=0.75584285730989;<br>
+[log]---- firing from 402 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2212364955227.6<br>
+[log]currentLife before = 18894990769200<br>
+[log]damage = 670<br>
+[log]count = 11<br>
+[log]$ps->getAssorbedDamage() = 7370<br>
+[log]currentShield after = 2212364947857.6<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 61296438<br>
+[log]lastShots after = 61296438<br>
+[log]$xs = result=11;rest=0.55874035082555;<br>
+[log]---- firing from 402 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470452475.478<br>
+[log]currentLife before = 219391146.20634<br>
+[log]damage = 670<br>
+[log]count = 17<br>
+[log]$ps->getAssorbedDamage() = 1192.927199873<br>
+[log]currentShield after = 29470451282.551<br>
+[log]currentLife after = 219391137.32566<br>
+[log]lastShipHit after = 92640075<br>
+[log]lastShots after = 92640075<br>
+[log]$xs = result=17;rest=0.46924609136407;<br>
+[log]---- firing from 402 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470452545.65<br>
+[log]currentLife before = 219391146.72873<br>
+[log]damage = 670<br>
+[log]count = 17<br>
+[log]$ps->getAssorbedDamage() = 1192.9272027134<br>
+[log]currentShield after = 29470451352.723<br>
+[log]currentLife after = 219391137.84805<br>
+[log]lastShipHit after = 92640074<br>
+[log]lastShots after = 92640074<br>
+[log]$xs = result=17;rest=0.46924609136407;<br>
+[log]---- firing from 402 to 272 ----<br>
+[log]Defender single hull = 33500<br>
+[log]Defender count = 41997340<br>
+[log]currentShield before = 49124040953.876<br>
+[log]currentLife before = 1098340480500<br>
+[log]damage = 670<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 670<br>
+[log]currentShield after = 49124040283.876<br>
+[log]currentLife after = 1098340480500<br>
+[log]lastShipHit after = 9264006<br>
+[log]lastShots after = 9264006<br>
+[log]$xs = result=1;rest=0.74692460913641;<br>
+array (
+  224 => 0.7558428573098901,
+  237 => 0.5587403508255537,
+  262 => 0.4692460913640737,
+  263 => 0.4692460913640737,
+  272 => 0.7469246091364075,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217089289.71<br>
+[log]currentLife before = 12056683889730<br>
+[log]damage = 670<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 670<br>
+[log]currentShield after = 799217088619.71<br>
+[log]currentLife after = 12056683889730<br>
+[log]lastShipHit after = 94159910<br>
+[log]lastShots after = 94159910<br>
+[log]---- firing from 403 to 224 ----<br>
+[log]$xs = result=0;rest=0.53805584416091;<br>
+[log]---- firing from 403 to 237 ----<br>
+[log]$xs = result=0;rest=0.35026485911593;<br>
+[log]---- firing from 403 to 262 ----<br>
+[log]$xs = result=0;rest=0.5293710936777;<br>
+[log]---- firing from 403 to 263 ----<br>
+[log]$xs = result=0;rest=0.5293710936777;<br>
+[log]---- firing from 403 to 272 ----<br>
+[log]$xs = result=0;rest=0.05293710936777;<br>
+array (
+  224 => 0.5380558441609058,
+  237 => 0.35026485911592586,
+  262 => 0.5293710936776992,
+  263 => 0.5293710936776992,
+  272 => 0.05293710936776992,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217088619.71<br>
+[log]currentLife before = 12056683889730<br>
+[log]damage = 1675<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1675<br>
+[log]currentShield after = 799217086944.71<br>
+[log]currentLife after = 12056683889730<br>
+[log]lastShipHit after = 94159911<br>
+[log]lastShots after = 94159911<br>
+[log]---- firing from 404 to 224 ----<br>
+[log]$xs = result=0;rest=0.53805584416091;<br>
+[log]---- firing from 404 to 237 ----<br>
+[log]$xs = result=0;rest=0.35026485911593;<br>
+[log]---- firing from 404 to 262 ----<br>
+[log]$xs = result=0;rest=0.5293710936777;<br>
+[log]---- firing from 404 to 263 ----<br>
+[log]$xs = result=0;rest=0.5293710936777;<br>
+[log]---- firing from 404 to 272 ----<br>
+[log]$xs = result=0;rest=0.05293710936777;<br>
+array (
+  224 => 0.5380558441609058,
+  237 => 0.35026485911592586,
+  262 => 0.5293710936776992,
+  263 => 0.5293710936776992,
+  272 => 0.05293710936776992,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217086944.71<br>
+[log]currentLife before = 12056683889730<br>
+[log]damage = 7370<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 1872.3017628267<br>
+[log]currentShield after = 799217085072.41<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 94159912<br>
+[log]lastShots after = 94159912<br>
+[log]---- firing from 407 to 224 ----<br>
+[log]$xs = result=0;rest=0.26902792208045;<br>
+[log]---- firing from 407 to 237 ----<br>
+[log]$xs = result=0;rest=0.17513242955796;<br>
+[log]---- firing from 407 to 262 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 407 to 263 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 407 to 272 ----<br>
+[log]$xs = result=0;rest=0.026468554683885;<br>
+array (
+  224 => 0.2690279220804529,
+  237 => 0.17513242955796293,
+  262 => 0.2646855468388496,
+  263 => 0.2646855468388496,
+  272 => 0.02646855468388496,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217085072.41<br>
+[log]currentLife before = 12056683884233<br>
+[log]damage = 6.7<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 6.7<br>
+[log]currentShield after = 799217085065.71<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 94159913<br>
+[log]lastShots after = 94159913<br>
+[log]---- firing from 408 to 224 ----<br>
+[log]$xs = result=0;rest=0.26902792208045;<br>
+[log]---- firing from 408 to 237 ----<br>
+[log]$xs = result=0;rest=0.17513242955796;<br>
+[log]---- firing from 408 to 262 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 408 to 263 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 408 to 272 ----<br>
+[log]$xs = result=0;rest=0.026468554683885;<br>
+array (
+  224 => 0.2690279220804529,
+  237 => 0.17513242955796293,
+  262 => 0.2646855468388496,
+  263 => 0.2646855468388496,
+  272 => 0.02646855468388496,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217085065.71<br>
+[log]currentLife before = 12056683884233<br>
+[log]damage = 6.7<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 6.7<br>
+[log]currentShield after = 799217085059.01<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 94159914<br>
+[log]lastShots after = 94159914<br>
+[log]---- firing from 412 to 224 ----<br>
+[log]$xs = result=0;rest=0.26902792208045;<br>
+[log]---- firing from 412 to 237 ----<br>
+[log]$xs = result=0;rest=0.17513242955796;<br>
+[log]---- firing from 412 to 262 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 412 to 263 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+[log]---- firing from 412 to 272 ----<br>
+[log]$xs = result=0;rest=0.026468554683885;<br>
+array (
+  224 => 0.2690279220804529,
+  237 => 0.17513242955796293,
+  262 => 0.2646855468388496,
+  263 => 0.2646855468388496,
+  272 => 0.02646855468388496,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217085059.01<br>
+[log]currentLife before = 12056683884233<br>
+[log]damage = 6.7<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 6.7<br>
+[log]currentShield after = 799217085052.31<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 94159915<br>
+[log]lastShots after = 94159915<br>
+[log]---- firing from 258 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217085052.31<br>
+[log]currentLife before = 12056683884233<br>
+[log]damage = 13.4<br>
+[log]count = 2<br>
+[log]$ps->getAssorbedDamage() = 26.8<br>
+[log]currentShield after = 799217085025.51<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 94159917<br>
+[log]lastShots after = 94159917<br>
+[log]$xs = result=2;rest=0.69027922080453;<br>
+[log]---- firing from 258 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2212364947857.6<br>
+[log]currentLife before = 18894990769200<br>
+[log]damage = 13.4<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 13.4<br>
+[log]currentShield after = 2212364947844.2<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 61296439<br>
+[log]lastShots after = 61296439<br>
+[log]$xs = result=1;rest=0.75132429557963;<br>
+[log]---- firing from 258 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470451282.551<br>
+[log]currentLife before = 219391137.32566<br>
+[log]damage = 13.4<br>
+[log]count = 2<br>
+[log]$ps->getAssorbedDamage() = 26.8<br>
+[log]currentShield after = 29470451255.751<br>
+[log]currentLife after = 219391137.32566<br>
+[log]lastShipHit after = 92640077<br>
+[log]lastShots after = 92640077<br>
+[log]$xs = result=2;rest=0.6468554683885;<br>
+[log]---- firing from 258 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470451352.723<br>
+[log]currentLife before = 219391137.84805<br>
+[log]damage = 13.4<br>
+[log]count = 2<br>
+[log]$ps->getAssorbedDamage() = 26.8<br>
+[log]currentShield after = 29470451325.923<br>
+[log]currentLife after = 219391137.84805<br>
+[log]lastShipHit after = 92640076<br>
+[log]lastShots after = 92640076<br>
+[log]$xs = result=2;rest=0.6468554683885;<br>
+[log]---- firing from 258 to 272 ----<br>
+[log]$xs = result=0;rest=0.26468554683885;<br>
+array (
+  224 => 0.6902792208045287,
+  237 => 0.7513242955796293,
+  262 => 0.6468554683884964,
+  263 => 0.6468554683884964,
+  272 => 0.26468554683884965,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2212364947844.2<br>
+[log]currentLife before = 18894990769200<br>
+[log]damage = 13.4<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 13.4<br>
+[log]currentShield after = 2212364947830.8<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 61296440<br>
+[log]lastShots after = 61296440<br>
+[log]---- firing from 262 to 224 ----<br>
+[log]Defender single hull = 36180<br>
+[log]Defender count = 426863395<br>
+[log]currentShield before = 799217085025.51<br>
+[log]currentLife before = 12056683884233<br>
+[log]damage = 134<br>
+[log]count = 1102973765<br>
+[log]$ps->getAssorbedDamage() = 147798484510<br>
+[log]currentShield after = 651418600515.51<br>
+[log]currentLife after = 12056683884233<br>
+[log]lastShipHit after = 521023312<br>
+[log]lastShots after = 1197133682<br>
+[log]$xs = result=1102973765;rest=0.57510113716125;<br>
+[log]---- firing from 262 to 237 ----<br>
+[log]Defender single hull = 87100<br>
+[log]Defender count = 277880537<br>
+[log]currentShield before = 2212364947830.8<br>
+[log]currentLife before = 18894990769200<br>
+[log]damage = 134<br>
+[log]count = 718016456<br>
+[log]$ps->getAssorbedDamage() = 96214205104<br>
+[log]currentShield after = 2116150742726.8<br>
+[log]currentLife after = 18894990769200<br>
+[log]lastShipHit after = 339176977<br>
+[log]lastShots after = 779312896<br>
+[log]$xs = result=718016456;rest=0.47062623500824;<br>
+[log]---- firing from 262 to 262 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470451255.751<br>
+[log]currentLife before = 219391137.32566<br>
+[log]damage = 134<br>
+[log]count = 1085170684<br>
+[log]$ps->getAssorbedDamage() = 29470451255.751<br>
+[log]currentShield after = 0<br>
+[log]currentLife after = 2.9802322387695E-8<br>
+[log]lastShipHit after = 512613477<br>
+[log]lastShots after = 1177810761<br>
+[log]$xs = result=1085170684;rest=0.26393914222717;<br>
+[log]---- firing from 262 to 263 ----<br>
+[log]Defender single hull = 0.67<br>
+[log]Defender count = 419973400<br>
+[log]currentShield before = 29470451325.923<br>
+[log]currentLife before = 219391137.84805<br>
+[log]damage = 134<br>
+[log]count = 1085170684<br>
+[log]$ps->getAssorbedDamage() = 29470451325.923<br>
+[log]currentShield after = -3.814697265625E-6<br>
+[log]currentLife after = 0<br>
+[log]lastShipHit after = 512613476<br>
+[log]lastShots after = 1177810760<br>
+array (
+  'cmd' => 'insert',
+  'tech' => '123',
+)array (
+  'page' => 'research',
+)

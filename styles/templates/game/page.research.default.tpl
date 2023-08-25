@@ -46,71 +46,44 @@
 </div>
 {/if}
 {if $IsLabinBuild}<table width="70%" id="infobox" style="border: 2px solid red; text-align:center;background:transparent"><tr><td>{$LNG.bd_building_lab}</td></tr></table><br><br>{/if}
-<table style="width:760px">
+
 	{foreach $ResearchList as $ID => $Element}
-	<tr>
-		<td rowspan="2" style="width:120px;">
-			<a href="#" onclick="return Dialog.info({$ID})">
-				<img src="{$dpath}gebaeude/{$ID}.gif" alt="" class="top" width="120" height="120">
-			</a>
-		</td>
-		<th>
-			<a href="#" onclick="return Dialog.info({$ID})">{$LNG.tech.{$ID}}</a>{if $Element.level != 0} ({$LNG.bd_lvl} {$Element.level}{if $Element.maxLevel != 255}/{$Element.maxLevel}{/if}){/if}
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<table style="width:100%">
-				<tr>
-					<td class="transparent left" style="width:90%;padding:10px;"><p>{$LNG.shortDescription.{$ID}}</p>
-					<p>{foreach $Element.costResources as $RessID => $RessAmount}
-					{$LNG.tech.{$RessID}}: <b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number}</span></b>
-					{/foreach}</p></td>
-					<td class="transparent" style="vertical-align:middle;width:100px">
+	<div style="position:relative; border-radius: 5px; width:172px; margin:5px; border:1px solid #000; height:324px; overflow:hidden; float:left; background:rgba(0,0,0,0.95);">
+		<div  onclick="return Dialog.info({$ID})" style=" width:172px; height:172px; background:url('{$dpath}gebaeude/{$ID}.gif'); background-size:100% 100%;"><div style="background:rgba(13, 16, 20, 0.95); height: 30px; border-bottom: 1px solid #000; padding-left:2px; width:100%;"><a class="tooltip" data-tooltip-content="<div style='max-width:200px;'>{$LNG.shortDescription.{$ID}|replace:'"':'\''}<br><br>						{$LNG.bd_remaining|replace:'"':'\''}<br>
+						{foreach $Element.costOverflow as $ResType => $ResCount}
+						{$LNG.tech.{$ResType}|replace:'"':'\''}: <span style='font-weight:700'>{$ResCount|number}</span><br>
+						{/foreach} </div>" style="font-weight:bold; font-size:1.1em;" href="#" onclick="return Dialog.info({$ID})">
+		{$LNG.tech.{$ID}}</a>{if $Element.level != 0} ({$LNG.bd_lvl} {$Element.level}{if $Element.maxLevel != 255}/{$Element.maxLevel}{/if}){/if}</a></div></div>
+
+		<div>{$LNG.fgf_time}:<span style="float:right;">{$Element.elementTime|time}</span></div>
+			<div style="; height:100px; text-align:right;" >
+					<span>{foreach $Element.costResources as $RessID => $RessAmount}
+					<b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number}</span></b> <img src="{$dpath}images/{$RessID}.gif" alt="{$LNG.tech.{$RessID}}" width="20" height="20"><br>
+					{/foreach}</span>
+					</div>
+
+					
+					<div style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px;
 					{if $Element.maxLevel == $Element.levelToBuild}
-						<span style="color:red">{$LNG.bd_maxlevel}</span>
-					{elseif $IsLabinBuild || $IsFullQueue || !$Element.buyable}
-						<span style="color:red">{if $Element.level == 0}{$LNG.bd_tech}{else}{$LNG.bd_tech_next_level}{$Element.levelToBuild + 1}{/if}</span>
+						 background-color: rgba(200, 0, 0, 1);"><span style="color:#fff">{$LNG.bd_maxlevel}</span>
+						 {elseif $IsLabinBuild || $IsFullQueue || !$Element.buyable}
+						background-color: rgba(200, 0, 0, 1);"><span style="color:#fff">{if $Element.level == 0}{$LNG.bd_tech}{else}{$LNG.bd_tech_next_level}{$Element.levelToBuild + 1}{/if}</span>
 					{else}
-						<form action="game.php?page=research" method="post" class="build_form">
+						background:green;">						<form action="game.php?page=research" method="post" class="build_form">
 							<input type="hidden" name="cmd" value="insert">
 							<input type="hidden" name="tech" value="{$ID}">
-							<button type="submit" class="build_submit">{if $Element.level == 0}{$LNG.bd_tech}{else}{$LNG.bd_tech_next_level}{$Element.levelToBuild + 1}{/if}</button>
-						</form>
+								<button type="submit" class="build_submit" style="color:#fff; font-weight:bold; ">{if $Element.level == 0}{$LNG.bd_tech}{else}{$LNG.bd_tech_next_level}{$Element.levelToBuild + 1}{/if}</button>
+							</form>
+							
 					{/if}
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" style="margin-bottom:10px;">  
-			<table style="width:100%">
-				<tr>
-					<td class="transparent left">
-						{$LNG.bd_remaining}<br>
-						{foreach $Element.costOverflow as $ResType => $ResCount}
-						{$LNG.tech.{$ResType}}: <span style="font-weight:700">{$ResCount|number}</span><br>
-						{/foreach}
-						<br>
-					</td>
-					<td class="transparent right">
-						{$LNG.fgf_time}
-					</td>
-				</tr>
-				<tr>		
-					<td class="transparent left" style="width:68%">
-						&nbsp;
-					</td>
-					<td class="transparent right" style="white-space:nowrap;">
-						{$Element.elementTime|time}
-					</td>
-				</tr>	
-			</table>
-		</td>
-	</tr>
+										
+</div>
+	</div>
+					
+					
+			
+	
 	{/foreach}
-</table>
 {/block}
 {block name="script" append}
     {if !empty($Queue)}

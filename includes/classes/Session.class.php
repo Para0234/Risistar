@@ -208,6 +208,7 @@ class Session
 	    // sessions require an valid user.
 	    if(empty($this->data['userId'])) {
 	        $this->delete();
+		  return;
 	    }
 
         $userIpAddress = self::getClientIp();
@@ -216,16 +217,27 @@ class Session
 		sessionID	= :sessionId,
 		userID		= :userId,
 		lastonline	= :lastActivity,
+		created		= :created,
 		userIP		= :userAddress;';
 
 		$db		= Database::get();
+		$sql_created = 'SELECT created FROM %%SESSION%% WHERE sessionID = :sessionId AND userID = :userId;';
+
+		$created = $db->selectSingle($sql_created, array(
+			':sessionId'	=> session_id(),
+			':userId'		=> $this->data['userId'],
+		), 'created');
+
+		if(empty($created)) { $created = time(); }
 
 		$db->replace($sql, array(
 			':sessionId'	=> session_id(),
 			':userId'		=> $this->data['userId'],
 			':lastActivity'	=> TIMESTAMP,
+			':created'	=> $created,
 			':userAddress'	=> $userIpAddress,
 		));
+
 
 		$sql = 'UPDATE %%USERS%% SET
 		onlinetime	= :lastActivity,
@@ -238,6 +250,24 @@ class Session
 		   ':lastActivity'	=> TIMESTAMP,
 		   ':userId'		=> $this->data['userId'],
 		));
+		// Remove multisessions
+		if(PREVENT_MULTISESSIONS == true) {
+			$sql	= 'DELETE FROM %%SESSION%% WHERE (userID = :userId AND sessionID != :sessionId);';
+			$db->delete($sql, array(
+				':userId'	=> $this->data['userId'],
+				':sessionId'	=> session_id(),
+			)); }
+
+
+		// Remove old sessions
+		if($created + SESSION_LIFETIME < time()) {
+			$sql	= 'DELETE FROM %%SESSION%% WHERE (userID = :userId AND sessionID = :sessionId);';
+
+		$db->delete($sql, array(
+			':userId'		=> $this->data['userId'],
+			':sessionId'	=> session_id(),
+		));}
+
 
 		$this->data['lastActivity']  = TIMESTAMP;
 		$this->data['sessionId']	 = session_id();
@@ -263,11 +293,17 @@ class Session
 
 	public function isValidSession()
 	{
-		if($this->compareIpAddress($this->data['userIpAddress'], self::getClientIp(), COMPARE_IP_BLOCKS) === false)
-		{
-			return false;
-		}
+		// if($this->compareIpAddress($this->data['userIpAddress'], self::getClientIp(), COMPARE_IP_BLOCKS) === false)
+		// {
+			// return false;
+		// }
+      	//This right here was an attempt to fix the game after going to PHP 7.4 ; It breaks the Cronjobs, so DO NOT UNCOMMENT IF YOU DON'T KNOW WHAT YOU ARE DOING
+		//ClearCache();
 
+		if(isset($_GET['page']) && $_GET['page']=="raport" && isset($_GET['raport']) && count($_GET)==2 && MODE === 'INGAME') {
+		$this->data['lastActivity']=time(); } else { if(!isset($_SESSION["obj"])) { return false; } }
+
+		
 		if($this->data['lastActivity'] < TIMESTAMP - SESSION_LIFETIME)
 		{
 			return false;
@@ -287,7 +323,6 @@ class Session
 
 		return true;
 	}
-
 	public function selectActivePlanet()
 	{
 		$httpData	= HTTP::_GP('cp', 0);

@@ -1,17 +1,27 @@
-Здравствуйте, {USERNAME}!
+Bonjour, {USERNAME},
 
-Спасибо за регистрацию в игре {GAMENAME}. Для завершения регистрации Вам нужно активировать аккаунт.
 
-Обратите внимание, что активация аккаунта необходима для того, чтобы начать играть. Для активации аккаунта пройдите по следующей ссылке.
+Merci pour votre inscription sur {GAMENAME}
+
+Before we can activate your account, one more step is needed.
+Please note that this step is mandatory in order to become a 
+registered user. You have to press the link below only once to 
+verify your identity.
+
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
+
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
 
 {VERTIFYURL}
 
-Ваши данные:
 
-Логин: {USERNAME}
-Пароль: {PASSWORD}
 
-Если у Вас есть проблемы с регистрацией, обратитесь к Администрации по следующему адресу электронной почты: {GAMEMAIL}
 
-C уважением,
-Администрация {GAMENAME}.
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
+
+Cordialement,
+l'équipe d'administration {GAMENAME}

@@ -201,7 +201,8 @@ class ShowAlliancePage extends AbstractGamePage
 		$allianceResult = $db->selectSingle($sql, array(
 			':userId'	=> $USER['id_planet']
 		));
-
+		if(empty($allianceResult['ally_tag'])) { $allianceResult['ally_tag'] = 0; }
+		
 		$this->assign(array(
 			'request_text'	=> sprintf($LNG['al_request_wait_message'], $allianceResult['ally_tag']),
 		));
@@ -868,10 +869,10 @@ class ShowAlliancePage extends AbstractGamePage
 			}
 		}
 
-        require 'includes/classes/class.FlyingFleetHandler.php';
+        require_once 'includes/classes/class.FlyingFleetHandler.php';
 
         $available_events = array();
-
+		
         foreach(array_keys(FlyingFleetHandler::$missionObjPattern) as $missionId) {
             $available_events[$missionId] = $LNG['type_mission_'.$missionId];
         }

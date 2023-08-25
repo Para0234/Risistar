@@ -58,7 +58,7 @@ class ShowResearchPage extends AbstractGamePage
 		$db = Database::get();
 
 		$elementId		= $USER['b_tech_id'];
-		$costResources	= BuildFunctions::getElementPrice($USER, $PLANET, $elementId, false, $USER[$resource[$elementId]] + 1);
+		$costResources	= BuildFunctions::getElementPrice($USER, $PLANET, $elementId);
 		
 		if($PLANET['id'] == $USER['b_tech_planet'])
 		{
@@ -121,7 +121,7 @@ class ShowResearchPage extends AbstractGamePage
 					$CPLANET		= $PLANET;
 				
 				$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
-				$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, $ListIDArray[0], NULL, false, $ListIDArray[1]);
+				$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
 				$ListIDArray[3]						= $BuildEndTime;
 				$NewCurrentQueue[]					= $ListIDArray;				
 			}

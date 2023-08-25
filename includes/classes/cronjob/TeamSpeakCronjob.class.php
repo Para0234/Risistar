@@ -21,7 +21,8 @@ class TeamSpeakCronjob implements CronjobTask
 {
 	function run()
 	{
-		Cache::get()->add('teamspeak', 'TeamspeakBuildCache');
-		Cache::get()->flush('teamspeak');
+      	//Okay soooo... For some reason, since switching to php 7.4, the cronjobs aren't being executed. Unless there is a cronjob that is executed CONSTANTLY. And when I say "constantly", I mean on every single refresh. For the tests, I used the dark matter cronjob, but becauseit actually has an use, I decided to put this one instead, as it is completely useless.
+/*		Cache::get()->add('teamspeak', 'TeamspeakBuildCache');
+		Cache::get()->flush('teamspeak');*/
 	}
 }

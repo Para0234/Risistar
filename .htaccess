@@ -39,10 +39,10 @@ AddDefaultCharset utf-8
 # Force UTF-8 for a number of file formats
 AddCharset utf-8 .css .js .xml .json .rss .atom
 
-<IfModule mod_autoindex.c>
-  Options -Indexes
-</IfModule>
-
+#<IfModule mod_autoindex.c>
+#  Options -Indexes
+#</IfModule>
+#
 <IfModule mod_rewrite.c>
   RewriteCond %{SCRIPT_FILENAME} -d
   RewriteCond %{SCRIPT_FILENAME} -f
@@ -62,4 +62,10 @@ AddCharset utf-8 .css .js .xml .json .rss .atom
 <IfModule mod_rewrite.c>
 	RewriteEngine on
 	RewriteRule uni([0-9]+)/?(.*)?$ $2 [L,QSA,E=UNI:$1]
+	RewriteEngine On 
+	RewriteCond %{HTTPS} !on 
+	RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$ 
+	RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$ 
+	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 </IfModule>

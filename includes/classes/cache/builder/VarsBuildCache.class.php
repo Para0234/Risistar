@@ -21,6 +21,7 @@ class VarsBuildCache implements BuildCache
 	{
 		$resource		= array();
 		$requeriments	= array();
+		$locks			= array();
 		$pricelist		= array();
 		$CombatCaps		= array();
 		$reslist		= array();
@@ -46,6 +47,12 @@ class VarsBuildCache implements BuildCache
 		foreach($reqResult as $reqRow)
 		{
 			$requeriments[$reqRow['elementID']][$reqRow['requireID']]	= $reqRow['requireLevel'];
+		}
+		
+		$lockResult		= $db->nativeQuery('SELECT * FROM %%VARS_LOCK%%;');
+		foreach($lockResult as $lockRow)
+		{
+			$locks[$lockRow['elementID']][$lockRow['lockID']]	= $lockRow['locked'];
 		}
 
 		$varsResult		= $db->nativeQuery('SELECT * FROM %%VARS%%;');
@@ -167,6 +174,7 @@ class VarsBuildCache implements BuildCache
 			'resource'		=> $resource,
 			'pricelist'		=> $pricelist,
 			'requeriments'	=> $requeriments,
+			'locks'	=> $locks,
 		);
 	}
 }

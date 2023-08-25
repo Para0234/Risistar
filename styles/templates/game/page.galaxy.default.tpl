@@ -16,7 +16,7 @@
 					</tr>
 				</table>
 			</td>
-			<td class="transparent">
+			<td class="transparent" >
 				<table>
 					<tr>
 						<th colspan="3">{$LNG.gl_solar_system}</th>

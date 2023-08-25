@@ -352,8 +352,22 @@ HTML;
 		{
 			// Win
 			case "a":
-				$moonDestroyChance	= round((100 - sqrt($targetPlanet['diameter'])) * sqrt($fleetAttack[$this->_fleet['fleet_id']]['unit'][214]), 1);
-
+			//j'ai rajouté [233] et pour que ça fonctionne on mets des try and catch car la valeur des vaisseaux non envoyé est pas zéro mais rien( erreur directe )
+				try
+				{
+					$moonDestroyChance	= round((100 - sqrt($targetPlanet['diameter'])) * (sqrt($fleetAttack[$this->_fleet['fleet_id']]['unit'][214] + ($fleetAttack[$this->_fleet['fleet_id']]['unit'][233])*5)), 1);
+				}
+				catch (Exception $e)
+				{
+				try
+				{
+					$moonDestroyChance	= round((100 - sqrt($targetPlanet['diameter'])) * sqrt(($fleetAttack[$this->_fleet['fleet_id']]['unit'][233])*5), 1);
+				}
+				catch (Exception $c)
+				{
+					$moonDestroyChance	= round((100 - sqrt($targetPlanet['diameter'])) * sqrt($fleetAttack[$this->_fleet['fleet_id']]['unit'][214]), 1);
+				}			
+				}
 				// Max 100% | Min 0%
 				$moonDestroyChance	= min($moonDestroyChance, 100);
 				$moonDestroyChance	= max($moonDestroyChance, 0);

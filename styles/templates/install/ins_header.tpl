@@ -45,8 +45,8 @@
 	</script>
 </head>
 <body id="step{$smarty.get.step|htmlspecialchars|default:'intro'}">
-<div id="tooltip" class="tip"></div>
-<div><p>&nbsp;</p></div>
+<div id="tooltip"  class="container-fluid" class="tip"></div>
+<div  class="container-fluid"><p>&nbsp;</p></div>
 <table width="960">
 <tr>
 	<th colspan="3">{$header}</th>

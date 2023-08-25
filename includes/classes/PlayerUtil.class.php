@@ -111,7 +111,7 @@ class PlayerUtil
 			}
 			
 			do {
-				$position = mt_rand(round($config->max_planets * 0.2), round($config->max_planets * 0.8));
+				$position = mt_rand(round($config->max_planets * 0.4), round($config->max_planets * 0.6));
 				if ($planet < 3) {
 					$planet += 1;
 				} else {
@@ -133,7 +133,201 @@ class PlayerUtil
 			$config->LastSettedSystemPos = $system;
 			$config->LastSettedPlanetPos = $planet;
 		}
-
+		$db = Database::get();
+		$petit = 0;
+		$ally_id = 0;
+		$score = 0;
+		$ally1 = 0;
+		$ally2 = 0;
+		$ally3 = 0;
+		$total = 0; 
+		$randomizer = 0;
+		$currentally = 0;
+		
+/*		for($valeur = 1;$valeur <=3; $valeur++)
+		{
+/*			$reqsql		= 'SELECT (
+				(SELECT `id_owner` FROM %%STATPOINTS%% WHERE `stat_type` = 2 ORDER BY `total_points` LIMIT 1)
+				);';*/
+//			$ally_id	= $db->selectSingle($reqsql);
+/*			$reqsql		= 'SELECT (
+				(SELECT `total_points` FROM %%STATPOINTS%% WHERE `stat_type` = 2 ORDER BY `total_points` LIMIT 1)
+				);';
+//			$reqsql		= 'SELECT \'total_points\' FROM %%STATPOINTS%% WHERE \'stat_type\' = 2; ORDER BY \'total_points\';';
+			$valeur = 1;
+			$reqsql		= 'SELECT total_points FROM %%STATPOINTS%% WHERE stat_type = 2 AND id_owner = :id_owner;';//Récupération du score des factions
+			$currentally	= $db->selectSingle($reqsql ,array(
+					':id_owner' => $valeur));
+			$ally1 = $currentally['total_points'];
+			$valeur = 2;
+					
+			$reqsql		= 'SELECT total_points FROM %%STATPOINTS%% WHERE stat_type = 2 AND id_owner = :id_owner;';//Récupération du score des factions
+			$currentally	= $db->selectSingle($reqsql ,array(
+					':id_owner' => $valeur));
+			$ally2 = $currentally['total_points'];
+			$valeur = 3;
+					
+			$reqsql		= 'SELECT total_points FROM %%STATPOINTS%% WHERE stat_type = 2 AND id_owner = :id_owner;';//Récupération du score des factions
+			$currentally	= $db->selectSingle($reqsql ,array(
+					':id_owner' => $valeur));
+			$ally3 = $currentally['total_points'];
+					
+			$total = $ally1+$ally2+$ally3;
+			$randomizer = mt_rand(0,$total);
+			if($randomizer < /*$total-$ally1)
+			{
+				$ally_id = 1;
+			}
+			else
+			{
+				if($randomizer < /*$total-($ally1+$ally2))
+				{
+					$ally_id = 2;
+				}
+				else
+				{
+					if($randomizer <($ally1+$ally2+$ally3))
+					{
+						$ally_id = 3;
+					}
+					else
+					{
+						if($ally1<=$ally2)
+						{
+							if($ally1<=$ally3)
+							{
+								$ally_id = 1;
+							}
+							else
+							{
+								$ally_id = 3;
+							}
+						}
+						else
+						{
+							if($ally2<=$ally3)
+							{
+								$ally_id = 2;
+							}
+							else
+							{
+								$ally_id = 3;
+							}
+						}
+					}
+				}
+			}
+/*			if($score == 0)
+			{
+				$score = $scoreint;
+				$ally_id = $valeur;
+			}
+			if($scoreint <= $score)
+			{
+				$score = $scoreint;
+				$ally_id = $valeur;
+			}*/
+			
+			
+/*			$reqsql	= 'SELECT (
+				(SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = :ally_id)
+			) as count;';
+			$scofac	= $db->selectSingle($reqsql ,array(
+				':ally_id' => $valeur), 'count');
+				$ally_id = $valeur;
+			if($valeur == 1)
+			{
+					$ally_id = $valeur;
+					$petit = $nbfac;
+			}
+			if($petit > $nbfac)
+			{
+				$ally_id = $valeur;
+				$petit = $nbfac;
+			}
+		}
+		$reqsql	= 'SELECT (
+			(SELECT COUNT(*) FROM %%STATPOINTS%% WHERE stat_type = 1 AND total_points > 100)
+		) as count;';
+		$elite	= $db->selectSingle($reqsql,array(), 'count');
+		if($elite <= 30)
+		{
+			for($valeur = 1;$valeur <=3; $valeur++)
+			{
+				$reqsql	= 'SELECT (
+					(SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = :ally_id)
+				) as count;';
+				$nbfac	= $db->selectSingle($reqsql ,array(
+					':ally_id' => $valeur), 'count');
+				if($valeur == 1)
+				{
+						$ally_id = $valeur;
+						$petit = $nbfac;
+				}
+				if($petit > $nbfac)
+				{
+					$ally_id = $valeur;
+					$petit = $nbfac;
+				}
+			}
+		}
+		$fac1 = 0;
+		$fac2 = 0;
+		$fac3 = 0;
+		$reqsql	= 'SELECT (
+			(SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = 1)
+		) as count;';
+		$fac1	= $db->selectSingle($reqsql,array(), 'count');
+		$reqsql	= 'SELECT (
+			(SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = 2)
+		) as count;';
+		$fac2	= $db->selectSingle($reqsql,array(), 'count');
+		$reqsql	= 'SELECT (
+			(SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = 3)
+		) as count;';
+		$fac3	= $db->selectSingle($reqsql,array(), 'count');
+		$randomizer = mt_rand(1,3);
+		switch($randomizer)
+		{
+			case 1:
+				if($fac1 > ($fac2+10))
+				{
+					$ally_id = 2;
+				}elseif($fac1 > ($fac3+10))
+				{
+					$ally_id = 3;
+				}else
+				{
+					$ally_id = 1;
+				}
+				break;
+			case 2:
+				if($fac2 > ($fac3+10))
+				{
+					$ally_id = 3;
+				}elseif($fac2 > ($fac1+10))
+				{
+					$ally_id = 1;
+				}else
+				{
+					$ally_id = 2;
+				}
+				break;
+			case 3:
+				if($fac3 > ($fac1+10))
+				{
+					$ally_id = 1;
+				}elseif($fac3 > ($fac2+10))
+				{
+					$ally_id = 2;
+				}else
+				{
+					$ally_id = 3;
+				}
+				break;
+		}*/
+			
+		
 		$params			= array(
 			':username'				=> $userName,
 			':email'				=> $userMail,
@@ -149,6 +343,7 @@ class PlayerUtil
 			':timezone'				=> $config->timezone,
 			':nameLastChanged'		=> 0,
 			':darkmatter_start'		=> $config->darkmatter_start,
+			':ally_id'				=> $ally_id,
 		);
 
 		$sql = 'INSERT INTO %%USERS%% SET
@@ -165,13 +360,14 @@ class PlayerUtil
 		dpath			= :dpath,
 		timezone		= :timezone,
 		uctime			= :nameLastChanged,
-		darkmatter		= :darkmatter_start;';
+		darkmatter		= :darkmatter_start,
+		`ally_id` 		= :ally_id;';
 
 		$db = Database::get();
 
 		$db->insert($sql, $params);
 		
-		$userId		= $db->lastInsertId();
+		$userId		= ($db->lastInsertId());
 		$planetId	= self::createPlanet($galaxy, $system, $position, $universe, $userId, $name, true, $authlevel);
 				
 		$currentUserAmount		= $config->users_amount + 1;
@@ -214,6 +410,13 @@ class PlayerUtil
 		   ':type'		=> 1,
 		   ':rank'		=> $rank + 1,
 		));
+		
+		
+		$sql	= "UPDATE %%ALLIANCE%% SET ally_members = (SELECT COUNT(*) FROM %%USERS%% WHERE ally_id = :AllianceID) WHERE id = :AllianceID;";
+		$db->update($sql, array(
+		':AllianceID'			=> $ally_id
+		));
+		
 		
 		$config->save();
 

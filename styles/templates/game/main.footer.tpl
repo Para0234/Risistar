@@ -1,5 +1,5 @@
-<div class="clear"></div>
-<div id="footer">
+<div class="clear" class="container-fluid"></div>
+<div id="footer" class="container-fluid">
 	{if $ga_active}
 	<script type="text/javascript">
 	var _gaq = _gaq || [];

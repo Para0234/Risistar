@@ -62,27 +62,29 @@ $LNG['registerEmailReplay']			= 'Répéter l\'adresse e-Mail';
 $LNG['registerEmailReplayDesc']		= 'S\'il vous plaît entrez une seconde fois l\'adresse e-Mail!';
 $LNG['registerLanguage']			= 'Langue';
 $LNG['registerReferral']			= 'Parrain du joueur:';
-$LNG['registerCaptcha']				= 'Code de sècuritè:';
-$LNG['registerCaptchaDesc']			= 'S\'il vous plaît entrez les caractères ci-dessous dans le champ vide. Il n\'y a pas de sensibilitè à la casse';
+$LNG['registerCaptcha']				= 'Code de sécurité:';
+$LNG['registerCaptchaDesc']			= 'S\'il vous plaît entrez les caractères ci-dessous dans le champ vide. Il n\'y a pas de sensibilité à la casse';
 $LNG['registerCaptchaReload']		= 'Recharger Captcha.';
 $LNG['registerRules']				= 'Règles';
 $LNG['registerRulesDesc']			= 'Je suis d\'accord avec les %s';
+$LNG['registerFaction']				= 'Faction';
+
 
 $LNG['registerBack']				= 'Retour';
 $LNG['registerNext']				= 'Suivant';
 
-$LNG['registerErrorUniClosed']		= 'Les enregistrements sont fermèes sur cet univers.!';
-$LNG['registerErrorUsernameEmpty']	= 'Vous devez renseignez un login!';
-$LNG['registerErrorUsernameChar']	= 'Votre login peut seulement contenir des nombres, lettres, espaces, _, -, . Seulement!';
-$LNG['registerErrorUsernameExist']	= 'Le login est dèjà pris!';
+$LNG['registerErrorUniClosed']		= 'Les enregistrements sont fermées sur cet univers.!';
+$LNG['registerErrorUsernameEmpty']	= 'Vous devez renseigner un login!';
+$LNG['registerErrorUsernameChar']	= 'Votre login peut seulement contenir des nombres, lettres, espaces, _, -, . ';
+$LNG['registerErrorUsernameExist']	= 'Le login est déjà pris!';
 $LNG['registerErrorPasswordLength']	= 'Le mot de passe doit comporter au moins 6 caractères!';
-$LNG['registerErrorPasswordSame']	= 'Les deux mots de passe entrès ne sont pas les mêmes!';
-$LNG['registerErrorMailEmpty']		= 'Vous devez spècifier une adresse e-mail!';
+$LNG['registerErrorPasswordSame']	= 'Les deux mots de passe entrés ne sont pas les mêmes!';
+$LNG['registerErrorMailEmpty']		= 'Vous devez spécifier une adresse e-mail!';
 $LNG['registerErrorMailInvalid']	= 'Adresse e-Mail invalide!';
-$LNG['registerErrorMailSame']		= 'Les deux adresses e-Mail renseignèes ne sont pas les mêmes!';
-$LNG['registerErrorMailExist']		= 'L\'adresse e-mail est dèjà enregistrè!';
+$LNG['registerErrorMailSame']		= 'Les deux adresses e-Mail renseignées ne sont pas les mêmes!';
+$LNG['registerErrorMailExist']		= 'L\'adresse e-mail est déjà enregistré!';
 $LNG['registerErrorRules']			= 'Vous devez accepter les règles!';
-$LNG['registerErrorCaptcha']		= 'Le code de sècuritè est incorrect!';
+$LNG['registerErrorCaptcha']		= 'Le code de sécurité est incorrect!';
 
 $LNG['registerMailVertifyTitle']	= 'Activation de l\'enregistrement sur le jeu: %s';
 $LNG['registerMailVertifyError']	= 'Impossible d\'envoyer l\'e-Mail: %s';
@@ -91,9 +93,9 @@ $LNG['registerMailCompleteTitle']	= 'Bienvenue sur %s!';
 
 $LNG['registerSendComplete']		= 'Merci pour votre enregistrement. Vous devez consulter vos e-Mail (Attention peut-etre dans les SPAM) avec plus d\'informations.';
 
-$LNG['registerWelcomePMSenderName']	= 'Administrateur';
+$LNG['registerWelcomePMSenderName']	= 'Para';
 $LNG['registerWelcomePMSubject']	= 'Bienvenue';
-$LNG['registerWelcomePMText']		= 'Bienvenue sur %s! D\'abord vous devez construire une centrale solaire, parce que l\'ènergie est nècessaire pour la production de matières premières. Pour en construire une, clic gauche dans le menu «bâtiments». Puis construire le 4e bâtiment à partir du haut. </br>Lorsque vous avez de l\'énergie, vous pouvez commencer 	à construire des mines. Aller aux bâtiments dans le menu et de construire une mine de métal, suivie d\'une mine de cristal.</br></br>Afin d\'être en mesure de construire des vaisseaux, vous devez avoir un chantier naval. Pour voir ce qui est nécessaire pour débloquer la construction vous pouvez jeter un oeil à Technologies dans le menu de gauche.</br>Si vous avez plus de questions, vous pouvez consulter le guide des débutants, notre forum ou ouvrir un ticket de support.</br></br>L\'équipe vous souhaite beaucoup de plaisir à explorez l\'univers!';
+$LNG['registerWelcomePMText']		= 'Bienvenue sur %s! Si vous avez besoin d\'assistance sur le jeu, de trouver de l\'aide, rendez vous sur le Discord (lien dans le menu de gauche). Si vous avez repéré quelqu\'un allant à l\'encontre des règles, vous pouvez me MP sur discord (Para). vous pouvez aussi MP Houdem sur Discord, ou bien envoyer un ticket. De plus, une petite surprise vous attend si vous cliquez sur l\'onglet "Succès", à gauche.<br><br> De plus, vous devez savoir que la Boîte aux Lettres s\'améliore uniquement si vous ne dépensez pas de Matière Noire dans la journée. Chaque amélioration vous donne 100 MN par jour de plus. <br><br>Sur ce, bon jeu!';
 
 //Vertify
 

@@ -108,7 +108,7 @@ class ShowOfficierPage extends AbstractGamePage
 				if($USER[$resource[$Element]] > TIMESTAMP) {
 					$this->tplObj->execscript("GetOfficerTime(".$Element.", ".($USER[$resource[$Element]] - TIMESTAMP).");");
 				}
-			
+
 				$costResources		= BuildFunctions::getElementPrice($USER, $PLANET, $Element);
 				$buyable			= BuildFunctions::isElementBuyable($USER, $PLANET, $Element, $costResources);
 				$costOverflow		= BuildFunctions::getRestPrice($USER, $PLANET, $Element, $costResources);

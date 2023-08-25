@@ -43,12 +43,11 @@ if(empty($cronjobID))
 	exit;
 }
 
-require 'includes/classes/Cronjob.class.php';
+require_once 'includes/classes/Cronjob.class.php';
 
 $cronjobsTodo	= Cronjob::getNeedTodoExecutedJobs();
-if(!in_array($cronjobID, $cronjobsTodo))
+/*if(!in_array($cronjobID, $cronjobsTodo))
 {
 	exit;
-}
-
+}*/
 Cronjob::execute($cronjobID);

@@ -47,15 +47,12 @@ class Database
 		$database = array();
 		require 'includes/config.php';
 		//Connect
-		$db = new PDO("mysql:host=".$database['host'].";port=".$database['port'].";dbname=".$database['databasename'], $database['user'], $database['userpw'], array(
-		    PDO::MYSQL_ATTR_INIT_COMMAND => "SET CHARACTER SET utf8, NAMES utf8, sql_mode = 'STRICT_ALL_TABLES'"
-		));
+		$db = new PDO("mysql:host=".$database['host'].";port=".$database['port'].";dbname=".$database['databasename'], $database['user'], $database['userpw']);
 		//error behaviour
 		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
-		// $db->query("set character set utf8");
-		// $db->query("set names utf8");
-		// $db->query("SET sql_mode = 'STRICT_ALL_TABLES'");
+		$db->query("set character set utf8");
+		$db->query("set names utf8");
 		$this->dbHandle = $db;
 
 		$dbTableNames = array();
@@ -201,7 +198,12 @@ class Database
 
 		$stmt = $this->_query($qry, $params, $type);
 		$res = $stmt->fetch(PDO::FETCH_ASSOC);
-		return ($field === false || is_null($res)) ? $res : $res[$field];
+		
+		if(PHP_VERSION_ID <= 70400) {
+			return ($field === false || is_null($res)) ? $res : $res[$field];
+		} else {
+			return ($field === false || (empty($res))) ? $res : $res[$field];
+		}
 	}
 	
 	/**

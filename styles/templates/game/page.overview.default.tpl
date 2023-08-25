@@ -1,6 +1,19 @@
+
 {block name="title" prepend}{$LNG.lm_overview}{/block}
 {block name="script" append}{/block}
 {block name="content"}
+<!DOCTYPE html>
+<html>
+<body>
+
+<audio controls>
+  <source src="/styles/theme/Dieu.ogg" type="audio/ogg">
+Your browser does not support the audio element.
+</audio>
+
+</body>
+</html>
+
 <table class="table519">
 	<tr>
 		<th colspan="3"><a href="#" onclick="return Dialog.PlanetAction();" title="{$LNG.ov_planetmenu}">{$LNG["type_planet_{$planet_type}"]} "<span class="planetname">{$planetname}</span>"</a> ({$username})</th>
@@ -108,4 +121,5 @@
 {/block}
 {block name="script" append}
     <script src="scripts/game/overview.js"></script>
-{/block}
+	{/block}
+

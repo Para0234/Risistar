@@ -24,6 +24,17 @@ require 'includes/pages/login/ShowErrorPage.class.php';
 require 'includes/common.php';
 /** @var $LNG Language */
 
+$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+
+
+if (strpos($url,'index.php?page=rules') !== false) {
+	}
+ else {
+		if (Session::load()->isValidSession()) {
+		HTTP::sendHeader('Location', "game.php");
+		exit;
+	}
+}
 $page 		= HTTP::_GP('page', 'index');
 $mode 		= HTTP::_GP('mode', 'show');
 $page		= str_replace(array('_', '\\', '/', '.', "\0"), '', $page);

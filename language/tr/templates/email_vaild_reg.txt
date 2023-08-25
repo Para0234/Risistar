@@ -1,23 +1,27 @@
-Merhaba {USERNAME},
+Bonjour, {USERNAME},
 
 
- {GAMENAME} kayit oldugunuz icin tesekkur ederiz.
+Merci pour votre inscription sur {GAMENAME}
 
-Hesabinizin aktiflestirilmesine son bir adim kaldi;
-Lutfen unutmayin oyuna baslayabilmeniz icin bu adim zorunludur.Asagidaki linke tiklayip mail adresinizi onaylamaniz gerekmektedir.
+Before we can activate your account, one more step is needed.
+Please note that this step is mandatory in order to become a 
+registered user. You have to press the link below only once to 
+verify your identity.
 
-Kayit isleminizi tamamlamak icin asgidaki aktivasyon linkine tiklayiniz:
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
+
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
 
 {VERTIFYURL}
 
-Bilgileriniz:
 
-Kullanici adi : {USERNAME}
-Sifre : {PASSWORD}
 
-Eger otomatik kayit islemi ile ilgili problem yasiyorsaniz lutfen admin yada webmaster
-ile asagidaki adresten irtibata geciniz:
-{GAMEMAIL}
 
-Saygilarla,
-{GAMENAME} Takimi
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
+
+Cordialement,
+l'équipe d'administration {GAMENAME}

@@ -68,7 +68,7 @@ class BuildFunctions
         if (in_array($Element, $reslist['fleet']) || in_array($Element, $reslist['defense']) || in_array($Element, $reslist['missile'])) {
             $elementLevel = $forLevel;
         } elseif (isset($forLevel)) {
-            $elementLevel = $forLevel;
+            $elementLevel = $forLevel -1;
         } elseif (isset($PLANET[$resource[$Element]])) {
             $elementLevel = $PLANET[$resource[$Element]];
         } elseif (isset($USER[$resource[$Element]])) {
@@ -96,11 +96,16 @@ class BuildFunctions
             }
 
             if($forLevel && (in_array($Element, $reslist['fleet']) || in_array($Element, $reslist['defense']) || in_array($Element, $reslist['missile']))) {
+//                $price[$resType]	-= (($price[$resType] / 100) * (4 * $USER['escalation']));
                 $price[$resType]	*= $elementLevel;
             }
+			
+            if(in_array($Element, $reslist['fleet']) || in_array($Element, $reslist['defense']) || in_array($Element, $reslist['missile'])) {
+                $price[$resType]	-= (($price[$resType] / 100) * (4 * $USER['escalation']));
+            }
 
-            if($forDestroy === true) {
-                $price[$resType]	/= 2;
+            if($forDestroy == true) {
+                $price[$resType]	= $price[$resType]/2;
             }
         }
 
@@ -109,8 +114,20 @@ class BuildFunctions
 
     public static function isTechnologieAccessible($USER, $PLANET, $Element)
     {
-        global $requeriments, $resource;
-
+		
+        global $requeriments, $resource, $locks;
+        if(isset($locks[$Element]))
+		{
+			foreach($locks[$Element] as $lockElement => $EleLevel)
+			{
+				if (
+					(isset($USER[$resource[$lockElement]]) && $USER[$resource[$lockElement]] > 0) ||
+					(isset($PLANET[$resource[$lockElement]]) && $PLANET[$resource[$lockElement]] > 0)
+				) {
+					return false;
+				}
+			}
+		}
         if(!isset($requeriments[$Element]))
             return true;
 
@@ -176,7 +193,43 @@ class BuildFunctions
             $time	= floor($time * 3600);
         }
 
-        return max($time, $config->min_build_time);
+        // On retourne le temps reel de construction dans le cas de construction d'un vaisseau car le temps minimal sera pris en compte plus tard via le stack des vaisseaux
+        if (in_array($Element, $reslist['fleet'])) {
+            $db				= Database::get();
+
+			$sql			= 'SELECT * FROM %%VARS%% WHERE elementID = :elementID;';
+			$class		= $db->selectSingle($sql, array(
+			':elementID'	=> $Element
+			));
+			switch ($class['shipclass']) {
+			case 1:
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				break;
+			case 2:
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				break;
+			case 3:
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				break;
+			case 4:
+				return max($time, ($config->min_build_time * 10) - (($config->min_build_time * 10) / 25) * min(25, $USER['escalation']));
+				break;
+			case 5:
+				return max($time, ($config->min_build_time * 60) - (($config->min_build_time * 60) / 25) * min(25, $USER['escalation']));
+				break;
+			case 6:
+				return max($time, ($config->min_build_time * 21600) - (($config->min_build_time * 21600) / 25) * min(25, $USER['escalation']));
+				break;
+			case 7:
+				return $time;
+				break;
+			default:
+				return max($time, $config->min_build_time);
+				break;
+			}
+        } else {
+            return max($time, $config->min_build_time);
+        }
     }
 
     public static function isElementBuyable($USER, $PLANET, $Element, $elementPrice = NULL, $forDestroy = false, $forLevel = NULL)
@@ -199,11 +252,25 @@ class BuildFunctions
         {
             if(isset($PLANET[$resource[$resourceID]]))
             {
-                $maxElement[]	= floor($PLANET[$resource[$resourceID]] / $price);
+                if($price > 0)
+				{
+					$maxElement[]	= floor($PLANET[$resource[$resourceID]] / $price);
+				}
+				else
+				{
+					$maxElement[]	= 1000000;
+				}
             }
             elseif(isset($USER[$resource[$resourceID]]))
             {
-                $maxElement[]	= floor($USER[$resource[$resourceID]] / $price);
+                if($price > 0)
+				{
+					$maxElement[]	= floor($USER[$resource[$resourceID]] / $price);
+				}
+				else
+				{
+					$maxElement[]	= 1000000;
+				}
             }
             else
             {
@@ -211,6 +278,14 @@ class BuildFunctions
             }
         }
 
+        if($Element == 239) {
+			$maxElement[]	= 25000 - $PLANET[$resource[239]];
+        }
+        if($Element == 239) {
+			if($PLANET['b_hangar'] != 0) {
+				$maxElement[] = 0;
+			}
+        }
         if(in_array($Element, $reslist['one'])) {
             $maxElement[]	= 1;
         }
@@ -233,19 +308,19 @@ class BuildFunctions
         }
 
         $BuildArray  	  	= !empty($PLANET['b_hangar_id']) ? unserialize($PLANET['b_hangar_id']) : array();
-        $MaxMissiles   		= $PLANET[$resource[44]] * 10 * max(Config::get()->silo_factor, 1);
+        $MaxMissiles   		= $PLANET[$resource[44]] * 100 * max(Config::get()->silo_factor, 1);
 
         foreach($BuildArray as $ElementArray) {
             if(isset($Missiles[$ElementArray[0]]))
                 $Missiles[$ElementArray[0]] += $ElementArray[1];
         }
 
-        $ActuMissiles  = $Missiles[502] + (2 * $Missiles[503]);
+        $ActuMissiles  = ($Missiles[502] * 4) + (40 * $Missiles[503]);
         $MissilesSpace = max(0, $MaxMissiles - $ActuMissiles);
 
         return array(
-            502	=> $MissilesSpace,
-            503	=> floor($MissilesSpace / 2),
+            502	=> floor($MissilesSpace / 4),
+            503	=> floor($MissilesSpace / 40),
         );
     }
 

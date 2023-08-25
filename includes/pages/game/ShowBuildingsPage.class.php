@@ -36,10 +36,9 @@ class ShowBuildingsPage extends AbstractGamePage
 		}
 	
 		$Element             	= $CurrentQueue[0][0];
-        $BuildLevel          	= $CurrentQueue[0][1];
 		$BuildMode          	= $CurrentQueue[0][4];
 		
-		$costResources			= BuildFunctions::getElementPrice($USER, $PLANET, $Element, $BuildMode == 'destroy', $BuildLevel);
+		$costResources			= BuildFunctions::getElementPrice($USER, $PLANET, $Element, $BuildMode);
 		
 		if(isset($costResources[901])) { $PLANET[$resource[901]]	+= $costResources[901]; }
 		if(isset($costResources[902])) { $PLANET[$resource[902]]	+= $costResources[902]; }
@@ -56,7 +55,7 @@ class ShowBuildingsPage extends AbstractGamePage
 				if($Element == $ListIDArray[0])
 					continue;
 					
-				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $PLANET, $ListIDArray[0], $costResources, $ListIDArray[4] == 'destroy');
+				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $PLANET, $ListIDArray[0], NULL, $ListIDArray[4] == 'destroy');
 				$ListIDArray[3]		= $BuildEndTime;
 				$NewQueueArray[]	= $ListIDArray;					
 			}
@@ -93,9 +92,7 @@ class ShowBuildingsPage extends AbstractGamePage
             return;
         }
 
-        // Get ElementID from the task to cancel.
-		$Element		= $CurrentQueue[$QueueID - 1][0];
-
+		$Element		= $CurrentQueue[$QueueID - 2][0];
 		$BuildEndTime	= $CurrentQueue[$QueueID - 2][3];
 		unset($CurrentQueue[$QueueID - 1]);
 		$NewQueueArray	= array();
@@ -107,7 +104,7 @@ class ShowBuildingsPage extends AbstractGamePage
 				if($Element == $ListIDArray[0] || empty($ListIDArray[0]))
 					continue;
 
-				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $PLANET, $ListIDArray[0], NULL, $ListIDArray[4] == 'destroy', $ListIDArray[1]);
+				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $PLANET, $ListIDArray[0]);
 				$ListIDArray[3]		= $BuildEndTime;
 				$NewQueueArray[]	= $ListIDArray;				
 			}
@@ -154,16 +151,16 @@ class ShowBuildingsPage extends AbstractGamePage
 		}
 	
 		$BuildMode 			= $AddMode ? 'build' : 'destroy';
-		$BuildLevel			= $PLANET[$resource[$Element]] + (int) $AddMode;
+		$BuildLevel			= $PLANET[$resource[$Element]] + 1;
 		
 		if($ActualCount == 0)
 		{
 			if($pricelist[$Element]['max'] < $BuildLevel)
 				return;
-
-			$costResources		= BuildFunctions::getElementPrice($USER, $PLANET, $Element, !$AddMode, $BuildLevel);
+			$costResources			= BuildFunctions::getElementPrice($USER, $PLANET, $Element, !$AddMode, $BuildLevel);
+			//$costResources		= BuildFunctions::getElementPrice($USER, $PLANET, $Element, !$AddMode, $BuildLevel);
 			
-			if(!BuildFunctions::isElementBuyable($USER, $PLANET, $Element, $costResources))
+			if(!BuildFunctions::isElementBuyable($USER, $PLANET, $Element, $costResources, $BuildMode))
 				return;
 			
 			if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }

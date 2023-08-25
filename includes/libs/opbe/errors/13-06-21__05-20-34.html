@@ -1,0 +1,83 @@
+Sunday 13th of June 2021 05:20:34 AM
+Exception: Negative currentShield! in /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/models/ShipType.php:432
+Stack trace:
+#0 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/models/Fleet.php(148): ShipType->inflictDamage(304500000, 9682239)
+#1 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/models/Player.php(147): Fleet->inflictDamage(Object(FireManager))
+#2 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/models/PlayerGroup.php(106): Player->inflictDamage(Object(FireManager))
+#3 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/core/Round.php(109): PlayerGroup->inflictDamage(Object(FireManager))
+#4 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/core/Battle.php(80): Round->startRound()
+#5 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/utils/DebugManager.php(60): Battle->startBattle()
+#6 /homepages/5/d708340154/htdocs/beta/includes/libs/opbe/implementations/2Moons/1_7_2_injectionMode/calculateAttack.php(116): DebugManager::{closure}()
+#7 /homepages/5/d708340154/htdocs/beta/includes/classes/missions/MissionCaseAttack.class.php(181): calculateAttack(Array, Array, '50', '0')
+#8 /homepages/5/d708340154/htdocs/beta/includes/classes/class.FlyingFleetHandler.php(80): MissionCaseAttack->TargetEvent()
+#9 /homepages/5/d708340154/htdocs/beta/includes/FleetHandler.php(31): FlyingFleetHandler->run()
+#10 /homepages/5/d708340154/htdocs/beta/includes/common.php(127): require('/homepages/5/d7...')
+#11 /homepages/5/d708340154/htdocs/beta/game.php(24): require('/homepages/5/d7...')
+#12 {main}
+$_POST =
+$_GET =
+[log]attackers =         <table class="lined widthFull">
+    <caption> <br> 770% - 640% - 770%</caption>
+    <thead>
+        <tr>
+                            <th></th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>9682244</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+[log]defenders =         <table class="lined widthFull">
+    <caption> <br> 750% - 620% - 760%</caption>
+    <thead>
+        <tr>
+                            <th></th>
+                            <th></th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>2349254</td>                   
+                
+                <td>1</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+--- Round 1 ---<br><br>[log]calculating fire from attacker 218<br>
+[log]$max = 4.5972038522635E-7<br>
+[log]$min = 3.0648025681757E-7<br>
+[log]$mean = 3.8310032102196E-7<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 9682244<br>
+[log]calculating fire from attacker 218<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 2349254<br>
+[log]calculating fire from attacker 231<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1<br>
+***** firing to defenders *****<br>---------** firing to player with ID = 1635 **---------- <br>------- firing to fleet with ID = 0 -------- <br>[log]---- firing from 218 to 218 ----<br>
+[log]Defender single hull = 348300000<br>
+[log]Defender count = 2349254<br>
+[log]currentShield before = 33829257600000<br>
+[log]currentLife before = 8.182451682E+14<br>
+[log]damage = 304500000<br>
+[log]count = 9682239<br>
+[log]$ps->getAssorbedDamage() = 33829257600000<br>
+[log]currentShield after = -0.00390625<br>
+[log]currentLife after = 0<br>
+[log]lastShipHit after = 2349254<br>
+[log]lastShots after = 9682239<br>
+array (
+)array (
+  'page' => 'overview',
+)

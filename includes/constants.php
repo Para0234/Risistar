@@ -112,6 +112,7 @@ define('ENABLE_MULTIALERT'			, true);
 // UTF-8 support for names (required for non-english chars!)
 define('UTF8_SUPPORT'				, true);
 
+define('PREVENT_MULTISESSIONS'		, false);
 // Define, how its more hard to spy all inforation
 /*
 	if [Spy tech level of sender] > [Spy tech level of target]
@@ -134,14 +135,14 @@ define('SPY_DIFFENCE_FACTOR'		, 1);
 define('SPY_VIEW_FACTOR'			, 1);
 
 // Bash Settings
-define('BASH_ON'					, false);	
+define('BASH_ON'					, true);	
 define('BASH_COUNT'					, 6);	
 define('BASH_TIME'					, 86400);	
 
 // Bash rule on wars:
 // 0 = NORMAL
 // 1 = ON WAR, BASH RULE IS DEACTIVE
-define('BASH_WAR'					, 0);
+define('BASH_WAR'					, 1);
 
 // MINIMUM FLEET TIME MUST HIGHER THEN BASH_TIME
 define('FLEETLOG_AGE'				, 86400);	

@@ -65,7 +65,7 @@ class Universe {
 		{
 			throw new Exception('Unknown universe ID: '.$universeId);
 		}
-
+		$gloubiboulga;
 		$session	= Session::load();
 		$session->emulatedUniverse	= $universeId;
 		$session->save();

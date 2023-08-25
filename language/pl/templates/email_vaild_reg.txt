@@ -1,22 +1,27 @@
-﻿Witaj {USERNAME},
-
-Dzięki za rejstracje na {GAMENAME}
-Nim aktywujesz swoje konto jeszcze jeden krok przed tobą.
-
-Kliknij na ten link poniżej aktywujący twoje konto.
-
-Link aktywacyjny: {VERTIFYURL}
-
-Dane do logowania
-
-Username : {USERNAME}
-Password : {PASSWORD}
+Bonjour, {USERNAME},
 
 
-Jeśli będziesz miał jakieś problemy prosze daj znać na maila adminowi :
+Merci pour votre inscription sur {GAMENAME}
 
-{GAMEMAIL}
+Before we can activate your account, one more step is needed.
+Please note that this step is mandatory in order to become a 
+registered user. You have to press the link below only once to 
+verify your identity.
 
-Pozdrowienia,
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
 
-{GAMENAME} - Team
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
+
+{VERTIFYURL}
+
+
+
+
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
+
+Cordialement,
+l'équipe d'administration {GAMENAME}

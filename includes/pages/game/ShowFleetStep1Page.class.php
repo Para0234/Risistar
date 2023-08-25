@@ -240,10 +240,10 @@ class ShowFleetStep1Page extends AbstractGamePage
 			$this->sendJSON($LNG['fl_error_same_planet']);
 		}
 
-		// If target is expedition
+		// If target is not expedition
 		if ($targetPlanet != Config::get()->max_planets + 1)
 		{
-			$db = Database::get();
+			$db = Database::get();//Get all informations on the target
             $sql = "SELECT u.id, u.urlaubs_modus, u.user_lastip, u.authattack,
             	p.destruyed, p.der_metal, p.der_crystal, p.destruyed
                 FROM %%USERS%% as u, %%PLANETS%% as p WHERE
@@ -261,45 +261,55 @@ class ShowFleetStep1Page extends AbstractGamePage
                 ':targetPlanet' => $targetPlanet,
                 ':targetType' => (($targetPlanetType == 2) ? 1 : $targetPlanetType),
             ));
-
+			//Check if target is moon
             if ($targetPlanetType == 3 && !isset($planetData))
 			{
 				$this->sendJSON($LNG['fl_error_no_moon']);
 			}
-
-			if ($targetPlanetType != 2 && $planetData['urlaubs_modus'])
+			//Check is player is in vacation
+			if ($targetPlanetType != 2 && !empty($planetData['urlaubs_modus']))
 			{
 				$this->sendJSON($LNG['fl_in_vacation_player']);
 			}
-
-			if ($planetData['id'] != $USER['id'] && Config::get()->adm_attack == 1 && $planetData['authattack'] > $USER['authlevel'])
+			//I don't remember that one, but it seems to be a way to block admin attacks
+			if(!empty($planetData))
 			{
-				$this->sendJSON($LNG['fl_admin_attack']);
+				if ($planetData['id'] != $USER['id'] && Config::get()->adm_attack == 1 && $planetData['authattack'] > $USER['authlevel'])
+				{
+					$this->sendJSON($LNG['fl_admin_attack']);
+				}
+			}
+			//Checks if the planet has been destroyed
+			if(!empty($planetData))
+			{
+				if ($planetData['destruyed'] != 0)
+				{
+					$this->sendJSON($LNG['fl_error_not_avalible']);
+				}
 			}
 
-			if ($planetData['destruyed'] != 0)
-			{
-				$this->sendJSON($LNG['fl_error_not_avalible']);
-			}
-
-			if($targetPlanetType == 2 && $planetData['der_metal'] == 0 && $planetData['der_crystal'] == 0)
+/*			if($targetPlanetType == 2 && empty($planetData['der_metal']) && empty($planetData['der_crystal']))
 			{
 				$this->sendJSON($LNG['fl_error_empty_derbis']);
-			}
-
+			}*/
+			//Checks out for multi account
 			$sql	= 'SELECT (
 				(SELECT COUNT(*) FROM %%MULTI%% WHERE userID = :userID) +
 				(SELECT COUNT(*) FROM %%MULTI%% WHERE userID = :dataID)
 			) as count;';
-
-			$multiCount	= $db->selectSingle($sql ,array(
-				':userID' => $USER['id'],
-				':dataID' => $planetData['id']
-			), 'count');
-
-			if(ENABLE_MULTIALERT && $USER['id'] != $planetData['id'] && $USER['authlevel'] != AUTH_ADM && $USER['user_lastip'] == $planetData['user_lastip'] && $multiCount != 2)
+			if(!empty($planetData))
 			{
-				$this->sendJSON($LNG['fl_multi_alarm']);
+				$multiCount	= $db->selectSingle($sql ,array(
+					':userID' => $USER['id'],
+					':dataID' => $planetData['id']
+				), 'count');
+			}
+			if(!empty($planetData))
+			{
+				if(ENABLE_MULTIALERT && $USER['id'] != $planetData['id'] && $USER['authlevel'] != AUTH_ADM && $USER['user_lastip'] == $planetData['user_lastip'] && $multiCount != 2)
+				{
+					$this->sendJSON($LNG['fl_multi_alarm']);
+				}
 			}
 		}
 		else
@@ -316,7 +326,7 @@ class ShowFleetStep1Page extends AbstractGamePage
 				$this->sendJSON($LNG['fl_no_expedition_slot']);
 			}
 		}
-
+		
 		$this->sendJSON('OK');	
 	}
 }

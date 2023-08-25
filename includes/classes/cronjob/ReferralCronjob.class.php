@@ -20,12 +20,12 @@ require_once 'includes/classes/cronjob/CronjobTask.interface.php';
 class ReferralCronJob implements CronjobTask
 {
 	function run()
-	{		
+	{/*
 		if(Config::get(ROOT_UNI)->ref_active != 1)
 		{
 			return null;
 		}
-		/** @var $langObjects Language[] */
+		/** @var $langObjects Language[] *//*
 		$langObjects	= array();
 
 		$db	= Database::get();
@@ -68,7 +68,7 @@ class ReferralCronJob implements CronjobTask
 			$Message	= sprintf($LNG['sys_refferal_text'], $user['username'], pretty_number($userConfig->ref_minpoints), pretty_number($userConfig->ref_bonus), $LNG['tech'][921]);
 			PlayerUtil::sendMessage($user['ref_id'], '', $LNG['sys_refferal_from'], 4, sprintf($LNG['sys_refferal_title'], $user['username']), $Message, TIMESTAMP);
 		}
-
+		*/
 		return true;
 	}
-}
+}µ

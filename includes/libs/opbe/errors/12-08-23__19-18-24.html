@@ -1,0 +1,426 @@
+Saturday 12th of August 2023 07:18:24 PM
+Exception: Negative currentShield! in /homepages/5/d708340154/htdocs/includes/libs/opbe/models/ShipType.php:432
+Stack trace:
+#0 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/Fleet.php(148): ShipType->inflictDamage()
+#1 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/Player.php(147): Fleet->inflictDamage()
+#2 /homepages/5/d708340154/htdocs/includes/libs/opbe/models/PlayerGroup.php(106): Player->inflictDamage()
+#3 /homepages/5/d708340154/htdocs/includes/libs/opbe/core/Round.php(109): PlayerGroup->inflictDamage()
+#4 /homepages/5/d708340154/htdocs/includes/libs/opbe/core/Battle.php(80): Round->startRound()
+#5 /homepages/5/d708340154/htdocs/includes/libs/opbe/utils/DebugManager.php(60): Battle->startBattle()
+#6 /homepages/5/d708340154/htdocs/includes/libs/opbe/implementations/2Moons/1_7_2_injectionMode/calculateAttack.php(116): DebugManager::{closure}()
+#7 /homepages/5/d708340154/htdocs/includes/pages/game/ShowBattleSimulatorPage.class.php(191): calculateAttack()
+#8 /homepages/5/d708340154/htdocs/game.php(57): ShowBattleSimulatorPage->send()
+#9 {main}
+$_POST =
+$_GET =
+[log]attackers =         <table class="lined widthFull">
+    <caption> <br> 130% - 130% - 110%</caption>
+    <thead>
+        <tr>
+                            <th>FS-R91</th>
+                            <th>Intercepteur avancé</th>
+                            <th>Torpilleur avancé</th>
+                            <th>Chasseur omnirôle</th>
+                            <th>Drone Bombardier</th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>500000</td>                   
+                
+                <td>1250000000</td>                   
+                
+                <td>500000000</td>                   
+                
+                <td>50000000</td>                   
+                
+                <td>125000000</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+[log]defenders =         <table class="lined widthFull">
+    <caption> <br> 0% - 0% - 0%</caption>
+    <thead>
+        <tr>
+                            <th>FS-R91</th>
+                            <th>Intercepteur avancé</th>
+                            <th>Torpilleur avancé</th>
+                            <th>Chasseur omnirôle</th>
+                            <th>Drone Bombardier</th>
+                    </tr>
+    </thead>
+    <tbody>
+        <tr>
+                
+                <td>1000000</td>                   
+                
+                <td>2500000000</td>                   
+                
+                <td>1000000000</td>                   
+                
+                <td>100000000</td>                   
+                
+                <td>250000000</td>                   
+                    </tr>
+    </tbody>
+</table><br>
+--- Round 1 ---<br><br>[log]calculating fire from attacker 274<br>
+[log]$max = 4.7937743190661<br>
+[log]$min = 3.1958495460441<br>
+[log]$mean = 3.9948119325551<br>
+[log]$tmpshots = 2000000<br>
+[log]$this->shots = 2500000<br>
+[log]calculating fire from attacker 262<br>
+[log]$max = 3.4749620637329<br>
+[log]$min = 2.316641375822<br>
+[log]$mean = 2.8958017197774<br>
+[log]$tmpshots = 4084498287<br>
+[log]$this->shots = 5334498287<br>
+[log]calculating fire from attacker 263<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 500000000<br>
+[log]calculating fire from attacker 264<br>
+[log]$max = 4.7937743190661<br>
+[log]$min = 3.1958495460441<br>
+[log]$mean = 3.9948119325551<br>
+[log]$tmpshots = 185857459<br>
+[log]$this->shots = 235857459<br>
+[log]calculating fire from attacker 265<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 125000000<br>
+[log]calculating fire from attacker 274<br>
+[log]$max = 4.7937743190661<br>
+[log]$min = 3.1958495460441<br>
+[log]$mean = 3.9948119325551<br>
+[log]$tmpshots = 4669183<br>
+[log]$this->shots = 5669183<br>
+[log]calculating fire from attacker 262<br>
+[log]$max = 3.4749620637329<br>
+[log]$min = 2.316641375822<br>
+[log]$mean = 2.8958017197774<br>
+[log]$tmpshots = 8139330202<br>
+[log]$this->shots = 10639330202<br>
+[log]calculating fire from attacker 263<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 1000000000<br>
+[log]calculating fire from attacker 264<br>
+[log]$max = 4.7937743190661<br>
+[log]$min = 3.1958495460441<br>
+[log]$mean = 3.9948119325551<br>
+[log]$tmpshots = 385014569<br>
+[log]$this->shots = 485014569<br>
+[log]calculating fire from attacker 265<br>
+[log]$max = 0<br>
+[log]$min = 0<br>
+[log]$mean = 0<br>
+[log]$tmpshots = 0<br>
+[log]$this->shots = 250000000<br>
+***** firing to defenders *****<br>---------** firing to player with ID = 2001 **---------- <br>------- firing to fleet with ID = 0 -------- <br>[log]---- firing from 274 to 262 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 2500000000<br>
+[log]currentShield before = 37500000000<br>
+[log]currentLife before = 250000000<br>
+[log]damage = 9200<br>
+[log]count = 1622955<br>
+[log]$ps->getAssorbedDamage() = 24344325<br>
+[log]currentShield after = 37475655675<br>
+[log]currentLife after = 249837704.5<br>
+[log]lastShipHit after = 1622955<br>
+[log]lastShots after = 1622955<br>
+[log]$xs = result=1622955;rest=0.076603479683399;<br>
+[log]---- firing from 274 to 263 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 1000000000<br>
+[log]currentShield before = 15000000000<br>
+[log]currentLife before = 100000000<br>
+[log]damage = 9200<br>
+[log]count = 649182<br>
+[log]$ps->getAssorbedDamage() = 9737730<br>
+[log]currentShield after = 14990262270<br>
+[log]currentLife after = 99935081.8<br>
+[log]lastShipHit after = 649182<br>
+[log]lastShots after = 649182<br>
+[log]$xs = result=649182;rest=0.03064139187336;<br>
+[log]---- firing from 274 to 264 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 100000000<br>
+[log]currentShield before = 5000000000<br>
+[log]currentLife before = 10000000<br>
+[log]damage = 9200<br>
+[log]count = 64918<br>
+[log]$ps->getAssorbedDamage() = 3245900<br>
+[log]currentShield after = 4996754100<br>
+[log]currentLife after = 9993508.2<br>
+[log]lastShipHit after = 64918<br>
+[log]lastShots after = 64918<br>
+[log]$xs = result=64918;rest=0.20306413919025;<br>
+[log]---- firing from 274 to 265 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 250000000<br>
+[log]currentShield before = 1250000000<br>
+[log]currentLife before = 25000000<br>
+[log]damage = 9200<br>
+[log]count = 162295<br>
+[log]$ps->getAssorbedDamage() = 811475<br>
+[log]currentShield after = 1249188525<br>
+[log]currentLife after = 24983770.5<br>
+[log]lastShipHit after = 162295<br>
+[log]lastShots after = 162295<br>
+[log]$xs = result=162295;rest=0.50766034796834;<br>
+[log]---- firing from 274 to 274 ----<br>
+[log]Defender single hull = 900000<br>
+[log]Defender count = 1000000<br>
+[log]currentShield before = 25000000000<br>
+[log]currentLife before = 900000000000<br>
+[log]damage = 9200<br>
+[log]count = 649<br>
+[log]$ps->getAssorbedDamage() = 5970800<br>
+[log]currentShield after = 24994029200<br>
+[log]currentLife after = 900000000000<br>
+[log]lastShipHit after = 649<br>
+[log]lastShots after = 649<br>
+[log]$xs = result=649;rest=0.18203064139186;<br>
+array (
+  262 => 0.0766034796833992,
+  263 => 0.03064139187335968,
+  264 => 0.20306413919024635,
+  265 => 0.5076603479683399,
+  274 => 0.18203064139186154,
+)[log]$tmp = <br>
+[log]adding 1 shot<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 250000000<br>
+[log]currentShield before = 1249188525<br>
+[log]currentLife before = 24983770.5<br>
+[log]damage = 9200<br>
+[log]count = 1<br>
+[log]$ps->getAssorbedDamage() = 4.9967541<br>
+[log]currentShield after = 1249188520.0032<br>
+[log]currentLife after = 24983770.400065<br>
+[log]lastShipHit after = 162296<br>
+[log]lastShots after = 162296<br>
+[log]---- firing from 262 to 262 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 2500000000<br>
+[log]currentShield before = 37475655675<br>
+[log]currentLife before = 249837704.5<br>
+[log]damage = 80.5<br>
+[log]count = 3463060430<br>
+[log]$ps->getAssorbedDamage() = 37475655675<br>
+[log]currentShield after = 0<br>
+[log]currentLife after = 0<br>
+[log]lastShipHit after = 2501622955<br>
+[log]lastShots after = 3464683385<br>
+[log]$xs = result=3463060430;rest=0.40768623352051;<br>
+[log]---- firing from 262 to 263 ----<br>
+[log]Defender single hull = 0.1<br>
+[log]Defender count = 1000000000<br>
+[log]currentShield before = 14990262270<br>
+[log]currentLife before = 99935081.8<br>
+[log]damage = 80.5<br>
+[log]count = 1385224172<br>
+[log]$ps->getAssorbedDamage() = 14990262270<br>
+[log]currentShield after = -1.9073486328125E-6<br>
+[log]currentLife after = 0<br>
+[log]lastShipHit after = 1000649182<br>
+[log]lastShots after = 1385873354<br>
+array (
+  'slots' => '2',
+  'battleinput' => 
+  array (
+    0 => 
+    array (
+      1 => 
+      array (
+        901 => '55564874',
+        902 => '11231429',
+        903 => '73728975382604',
+        109 => '0',
+        110 => '0',
+        111 => '0',
+        202 => '0',
+        203 => '0',
+        204 => '0',
+        205 => '0',
+        206 => '0',
+        207 => '0',
+        208 => '0',
+        209 => '0',
+        210 => '0',
+        211 => '0',
+        212 => '0',
+        213 => '0',
+        214 => '0',
+        215 => '0',
+        216 => '0',
+        217 => '0',
+        218 => '0',
+        219 => '0',
+        220 => '0',
+        221 => '0',
+        222 => '0',
+        223 => '0',
+        224 => '0',
+        225 => '0',
+        226 => '0',
+        227 => '0',
+        228 => '0',
+        229 => '0',
+        230 => '0',
+        231 => '0',
+        232 => '0',
+        233 => '0',
+        234 => '0',
+        235 => '0',
+        236 => '0',
+        237 => '0',
+        238 => '0',
+        239 => '0',
+        240 => '0',
+        241 => '0',
+        242 => '0',
+        243 => '0',
+        244 => '0',
+        245 => '0',
+        246 => '0',
+        247 => '0',
+        248 => '0',
+        249 => '0',
+        250 => '0',
+        251 => '0',
+        252 => '0',
+        253 => '0',
+        254 => '0',
+        255 => '0',
+        256 => '0',
+        257 => '0',
+        258 => '0',
+        259 => '0',
+        260 => '0',
+        261 => '0',
+        262 => '0',
+        263 => '0',
+        264 => '0',
+        265 => '0',
+        266 => '0',
+        267 => '0',
+        268 => '0',
+        269 => '0',
+        270 => '0',
+        271 => '0',
+        272 => '0',
+        273 => '0',
+        274 => '1000000',
+        401 => '0',
+        402 => '0',
+        403 => '0',
+        404 => '0',
+        405 => '0',
+        406 => '0',
+        407 => '0',
+        408 => '0',
+        409 => '0',
+        410 => '0',
+        411 => '0',
+        412 => '0',
+        413 => '0',
+        414 => '0',
+        415 => '0',
+        416 => '0',
+        417 => '0',
+      ),
+      0 => 
+      array (
+        109 => '13',
+        110 => '11',
+        111 => '13',
+        202 => '0',
+        203 => '0',
+        204 => '0',
+        205 => '0',
+        206 => '0',
+        207 => '0',
+        208 => '0',
+        209 => '0',
+        210 => '0',
+        211 => '0',
+        212 => '0',
+        213 => '0',
+        214 => '0',
+        215 => '0',
+        216 => '0',
+        217 => '0',
+        218 => '0',
+        219 => '0',
+        220 => '0',
+        221 => '0',
+        222 => '0',
+        223 => '0',
+        224 => '0',
+        225 => '0',
+        226 => '0',
+        227 => '0',
+        228 => '0',
+        229 => '0',
+        230 => '0',
+        231 => '0',
+        232 => '0',
+        233 => '0',
+        234 => '0',
+        235 => '0',
+        236 => '0',
+        237 => '0',
+        238 => '0',
+        239 => '0',
+        240 => '0',
+        241 => '0',
+        242 => '0',
+        243 => '0',
+        244 => '0',
+        245 => '0',
+        246 => '0',
+        247 => '0',
+        248 => '0',
+        249 => '0',
+        250 => '0',
+        251 => '0',
+        252 => '0',
+        253 => '0',
+        254 => '0',
+        255 => '0',
+        256 => '0',
+        257 => '0',
+        258 => '0',
+        259 => '0',
+        260 => '0',
+        261 => '0',
+        262 => '0',
+        263 => '0',
+        264 => '0',
+        265 => '0',
+        266 => '0',
+        267 => '0',
+        268 => '0',
+        269 => '0',
+        270 => '0',
+        271 => '0',
+        272 => '0',
+        273 => '0',
+        274 => '500000',
+      ),
+    ),
+  ),
+)array (
+  'page' => 'battleSimulator',
+  'mode' => 'send',
+)

@@ -1,26 +1,27 @@
-Hello {USERNAME},
+Bonjour, {USERNAME},
 
 
-Thank you for registering at {GAMENAME}
+Merci pour votre inscription sur {GAMENAME}
 
 Before we can activate your account, one more step is needed.
 Please note that this step is mandatory in order to become a 
 registered user. You have to press the link below only once to 
 verify your identity.
 
-In order to complete your registration please click the 
-following activation link:
+Avant de pouvoir activer votre compte, il est nécessaire de remplir une dernière étape.
+Cette étape est obligatoire pour pouvoir être inscrit.
+
+Il vous suffit de cliquer sur le lien ci-dessous pour confirmer votre identité.
+
+
 
 {VERTIFYURL}
 
-Your login data:
 
-Username : {USERNAME}
-Password : {PASSWORD}
 
-Should you be facing any issues with the automated registration, 
-please contact the webmaster using the following email: 
-{GAMEMAIL}
 
-Regards,
-{GAMENAME} Team
+En cas de problème, veuillez contacter l'administration via le discord officiel, ou par mail, à :
+para@risistar.fr
+
+Cordialement,
+l'équipe d'administration {GAMENAME}

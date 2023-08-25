@@ -184,6 +184,7 @@ class FleetFunctions
 		$haltSpeed	= Config::get($USER['universe'])->halt_speed;
 
 		if (in_array(15, $Missions)) {
+		// rajout du quatsansdisse dans la formule pour lui donner les droits ( à voir)
 			for($i = 1;$i <= $USER[$resource[124]];$i++)
 			{
 				$stayBlock[$i]	= round($i / $haltSpeed, 2);
@@ -311,7 +312,13 @@ class FleetFunctions
 		$fleetResult	= $db->selectSingle($sql, array(
 			':fleetId'	=> $FleetID,
 		));
-
+		if(empty($fleetResult['start_time'])) { $fleetResult['start_time'] = 0; }
+		if(empty($fleetResult['fleet_start_time'])) { $fleetResult['fleet_start_time'] = 0; }
+		if(empty($fleetResult['fleet_mission'])) { $fleetResult['fleet_mission'] = 0; }
+		if(empty($fleetResult['fleet_group'])) { $fleetResult['fleet_group'] = 0; }
+		if(empty($fleetResult['fleet_owner'])) { $fleetResult['fleet_owner'] = 0; }
+		if(empty($fleetResult['fleet_mess'])) { $fleetResult['fleet_mess'] = 0; }
+		
 		if ($fleetResult['fleet_owner'] != $USER['id'] || $fleetResult['fleet_mess'] == 1)
 		{
 			return false;
@@ -370,14 +377,16 @@ class FleetFunctions
 		fleet_end_stay	= :endStayTime,
 		fleet_end_time	= :endTime,
 		fleet_mess		= :fleetState,
-		fleet_state		= 2
+		fleet_state		= 2,
+		hasCanceled			= :hasCanceled
 		WHERE '.$sqlWhere.' = :id;';
 
 		$db->update($sql, array(
 			':id'			=> $FleetID,
 			':endStayTime'	=> TIMESTAMP,
 			':endTime'		=> $fleetEndTime,
-			':fleetState'	=> FLEET_RETURN
+			':fleetState'	=> FLEET_RETURN,
+			':hasCanceled'	=> 1
 		));
 
 		return true;
@@ -414,7 +423,7 @@ class FleetFunctions
 		if ($MissionInfo['planet'] == (Config::get($USER['universe'])->max_planets + 1) && isModuleAvailable(MODULE_MISSION_EXPEDITION))
 			$availableMissions[]	= 15;	
 		elseif ($MissionInfo['planettype'] == 2) {
-			if ((isset($MissionInfo['Ship'][209]) || isset($MissionInfo['Ship'][219])) && isModuleAvailable(MODULE_MISSION_RECYCLE) && !($GetInfoPlanet['der_metal'] == 0 && $GetInfoPlanet['der_crystal'] == 0))
+			if ((isset($MissionInfo['Ship'][209]) || isset($MissionInfo['Ship'][219])) && isModuleAvailable(MODULE_MISSION_RECYCLE))
 				$availableMissions[]	= 8;
 		} else {
 			if (!$UsedPlanet) {
@@ -433,13 +442,14 @@ class FleetFunctions
 					if(isModuleAvailable(MODULE_MISSION_HOLD))
 						$availableMissions[]	= 5;}
 						
-				elseif(isModuleAvailable(MODULE_MISSION_STATION)) {
+				if(isModuleAvailable(MODULE_MISSION_STATION)) {
+//				if(1&1) {
 					$availableMissions[]	= 4;}
 					
 				if (!empty($MissionInfo['IsAKS']) && !$YourPlanet && isModuleAvailable(MODULE_MISSION_ATTACK) && isModuleAvailable(MODULE_MISSION_ACS))
 					$availableMissions[]	= 2;
-
-				if (!$YourPlanet && $MissionInfo['planettype'] == 3 && isset($MissionInfo['Ship'][214]) && isModuleAvailable(MODULE_MISSION_DESTROY))
+// je rajoute le quatsansdisse dans la formule pour lui donner le bouton radio de la mission detruire les lunes
+				if (!$YourPlanet && $MissionInfo['planettype'] == 3 && (isset($MissionInfo['Ship'][214]) || isset($MissionInfo['Ship'][233])) && isModuleAvailable(MODULE_MISSION_DESTROY))
 					$availableMissions[]	= 9;
 
 				if ($YourPlanet && $MissionInfo['planettype'] == 3 && self::OnlyShipByID($MissionInfo['Ship'], 220) && isModuleAvailable(MODULE_MISSION_DARKMATTER))
@@ -458,23 +468,28 @@ class FleetFunctions
 		{
 			return false;
 		}
-
+		$Count = 0;
 		$sql	= 'SELECT COUNT(*) as state
 		FROM %%LOG_FLEETS%%
 		WHERE fleet_owner = :fleetOwner
-		AND fleet_end_id = :fleetEndId
+		AND fleet_target_owner = :fleetEndOwner
 		AND fleet_state != :fleetState
+        AND hasCanceled = :canceled
 		AND fleet_start_time > :fleetStartTime
 		AND fleet_mission IN (1,2,9);';
 
 		$Count	= Database::get()->selectSingle($sql, array(
 			':fleetOwner'		=> $USER['id'],
-			':fleetEndId'		=> $Target,
+			':fleetEndOwner'		=> $Target,
 			':fleetState'		=> 2,
+			':canceled'		=> 0,
 			':fleetStartTime'	=> (TIMESTAMP - BASH_TIME),
-		));
-
-		return $Count['state'] >= BASH_COUNT;
+		), 'state');
+		if($Count >= 6)
+		{
+			return true;
+		}
+	  	return false;
 	}
 	
 	public static function sendFleet($fleetArray, $fleetMission, $fleetStartOwner, $fleetStartPlanetID,
@@ -486,12 +501,20 @@ class FleetFunctions
 		global $resource;
 		$fleetShipCount	= array_sum($fleetArray);
 		$fleetData		= array();
-
+	    $fleetTemps		= ($fleetStayTime - $fleetStartTime)/2;
 		$db				= Database::get();
-
+		if($fleetMission == 15)
+		{
+		  if(array_key_exists ( 232 , $fleetArray ) == 'True')
+		  {
+			$fleetStayTime = $fleetStayTime - $fleetTemps;
+			$fleetEndTime = $fleetEndTime - $fleetTemps;
+			  
+		  }
+		}
 		$params			= array(':planetId'	=> $fleetStartPlanetID);
 
-		$planetQuery	= array();
+		$planetQuery	=  [];
 		foreach($fleetArray as $ShipID => $ShipCount) {
 			$fleetData[]	= $ShipID.','.floatToString($ShipCount);
 			$planetQuery[]	= $resource[$ShipID]." = ".$resource[$ShipID]." - :".$resource[$ShipID];

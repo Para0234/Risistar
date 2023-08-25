@@ -65,12 +65,13 @@ class Cronjob
 
 		$sql = 'INSERT INTO %%CRONJOBS_LOG%% SET `cronjobId` = :cronjobId,
 		`executionTime` = :executionTime, `lockToken` = :lockToken';
-
+		
 		$db->insert($sql, array(
 			':cronjobId'		=> $cronjobID,
 			':executionTime'	=> Database::formatDate(TIMESTAMP),
 			':lockToken'		=> $lockToken
 		));
+		
 	}
 	
 	static function getNeedTodoExecutedJobs()

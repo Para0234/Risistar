@@ -155,7 +155,7 @@ class ShowFleetStep3Page extends AbstractGamePage
 		}
 		else
 		{
-			if ($targetPlanetData["destruyed"] != 0) {
+			if (!empty($targetPlanetData["destruyed"])) {
 				$this->printMessage($LNG['fl_no_target'], array(array(
 					'label'	=> $LNG['sys_back'],
 					'url'	=> 'game.php?page=fleet1'
@@ -216,12 +216,13 @@ class ShowFleetStep3Page extends AbstractGamePage
 				'ally_id'			=> 0,
 				'urlaubs_modus'		=> 0,
 				'authattack'		=> 0,
+				'authlevel'		=> 0,
 				'total_points'		=> 0,
 			);
 		} elseif($myPlanet) {
 			$targetPlayerData	= $USER;
 		} elseif(!empty($targetPlanetData['id_owner'])) {
-            $sql = "SELECT user.id, user.onlinetime, user.ally_id, user.urlaubs_modus, user.banaday, user.authattack,
+            $sql = "SELECT user.id, user.onlinetime, user.ally_id, user.urlaubs_modus, user.banaday, user.authattack, user.authlevel,
                 stat.total_points
                 FROM %%USERS%% as user
                 LEFT JOIN %%STATPOINTS%% as stat ON stat.id_owner = user.id AND stat.stat_type = '1'
@@ -265,7 +266,17 @@ class ShowFleetStep3Page extends AbstractGamePage
 		}
 		
 		if($targetMission == 1 || $targetMission == 2 || $targetMission == 9) {
-			if(FleetFunctions::CheckBash($targetPlanetData['id']))
+/*			if($targetPlanetData['id_owner'] != 1)
+			{
+				if(FleetFunctions::CheckBash($targetPlayerData['id']))
+				{
+					$this->printMessage($LNG['fl_bash_protection'], array(array(
+						'label'	=> $LNG['sys_back'],
+						'url'	=> 'game.php?page=fleetTable'
+					)));
+				}
+			}*/
+			if(FleetFunctions::CheckBash($targetPlayerData['id']))
 			{
 				$this->printMessage($LNG['fl_bash_protection'], array(array(
 					'label'	=> $LNG['sys_back'],
@@ -313,17 +324,39 @@ class ShowFleetStep3Page extends AbstractGamePage
 
 		if ($targetMission == 5)
 		{	
-			if($targetPlayerData['ally_id'] != $USER['ally_id']) {
-				$sql = "SELECT COUNT(*) as state FROM %%BUDDY%%
-				WHERE id NOT IN (SELECT id FROM %%BUDDY_REQUEST%% WHERE %%BUDDY_REQUEST%%.id = %%BUDDY%%.id) AND
-				(owner = :ownerID AND sender = :userID) OR (owner = :userID AND sender = :ownerID);";
-                $buddy = $db->selectSingle($sql, array(
-                    ':ownerID'  => $targetPlayerData['id'],
-                    ':userID'   => $USER['id']
-                ), 'state');
-
-                if($buddy == 0) {
-					$this->printMessage($LNG['fl_no_same_alliance'], array(array(
+			$sql = "SELECT COUNT(*) as state FROM %%USERS%%
+			WHERE id = :userID AND authlevel = '3';";
+			$admmis = $db->selectSingle($sql, array(
+				':userID'   => $USER['id']
+			), 'state');
+			if($admmis == 0)
+			{
+				$sql = "SELECT COUNT(*) as state FROM %%PLANETS%%
+				WHERE id = :planetID AND ally_deposit != '0';";
+				$depally = $db->selectSingle($sql, array(
+					':planetID'   => $targetPlanetData['id']
+				), 'state');
+				if($depally != 0)
+				{
+					if($targetPlayerData['ally_id'] != $USER['ally_id']) {
+						$sql = "SELECT COUNT(*) as state FROM %%BUDDY%%
+						WHERE id NOT IN (SELECT id FROM %%BUDDY_REQUEST%% WHERE %%BUDDY_REQUEST%%.id = %%BUDDY%%.id) AND
+						(owner = :ownerID AND sender = :userID) OR (owner = :userID AND sender = :ownerID);";
+						$buddy = $db->selectSingle($sql, array(
+							':ownerID'  => $targetPlayerData['id'],
+							':userID'   => $USER['id']
+						), 'state');
+						if($buddy == 0) {
+							$this->printMessage($LNG['fl_no_same_alliance'], array(array(
+								'label'	=> $LNG['sys_back'],
+								'url'	=> 'game.php?page=fleetTable'
+							)));
+						}
+					}
+				}
+				else
+				{
+					$this->printMessage($LNG['fl_not_ally_deposit'], array(array(
 						'label'	=> $LNG['sys_back'],
 						'url'	=> 'game.php?page=fleetTable'
 					)));

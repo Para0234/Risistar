@@ -6,7 +6,7 @@
 <!--[if IE 9 ]>    <html lang="{$lang}" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="{$lang}" class="no-js"> <!--<![endif]-->
 <head>
-	<title>{block name="title"} - {$uni_name} - {$game_name}{/block}</title>
+	<title>{block name="title"} - {$uni_name} - {$game_name}{/block} </title>
 	<meta name="generator" content="2Moons {$VERSION}">
 	<!-- 
 		This website is powered by 2Moons {$VERSION}

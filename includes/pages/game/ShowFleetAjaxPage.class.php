@@ -130,7 +130,7 @@ class ShowFleetAjaxPage extends AbstractGamePage
 		planet.system as system,
 		planet.planet as planet,
 		planet.planet_type as planet_type,
-		total_points, onlinetime, urlaubs_modus, banaday, authattack
+		total_points, onlinetime, urlaubs_modus, banaday, authattack, authlevel
 		FROM %%PLANETS%% planet
 		INNER JOIN %%USERS%% user ON planet.id_owner = user.id
 		LEFT JOIN %%STATPOINTS%% as stat ON stat.id_owner = user.id AND stat.stat_type = '1'

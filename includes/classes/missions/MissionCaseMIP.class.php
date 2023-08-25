@@ -37,7 +37,7 @@ class MissionCaseMIP extends MissionFunctions implements Mission
 		}
 			
 		$sql = 'SELECT lang, shield_tech,
-		%%PLANETS%%.id, name, id_owner, '.implode(', ', $sqlFields).'
+		%%PLANETS%%.id, name, id_owner, percentShield, lastMIP, '.implode(', ', $sqlFields).'
 		FROM %%PLANETS%%
 		INNER JOIN %%USERS%% ON id_owner = %%USERS%%.id
 		WHERE %%PLANETS%%.id = :planetId;';
@@ -80,7 +80,136 @@ class MissionCaseMIP extends MissionFunctions implements Mission
 		unset($targetDefensive[502]);
 
 		$LNG	= $this->getLanguage(Config::get($this->_fleet['fleet_universe'])->lang, array('L18N', 'FLEET', 'TECH'));
-				
+		
+		
+
+/*		$percentShield	= Database::get()->selectSingle($sql, array(
+			':planetId'	=> $this->_fleet['fleet_end_id']
+		));*/
+		$percentShield = $targetData['percentShield'];
+		
+		
+		
+		if ($targetData['lastMIP'] <= (TIMESTAMP - 600))
+		{
+			$percentShield = 100;
+		}
+		$FirstCount = $this->_fleet['fleet_amount'];
+		$LastMIP = TIMESTAMP;
+		$shieldCounter = 0;
+		$baseshieldCounter = 0;
+		$smallshield = 0;
+		$bigshield = 0;
+		$hoash = 0;
+		$dome = 0;
+		
+		$sql	= 'SELECT COUNT(*) as state
+				FROM %%PLANETS%%
+				WHERE `id`	= :userId
+				AND `small_protection_shield`	= 1;';
+
+		$smallshield	= Database::get()->selectSingle($sql, array(
+			':userId'		=> $this->_fleet['fleet_end_id'],
+			), 'state');
+		
+		
+		
+		
+		
+		$sql	= 'SELECT COUNT(*) as state
+				FROM %%PLANETS%%
+				WHERE `id`	= :userId
+				AND `big_protection_shield`	= 1;';
+
+		$bigshield	= Database::get()->selectSingle($sql, array(
+			':userId'		=> $this->_fleet['fleet_end_id'],
+			), 'state');
+		
+		
+		
+		
+		$sql	= 'SELECT COUNT(*) as state
+				FROM %%PLANETS%%
+				WHERE `id`	= :userId
+				AND `hoash_shield`	= 1;';
+
+		$hoash	= Database::get()->selectSingle($sql, array(
+			':userId'		=> $this->_fleet['fleet_end_id'],
+			), 'state');
+		
+		
+		
+		
+		$sql	= 'SELECT COUNT(*) as state
+				FROM %%PLANETS%%
+				WHERE `id`	= :userId
+				AND `planet_protector`	= 1;';
+
+		$dome	= Database::get()->selectSingle($sql, array(
+			':userId'		=> $this->_fleet['fleet_end_id'],
+			), 'state');
+		
+		
+		if ($smallshield != 0)
+		{
+			$baseshieldCounter = $baseshieldCounter + 5;
+		}
+		if ($bigshield != 0)
+		{
+			$baseshieldCounter = $baseshieldCounter + 10;
+		}
+		if ($hoash != 0)
+		{
+			$baseshieldCounter = $baseshieldCounter + 50;
+		}
+		if ($dome != 0)
+		{
+			$baseshieldCounter = $baseshieldCounter + 250;
+		}
+		$shieldCounter = $baseshieldCounter;
+		
+		if ($shieldCounter != 0)
+		{
+			$shieldCounter = floor(($shieldCounter * $percentShield) / 100);
+		}
+		$intercept = $shieldCounter;
+		if ($shieldCounter >= $this->_fleet['fleet_amount'])
+		{
+			$shieldCounter = $shieldCounter - $this->_fleet['fleet_amount'];
+			$this->_fleet['fleet_amount'] = 0;
+		}
+		else
+		{
+			$this->_fleet['fleet_amount'] = $this->_fleet['fleet_amount'] - $shieldCounter;
+			$shieldCounter = 0;
+		}
+		if ($shieldCounter != 0)
+		{
+			$percentShield = floor(($shieldCounter / $baseshieldCounter)*100);
+		}
+		else{
+			$percentShield = 0;
+		}
+		
+		
+		
+		$sql	= 'UPDATE %%PLANETS%% SET `percentShield` = :shield WHERE `id` = :planetId;';
+
+		$db->update($sql, array(
+			':shield'	=> $percentShield,
+			':planetId'	=> $targetData['id']
+		));
+		
+		
+		$sql	= 'UPDATE %%PLANETS%% SET `LastMIP` = :TS WHERE `id` = :planetId;';
+
+		$db->update($sql, array(
+			':TS'	=> TIMESTAMP,
+			':planetId'	=> $targetData['id']
+		));
+		
+		
+		
 		if ($targetData[$resource[502]] >= $this->_fleet['fleet_amount'])
 		{
 			$message 	= $LNG['sys_irak_no_att'];
@@ -115,8 +244,8 @@ class MissionCaseMIP extends MissionFunctions implements Mission
 					$this->_fleet['fleet_amount'], $targetDefensive, $primaryTarget, $targetData[$resource[502]]);
 
 				$result		= array_filter($result);
-				
-				$message	= sprintf($LNG['sys_irak_def'], $targetData[$resource[502]]).'<br><br>';
+				$intercept = $intercept + $targetData[$resource[502]];
+				$message	= sprintf($LNG['sys_irak_def'], $intercept).'<br><br>';
 				
 				ksort($result, SORT_NUMERIC);
 				
@@ -144,7 +273,7 @@ class MissionCaseMIP extends MissionFunctions implements Mission
 
 		$ownerLink			= $planetName." ".GetStartAddressLink($this->_fleet);
 		$targetLink 		= $targetData['name']." ".GetTargetAddressLink($this->_fleet);
-		$message			= sprintf($LNG['sys_irak_mess'], $this->_fleet['fleet_amount'], $ownerLink, $targetLink).$message;
+		$message			= sprintf($LNG['sys_irak_mess'], $FirstCount, $ownerLink, $targetLink).$message;
 
 		PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_mess_tower'], 3,
 			$LNG['sys_irak_subject'], $message, $this->_fleet['fleet_start_time'], NULL, 1, $this->_fleet['fleet_universe']);

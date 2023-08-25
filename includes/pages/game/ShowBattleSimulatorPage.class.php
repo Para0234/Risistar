@@ -28,6 +28,7 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 	{
 		global $reslist, $pricelist, $LNG;
 		
+		$db = Database::get();
 		if(!isset($_REQUEST['battleinput'])) {
 			$this->sendJSON(0);
 		}
@@ -65,11 +66,43 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 				
 				$attacker['player']['factor']	= getFactors($attacker['player'], 'attack');
 				
+
+				
 				foreach($BattleSlot[0] as $ID => $Count)
 				{
 					if(!in_array($ID, $reslist['fleet']) || $BattleSlot[0][$ID] <= 0)
 					{
 						unset($BattleSlot[0][$ID]);
+					}
+				}
+				
+				foreach(array_keys($BattleSlot[0]) as $CarrierShip)
+				{
+					if ($BattleSlot[0][$CarrierShip] != 0)
+					{
+						//We grab data from the database on the ship we are looking on
+						$sql	= "SELECT * FROM %%VARS%% WHERE eLementID = :shipID;";
+						$singleship	= $db->selectSingle($sql, array(
+							':shipID'	=> $CarrierShip
+						));
+						//Carriercapacity is either null or says which ships are carried by the ship.
+						if ($singleship['carriercapacity'] != NULL)
+						{
+							//We hijack the unserialize to get all the carried ships
+							$singleshiparray	= FleetFunctions::unserialize($singleship['carriercapacity']);
+							foreach(array_keys($singleshiparray) as $singleshipnumber)
+							{
+								//And we add the new ships.
+								if (isset($BattleSlot[0][$singleshipnumber]))
+								{
+									$BattleSlot[0][$singleshipnumber] += ($singleshiparray[$singleshipnumber] * $BattleSlot[0][$CarrierShip]);
+								}
+								else
+								{
+									$BattleSlot[0][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $BattleSlot[0][$CarrierShip]);
+								}
+							}
+						}
 					}
 				}
 				
@@ -114,8 +147,37 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 						unset($BattleSlot[1][$ID]);
 					}
 				}
-				
+				foreach(array_keys($BattleSlot[1]) as $CarrierShip)
+				{
+					if ($BattleSlot[1][$CarrierShip] != 0)
+					{
+						//We grab data from the database on the ship we are looking on
+						$sql	= "SELECT * FROM %%VARS%% WHERE eLementID = :shipID;";
+						$singleship	= $db->selectSingle($sql, array(
+							':shipID'	=> $CarrierShip
+						));
+						//Carriercapacity is either null or says which ships are carried by the ship.
+						if ($singleship['carriercapacity'] != NULL)
+						{
+							//We hijack the unserialize to get all the carried ships
+							$singleshiparray	= FleetFunctions::unserialize($singleship['carriercapacity']);
+							foreach(array_keys($singleshiparray) as $singleshipnumber)
+							{
+								//And we add the new ships.
+								if (isset($BattleSlot[1][$singleshipnumber]))
+								{
+									$BattleSlot[1][$singleshipnumber] += ($singleshiparray[$singleshipnumber] * $BattleSlot[1][$CarrierShip]);
+								}
+								else
+								{
+									$BattleSlot[1][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $BattleSlot[1][$CarrierShip]);
+								}
+							}
+						}
+					}
+				}
 				$defender['unit'] 	= $BattleSlot[1];
+				
 				$defenders[]	= $defender;
 			}
 		}
@@ -202,7 +264,7 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 		$reportData	= GenerateReport($combatResult, $reportInfo);
 		$reportID	= md5(uniqid('', true).TIMESTAMP);
 
-        $db = Database::get();
+//        $db = Database::get();
 
         $sql = "INSERT INTO %%RW%% SET rid = :reportID, raport = :reportData, time = :time;";
         $db->insert($sql,array(

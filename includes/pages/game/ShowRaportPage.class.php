@@ -143,12 +143,20 @@ class ShowRaportPage extends AbstractGamePage
 		if(empty($reportData)) {
 			$this->printMessage($LNG['sys_raport_not_found']);
 		}
-		
+		$isAdmin = 0;
 		// empty is BC for pre r2484
 		$isAttacker = empty($reportData['attacker']) || in_array($USER['id'], explode(",", $reportData['attacker']));
 		$isDefender = empty($reportData['defender']) || in_array($USER['id'], explode(",", $reportData['defender']));
+		if($USER['authlevel'] == 3)
+		{
+			$isAdmin = 1;
+		}
+		else
+		{
+			$isAdmin = 0;
+		}
 		
-		if(empty($reportData) || (!$isAttacker && !$isDefender)) {
+		if(empty($reportData) || (!$isAttacker && !$isDefender && !$isAdmin)) {
 			$this->printMessage($LNG['sys_raport_not_found']);
 		}
 
