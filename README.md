@@ -15,12 +15,19 @@ This project is under active development.
 This version already has a lot of major differences when compared to its source. Here are some :
 
 -OPBE is the combat engine instead of the default one
+
 -Dark Matter has been completely overhauled with a completely unique twist preventing pay-to-win activities
+
 -a LOT of new ships (including new capital ships, small ships, and so on)
+
 -Classes (Each giving specific bonuses)
+
 -Carrier ships (Ships able to deploy their own fleet of smaller ships during battles, each with their own specializations)
+
 -Achievments (Which are not adapted at all to the current version, ironically...)
+
 -A new blocking mechanic (opposite of the "requirements one") in case you want to add your own things
+
 -Perfect balance (as if anyone was going to believe that one...)
 
 # Credits
