@@ -12,7 +12,7 @@
  * @copyright 2016 Jan-Otto Kröpke <slaver7@gmail.com>
  * @licence MIT
  * @version 1.8.0
- * @link https://github.com/jkroepke/2Moons
+ * @link https://github.com/Para0234/Risistar
  */
 
 class MissionCaseDestruction extends MissionFunctions implements Mission
@@ -118,7 +118,35 @@ HTML;
 			$fleetAttack[$fleetID]['player']['factor']	= getFactors($fleetAttack[$fleetID]['player'], 'attack', $this->_fleet['fleet_start_time']);
 			$fleetAttack[$fleetID]['fleetDetail']		= $fleetDetail;
 			$fleetAttack[$fleetID]['unit']				= FleetFunctions::unserialize($fleetDetail['fleet_array']);
-
+			foreach(array_keys($fleetAttack[$fleetID]['unit']) as $CarrierShip)
+			{
+				if ($fleetAttack[$fleetID]['unit'][$CarrierShip] != 0)
+				{
+					//We grab data from the database on the ship we are looking on
+					$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+					$singleship	= $db->selectSingle($sql, array(
+						':shipID'	=> $CarrierShip
+					));
+					//Carriercapacity is either null or says which ships are carried by the ship.
+					if ($singleship['carriercapacity'] != NULL)
+					{
+						//We hijack the unserialize to get all the carried ships
+						$singleshiparray	= FleetFunctions::unserialize($singleship['carriercapacity']);
+						foreach(array_keys($singleshiparray) as $singleshipnumber)
+						{
+							//And we add the new ships.
+							if (isset($fleetAttack[$fleetID]['unit'][$singleshipnumber]))
+							{
+								$fleetAttack[$fleetID]['unit'][$singleshipnumber] += ($singleshiparray[$singleshipnumber] * $fleetAttack[$fleetID]['unit'][$CarrierShip]);
+							}
+							else
+							{
+								$fleetAttack[$fleetID]['unit'][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $fleetAttack[$fleetID]['unit'][$CarrierShip]);
+							}
+						}
+					}
+				}
+			}
 			$userAttack[$fleetAttack[$fleetID]['player']['id']]	= $fleetAttack[$fleetID]['player']['username'];
 		}
 
@@ -146,7 +174,35 @@ HTML;
 			$fleetDefend[$fleetID]['player']['factor']	= getFactors($fleetDefend[$fleetID]['player'], 'attack', $this->_fleet['fleet_start_time']);
 			$fleetDefend[$fleetID]['fleetDetail']		= $fleetDetail;
 			$fleetDefend[$fleetID]['unit']				= FleetFunctions::unserialize($fleetDetail['fleet_array']);
-
+			foreach(array_keys($fleetDefend[$fleetID]['unit']) as $CarrierShip)
+			{
+				if ($fleetDefend[$fleetID]['unit'][$CarrierShip] != 0)
+				{
+					//We grab data from the database on the ship we are looking on
+					$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+					$singleship	= $db->selectSingle($sql, array(
+						':shipID'	=> $CarrierShip
+					));
+					//Carriercapacity is either null or says which ships are carried by the ship.
+					if ($singleship['carriercapacity'] != NULL)
+					{
+						//We hijack the unserialize to get all the carried ships
+						$singleshiparray	= FleetFunctions::unserialize($singleship['carriercapacity']);
+						foreach(array_keys($singleshiparray) as $singleshipnumber)
+						{
+							//And we add the new ships.
+							if (isset($fleetDefend[$fleetID]['unit'][$singleshipnumber]))
+							{
+								$fleetDefend[$fleetID]['unit'][$singleshipnumber] += ($singleshiparray[$singleshipnumber] * $fleetDefend[$fleetID]['unit'][$CarrierShip]);
+							}
+							else
+							{
+								$fleetDefend[$fleetID]['unit'][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $fleetDefend[$fleetID]['unit'][$CarrierShip]);
+							}
+						}
+					}
+				}
+			}
 			$userDefend[$fleetDefend[$fleetID]['player']['id']]	= $fleetDefend[$fleetID]['player']['username'];
 		}
 
@@ -169,7 +225,35 @@ HTML;
 
 			$fleetDefend[0]['unit'][$elementID] = $targetPlanet[$resource[$elementID]];
 		}
-
+		foreach(array_keys($fleetDefend[0]['unit']) as $CarrierShip)
+		{
+			if ($fleetDefend[0]['unit'][$CarrierShip] != 0)
+			{
+				//We grab data from the database on the ship we are looking on
+				$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+				$singleship	= $db->selectSingle($sql, array(
+					':shipID'	=> $CarrierShip
+				));
+				//Carriercapacity is either null or says which ships are carried by the ship.
+				if ($singleship['carriercapacity'] != NULL)
+				{
+					//We hijack the unserialize to get all the carried ships
+					$singleshiparray	= FleetFunctions::unserialize($singleship['carriercapacity']);
+					foreach(array_keys($singleshiparray) as $singleshipnumber)
+					{
+						//And we add the new ships.
+						if (isset($fleetDefend[0]['unit'][$singleshipnumber]))
+						{
+							$fleetDefend[0]['unit'][$singleshipnumber] += ($singleshiparray[$singleshipnumber] * $fleetDefend[0]['unit'][$CarrierShip]);
+						}
+						else
+						{
+							$fleetDefend[0]['unit'][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $fleetDefend[0]['unit'][$CarrierShip]);
+						}
+					}
+				}
+			}
+		}
 		$userDefend[$fleetDefend[0]['player']['id']]	= $fleetDefend[0]['player']['username'];
 
 		require_once 'includes/classes/missions/functions/calculateAttack.php';
@@ -187,8 +271,17 @@ HTML;
 			$fleetDetail['unit']	= array_filter($fleetDetail['unit']);
 			foreach ($fleetDetail['unit'] as $elementID => $amount)
 			{
-				$fleetArray .= $elementID.','.floatToString($amount).';';
-				$totalCount += $amount;
+				// We're getting info on the ship from the database
+				$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+				$singleship	= $db->selectSingle($sql, array(
+					':shipID'	=> $elementID
+				));
+				// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
+				if ($singleship['shipclass'] != 1000)
+				{
+					$totalCount += $amount;
+					$fleetArray .= $elementID.','.$amount.';';
+				}
 			}
 
 			if($totalCount == 0)
@@ -250,8 +343,17 @@ HTML;
 
 				foreach ($fleetDetail['unit'] as $elementID => $amount)
 				{
-					$fleetArray .= $elementID.','.floatToString($amount).';';
-					$totalCount += $amount;
+					// We're getting info on the ship from the database
+					$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+					$singleship	= $db->selectSingle($sql, array(
+						':shipID'	=> $elementID
+					));
+					// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
+					if ($singleship['shipclass'] != 1000)
+					{
+						$totalCount += $amount;
+						$fleetArray .= $element.','.$amount.';';
+					}
 				}
 
 				if($totalCount == 0)
@@ -299,11 +401,20 @@ HTML;
 
 				// Planet fleet
 				$fleetArray = array();
-				foreach ($fleetDetail['unit'] as $elementID => $amount)
+			foreach ($fleetDetail['unit'] as $elementID => $amount)
+			{
+				// We're getting info on the ship from the database
+				$sql	= "SELECT * FROM %%VARS%% WHERE elementID = :shipID;";
+				$singleship	= $db->selectSingle($sql, array(
+					':shipID'	=> $elementID
+				));
+				// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
+				if ($singleship['shipclass'] != 1000)
 				{
 					$fleetArray[] = '`'.$resource[$elementID].'` = :'.$resource[$elementID];
 					$params[':'.$resource[$elementID]]	= $amount;
 				}
+			}
 
 				if(!empty($fleetArray))
 				{
