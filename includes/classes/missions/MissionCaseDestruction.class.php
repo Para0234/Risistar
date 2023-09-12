@@ -352,7 +352,7 @@ HTML;
 					if ($singleship['shipclass'] != 1000)
 					{
 						$totalCount += $amount;
-						$fleetArray .= $element.','.$amount.';';
+						$fleetArray .= $elementID.','.$amount.';';
 					}
 				}
 
