@@ -174,7 +174,7 @@ HTML;
 			$fleetDefend[$fleetID]['player']['factor']	= getFactors($fleetDefend[$fleetID]['player'], 'attack', $this->_fleet['fleet_start_time']);
 			$fleetDefend[$fleetID]['fleetDetail']		= $fleetDetail;
 			$fleetDefend[$fleetID]['unit']				= FleetFunctions::unserialize($fleetDetail['fleet_array']);
-			foreach(array_keys($fleetDefend[0]['unit']) as $CarrierShip)
+			foreach(array_keys($fleetDefend[$fleetID]['unit']) as $CarrierShip)
 			{
 				if ($fleetDefend[$fleetID]['unit'][$CarrierShip] != 0)
 				{
