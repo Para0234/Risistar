@@ -210,7 +210,6 @@ class Session
 	        $this->delete();
 		  return;
 	    }
-        $userClient = get_browser(null, true);
         $userIpAddress = self::getClientIp();
 
 		$sql	= 'REPLACE INTO %%SESSION%% SET
@@ -249,7 +248,7 @@ class Session
 		$db->update($sql, array(
 		   ':userAddress'	=> $userIpAddress,
 		   ':lastActivity'	=> TIMESTAMP,
-		   ':userClient'	=> $userClient,
+		   ':userClient'	=> $_SERVER['HTTP_USER_AGENT'],//$userClient,
 		   ':userId'		=> $this->data['userId'],
 		));
 		// Remove multisessions
