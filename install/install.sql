@@ -1121,7 +1121,8 @@ CREATE TABLE `%PREFIX%users` (
   `achievements_lab1` int(11) NOT NULL DEFAULT '0',
   `achievements_lab2` int(11) NOT NULL DEFAULT '0',
   `achievements_lab3` int(11) NOT NULL DEFAULT '0',
-  `achievements_lab4` int(11) NOT NULL DEFAULT '0'
+  `achievements_lab4` int(11) NOT NULL DEFAULT '0',
+  `user_lastclient` varchar(128) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
