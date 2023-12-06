@@ -27,7 +27,7 @@
  */
 class Defense extends ShipType
 {
-    public function getRepairProb()
+    public function getRepairProb($idPlayer = 0)
     {
         return DEFENSE_REPAIR_PROB;
     }
