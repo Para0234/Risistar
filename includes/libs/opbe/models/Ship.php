@@ -35,8 +35,8 @@ class Ship extends ShipType
 		$senderUser		= $db->selectSingle($sql, array(
 			':userId'	=> $idPlayer
 		));
-        $repair = min(20,$senderUser['escalation'];
-        $repairchance = SHIP_REPAIR_PROB + ($repair * 3);
+        $repair = min(20,$senderUser['escalation']);
+        $repairchance = SHIP_REPAIR_PROB + ($repair * 0.03);
         return $repairchance;
     }
 }
