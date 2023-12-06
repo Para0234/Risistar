@@ -36,7 +36,7 @@ class Ship extends ShipType
 			':userId'	=> $idPlayer
 		));
         $repair = min(20,$senderUser['escalation'];
-        $repairchance = SHIP_REPAIR_PROB + $repair;
+        $repairchance = SHIP_REPAIR_PROB + ($repair * 3);
         return $repairchance;
     }
 }
