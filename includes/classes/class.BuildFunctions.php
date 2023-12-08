@@ -90,7 +90,7 @@ class BuildFunctions
             }
 
             $price[$resType]	= $ressourceAmount;
-
+            $priceReduction	= min(60, (3 * $USER['profitincrease']))
             if(isset($pricelist[$Element]['factor']) && $pricelist[$Element]['factor'] != 0 && $pricelist[$Element]['factor'] != 1) {
                 $price[$resType]	*= pow($pricelist[$Element]['factor'], $elementLevel);
             }
@@ -101,7 +101,7 @@ class BuildFunctions
             }
 			
             if(in_array($Element, $reslist['fleet']) || in_array($Element, $reslist['defense']) || in_array($Element, $reslist['missile'])) {
-                $price[$resType]	-= (($price[$resType] / 100) * (4 * $USER['escalation']));
+                $price[$resType]	-= (($price[$resType] / 100) * $priceReduction);
             }
 
             if($forDestroy == true) {
@@ -203,22 +203,22 @@ class BuildFunctions
 			));
 			switch ($class['shipclass']) {
 			case 1:
-				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(20, $USER['profitincrease'])));
 				break;
 			case 2:
-				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(20, $USER['profitincrease'])));
 				break;
 			case 3:
-				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(25, $USER['escalation'])));
+				return max($time, $config->min_build_time - (($config->min_build_time/25) * min(20, $USER['profitincrease'])));
 				break;
 			case 4:
-				return max($time, ($config->min_build_time * 10) - (($config->min_build_time * 10) / 25) * min(25, $USER['escalation']));
+				return max($time, ($config->min_build_time * 10) - (($config->min_build_time * 10) / 25) * min(20, $USER['profitincrease']));
 				break;
 			case 5:
-				return max($time, ($config->min_build_time * 60) - (($config->min_build_time * 60) / 25) * min(25, $USER['escalation']));
+				return max($time, ($config->min_build_time * 60) - (($config->min_build_time * 60) / 25) * min(20, $USER['profitincrease']));
 				break;
 			case 6:
-				return max($time, ($config->min_build_time * 21600) - (($config->min_build_time * 21600) / 25) * min(25, $USER['escalation']));
+				return max($time, ($config->min_build_time * 21600) - (($config->min_build_time * 21600) / 25) * min(20, $USER['profitincrease']));
 				break;
 			case 7:
 				return $time;
