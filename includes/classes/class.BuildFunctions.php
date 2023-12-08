@@ -90,7 +90,7 @@ class BuildFunctions
             }
 
             $price[$resType]	= $ressourceAmount;
-            $priceReduction	= min(60, (3 * $USER['profitincrease']))
+            $priceReduction	= min(60, (3 * $USER['profitincrease']));
             if(isset($pricelist[$Element]['factor']) && $pricelist[$Element]['factor'] != 0 && $pricelist[$Element]['factor'] != 1) {
                 $price[$resType]	*= pow($pricelist[$Element]['factor'], $elementLevel);
             }
