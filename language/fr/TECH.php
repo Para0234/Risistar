@@ -308,7 +308,7 @@ $LNG['tech'] = array(
 653 => 'Classe : Raideur',
 654 => 'Classe : Mineur',
 655 => 'Classe : Célestin',
-655 => 'Classe : Marchand',
+656 => 'Classe : Marchand',
 
 700 => 'Premium Optimisations',
 701 => 'Optimisation des Armes',
