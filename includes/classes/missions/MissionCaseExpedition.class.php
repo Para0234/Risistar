@@ -62,24 +62,24 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 
 		$fleetCapacity  -= $this->_fleet['fleet_resource_metal'] + $this->_fleet['fleet_resource_crystal']
 			+ $this->_fleet['fleet_resource_deuterium'] + $this->_fleet['fleet_resource_darkmatter'];
-		$EventProbabilities	== random_int(1, 10000);
+		$EventProbabilities	= random_int(1, 5000);
 		if($EventProbabilities <=500)//ressources (5%)
 		{
 			$GetEvent = 1;
 		}
-		elif($EventProbabilities <=1000)//Ressources / métal seul(5%)
+		elseif($EventProbabilities <=1000)//Ressources / métal seul(5%)
 		{
 			$GetEvent = 2;
 		}
-		elif($EventProbabilities <=3000)//Vaisseaux(20%)
+		elseif($EventProbabilities <=3000)//Vaisseaux(20%)
 		{
 			$GetEvent = 3;
 		}
-		elif($EventProbabilities <=4975)//Combat(19,75%)
+		elseif($EventProbabilities <=4975)//Combat(19,75%)
 		{
 			$GetEvent = 4;
 		}
-		elif($EventProbabilities <=5000)//Destruction de flotte(0,25%)
+		elseif($EventProbabilities <=5000)//Destruction de flotte(0,25%)
 		{
 			$GetEvent = 5;
 		}
@@ -182,7 +182,7 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 
 				$fleetColName	= 'fleet_resource_'.$resource[$resourceId];
 				$this->UpdateFleet($fleetColName, $this->_fleet[$fleetColName] + $founded);
-			break;
+				break;
 			case 2:
 				$eventSize		= mt_rand(0, 100);
                 $factor			= 0;
@@ -206,7 +206,6 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 				$resourceId	= 901;
 				
 				
-				}
 				$sql		= "SELECT MAX(total_points) as total FROM %%STATPOINTS%%
 				WHERE `stat_type` = :type AND `universe` = :universe;";
 
@@ -261,10 +260,9 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 
 				$fleetColName	= 'fleet_resource_'.$resource[$resourceId];
 				$this->UpdateFleet($fleetColName, $this->_fleet[$fleetColName] + $founded);
-			break;
+				break;
 			case 3:
 			//Ici on avait modifié en augmentant les valeurs pour obtenir plus de vaisseaux
-
 				$eventSize	= mt_rand(0, 100);
                 $Size       = 0;
                 $Message    = "";
@@ -323,7 +321,7 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 					if($FoundShips <= 0)
 						break;
 				}*/
-				$getLucky = mt.rand(1,10);
+				$getLucky = mt_rand(1,10);
 				if($getLucky == 1)
 				{
 					$GoldShipBase = 248;
@@ -362,18 +360,17 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 							foreach($reslist['fleet'] as $ID)
 							{
 								$finalcount = 0;
-								if($ID == ($GoldShipBase + $amountperradar)
+								if($ID == ($GoldShipBase + $amountperradar))
 								{
 									$finalcount += $Count;
+									if ($finalcount > 0)
+									{
+										$NewFleetArray .= $ID.",".floatToString($finalcount).';';
+									}
 								}
 								if(!empty($fleetArray[$ID]))
 								{
 									$finalcount += $fleetArray[$ID];
-								}
-								
-								if ($finalcount > 0)
-								{
-									$NewFleetArray .= $ID.",".floatToString($finalcount).';';
 								}
 								$FoundShipMess   	.= '<br>'.$LNG['tech'][$GoldShip].': '.pretty_number($Count);
 							}
@@ -390,9 +387,10 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 				{
 					$this->UpdateFleet('fleet_array', $NewFleetArray);
 				}				
+				$Message .= $FoundShipMess;
 				$this->UpdateFleet('fleet_array', $NewFleetArray);
 				$this->UpdateFleet('fleet_amount', array_sum($fleetArray));
-			break;
+				break;
 			case 4:
 			//j'ai modifié l'indentation qui est éclaté, c'était peut-être le soucis des missions sans message
 
@@ -710,11 +708,11 @@ HTML;
 				PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_mess_tower'], 3,
 					$LNG['sys_mess_attack_report'], $message, $this->_fleet['fleet_end_stay']);
 
-			break;
+				break;
 			case 5:
 				$this->KillFleet();
 				$Message	= $LNG['sys_expe_lost_fleet_'.mt_rand(1,4)];
-			break;
+				break;
 			case 6:
 				# http://owiki.de/Expedition#Ver.C3.A4nderte_Flugzeit
 				$chance	= mt_rand(0, 100);
@@ -753,7 +751,7 @@ HTML;
 					$this->UpdateFleet('fleet_end_time', $endTime);
 					$Message = $LNG['sys_expe_time_fast_'.mt_rand(1,3)];
 				}
-			break;
+				break;
 		}
 
 		PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_mess_tower'], 15,
