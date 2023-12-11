@@ -344,6 +344,11 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
             	$amountperradar = $GoldShipFound;
             	$remainingFleetPoints = $fleetPoints;
 				$Found = 0;
+				foreach($fleetArray as $ID => $Count)
+				{
+			
+					$NewFleetArray  	.= $ID.",".floatToString($Count).';';
+				}	
 				while($amountperradar >= 0)
 				{
 					$GoldShip = $GoldShipBase + $amountperradar;
@@ -362,18 +367,14 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 								$finalcount = 0;
 								if($ID == ($GoldShipBase + $amountperradar))
 								{
-									$finalcount += $Count;
+									$finalcount = $Count;
 									if ($finalcount > 0)
 									{
 										$NewFleetArray .= $ID.",".floatToString($finalcount).';';
-										$FoundShipMess   	.= '<br>'.$LNG['tech'][$GoldShip].': '.pretty_number($Count);
+								        $FoundShipMess   	.= '<br>'.$LNG['tech'][$GoldShip].': '.pretty_number($Count);
+
 									}
 								}
-								if(!empty($fleetArray[$ID]))
-								{
-									$finalcount += $fleetArray[$ID];
-								}
-
 							}
 							
 						}
