@@ -366,13 +366,14 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 									if ($finalcount > 0)
 									{
 										$NewFleetArray .= $ID.",".floatToString($finalcount).';';
+										$FoundShipMess   	.= '<br>'.$LNG['tech'][$GoldShip].': '.pretty_number($Count);
 									}
 								}
 								if(!empty($fleetArray[$ID]))
 								{
 									$finalcount += $fleetArray[$ID];
 								}
-								$FoundShipMess   	.= '<br>'.$LNG['tech'][$GoldShip].': '.pretty_number($Count);
+
 							}
 							
 						}
