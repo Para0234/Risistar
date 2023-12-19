@@ -342,7 +342,19 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 				}
 				
             	$amountperradar = $GoldShipFound;
-            	$remainingFleetPoints = $fleetPoints;
+				$eventSize = mt_rand(0,100);
+				if($eventSize > 10)
+				{
+					$remainingFleetPoints = ($fleetPoints / 10);
+				}
+				elseif(eventSize > 0)
+				{
+					$remainingFleetPoints = ($fleetPoints / 3);
+				}
+				else
+				{
+					$remainingFleetPoints = $fleetPoints;
+				}
 				$Found = 0;
 				foreach($fleetArray as $ID => $Count)
 				{
