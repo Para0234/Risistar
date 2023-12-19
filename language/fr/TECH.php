@@ -376,7 +376,7 @@ $LNG['shortDescription'] = array(
 140 => 'Une technologie de détection qui permet de détecter d\'antiques bases. Les meilleurs explorateurs peuvent exploiter cette technologie pour trouver d\'incroyables bijoux de technologie oubliés. <br><Plus le niveau est élevé, meilleurs sont les vaisseaux trouvés en exploration>',
 141 => 'Un système de hangar embarqués et de maintenance intégré peut permettre à un vaisseau de transporter des appareils de petite taille incapables d\'assurer un déplacement interplanétaire de manière indépendante.',
 142 => 'Un radar capable de détecter la présence d\'anomalies via les fluctuations quanto-bullshittiques. Il permet de détecter d\'anciennes forteresses pendant les explorations.',
-143 => 'Vous optimisez vos laboratoires pour être plus efficaces. <br>Prix des recherches diminuées de 3% (maximum 60%)<br>-Production d\'énergie +5%',
+143 => 'Vous optimisez vos laboratoires pour être plus efficaces. <br>Prix des recherches diminuées de 3% (maximum 60%)<br>',
 144 => 'Vos compétences de marchand vous ont permis de trouver un moyen de produire des marchandises pour encore moins cher.<br><br>-Vous produisez vaisseaux et défenses 3% plus vite (Maximum 60%)',
 199 => 'En lançant une charge concentrée de particules Gravitons, un champ de pesanteur artificielle peut être construit, où les vaisseaux et même les lunes peuvent être anéantis.',
 
@@ -568,7 +568,7 @@ $LNG['longDescription'] = array(
 140 => 'Une technologie de détection qui permet de détecter d\'antiques bases. Les meilleurs explorateurs peuvent exploiter cette technologie pour trouver d\'incroyables bijoux de technologie oubliés. <br><Plus le niveau est élevé, meilleurs sont les vaisseaux trouvés en exploration>',
 141 => 'Un système de hangar embarqués et de maintenance intégré peut permettre à un vaisseau de transporter des appareils de petite taille incapables d\'assurer un déplacement interplanétaire de manière indépendante.',
 142 => 'Un radar capable de détecter la présence d\'anomalies via les fluctuations quanto-bullshittiques. Il permet de détecter d\'anciennes forteresses pendant les explorations.',
-143 => 'Vous optimisez vos laboratoires pour être plus efficaces. <br>Prix des recherches diminuées de 3% (maximum 60%)<br>-Production d\'énergie +5%',
+143 => 'Vous optimisez vos laboratoires pour être plus efficaces. <br>Prix des recherches diminuées de 3% (maximum 60%)',
 144 => 'Vos compétences de marchand vous ont permis de trouver un moyen de produire des marchandises pour encore moins cher.<br><br>-Vous produisez vaisseaux et défenses 3% plus vite (Maximum 60%)',
 199 => 'En lançant une charge concentrée de particules Gravitons, un champ de pesanteur artificielle peut être construit, où les vaisseaux et même les lunes peuvent être anéantis.',
 
