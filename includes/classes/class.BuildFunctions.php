@@ -90,7 +90,6 @@ class BuildFunctions
             }
 
             $price[$resType]	= $ressourceAmount;
-            $priceReduction	= min(60, (3 * $USER['profitincrease']));
             if(isset($pricelist[$Element]['factor']) && $pricelist[$Element]['factor'] != 0 && $pricelist[$Element]['factor'] != 1) {
                 $price[$resType]	*= pow($pricelist[$Element]['factor'], $elementLevel);
             }
@@ -101,6 +100,15 @@ class BuildFunctions
             }
 			
             if(in_array($Element, $reslist['fleet']) || in_array($Element, $reslist['defense']) || in_array($Element, $reslist['missile'])) {
+				$priceReduction	= min(60, (3 * $USER['profitincrease']));
+                $price[$resType]	-= (($price[$resType] / 100) * $priceReduction);
+            }
+            if(in_array($Element, $reslist['build'])) {
+				$priceReduction	= min(60, (3 * $USER['potato_crown']));
+                $price[$resType]	-= (($price[$resType] / 100) * $priceReduction);
+            }
+            if(in_array($Element, $reslist['tech'])) {
+				$priceReduction	= min(60, (3 * $USER['larrysluckycoin']));
                 $price[$resType]	-= (($price[$resType] / 100) * $priceReduction);
             }
 
