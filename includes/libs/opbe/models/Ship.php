@@ -27,9 +27,24 @@
  */
 class Ship extends ShipType
 {
-    public function getRepairProb()
+    public function getRepairProb($idPlayer = 0)
     {
-        return SHIP_REPAIR_PROB;
+		if($idplayer != 0)
+		{
+			$db				= Database::get();
+
+			$sql			= 'SELECT * FROM %%USERS%% WHERE id = :userId;';
+			$senderUser		= $db->selectSingle($sql, array(
+				':userId'	=> $idPlayer
+			));
+			$repair = min(20,$senderUser['escalation']);
+		}
+		else
+		{
+			$repair = 0;
+		}
+			$repairchance = SHIP_REPAIR_PROB + ($repair * 0.03);
+        return $repairchance;
     }
 }
 
