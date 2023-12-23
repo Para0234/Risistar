@@ -29,7 +29,7 @@ class Ship extends ShipType
 {
     public function getRepairProb($idPlayer = 0)
     {
-		if($idplayer != 0)
+		if($idPlayer != 0)
 		{
 			$db				= Database::get();
 
