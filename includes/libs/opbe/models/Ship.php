@@ -38,6 +38,10 @@ class Ship extends ShipType
 				':userId'	=> $idPlayer
 			));
 			$repair = min(20,$senderUser['escalation']);
+          	if($senderUser['npc_class_pirate'] == 1)
+            {
+            	return 1;
+            }
 		}
 		else
 		{

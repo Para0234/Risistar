@@ -443,8 +443,15 @@ class FleetFunctions
 						$availableMissions[]	= 5;}
 						
 				if(isModuleAvailable(MODULE_MISSION_STATION)) {
-//				if(1&1) {
-					$availableMissions[]	= 4;}
+					$sql = 'SELECT * FROM %%USERS%% WHERE id = :userId;';
+
+					$senderData	= Database::get()->selectSingle($sql, array(
+						':userId'	=> $USER['id']
+					));
+					if($senderData['class_merchant'] == 1 || $YourPlanet) {
+						$availableMissions[]	= 4;
+						}
+					}
 					
 				if (!empty($MissionInfo['IsAKS']) && !$YourPlanet && isModuleAvailable(MODULE_MISSION_ATTACK) && isModuleAvailable(MODULE_MISSION_ACS))
 					$availableMissions[]	= 2;
@@ -469,6 +476,40 @@ class FleetFunctions
 			return false;
 		}
 		$Count = 0;
+		$sql	= 'SELECT * FROM %%USERS%%
+		WHERE id = :id;';
+		$attacker	= Database::get()->selectSingle($sql, array(
+			':id'	=> $USER['id'],
+		));
+		$defender	= Database::get()->selectSingle($sql, array(
+			':id'	=> $Target,
+		));
+		$sql = 'SELECT COUNT(*) as state
+		FROM %%DIPLO%%
+		WHERE owner_1 = :firstally
+		AND owner_2 = :secondally
+		AND level = :war
+		AND accept = :accept;';
+		$optionone	= Database::get()->selectSingle($sql, array(
+			':firstally'		=> $attacker['ally_id'],
+			':secondally'		=> $defender['ally_id'],
+			':war'		=> 5,
+			':accept'	=> 1,
+		), 'state');
+		$optiontwo	= Database::get()->selectSingle($sql, array(
+			':firstally'		=> $defender['ally_id'],
+			':secondally'		=> $attacker['ally_id'],
+			':war'		=> 5,
+			':accept'	=> 1,
+		), 'state');
+		if($optionone != 0)
+		{
+			return false;
+		}
+		if($optiontwo != 0)
+		{
+			return false;
+		}
 		$sql	= 'SELECT COUNT(*) as state
 		FROM %%LOG_FLEETS%%
 		WHERE fleet_owner = :fleetOwner

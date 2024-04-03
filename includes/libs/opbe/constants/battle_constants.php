@@ -37,7 +37,7 @@ define('PROB_TO_REAL_MAGIC', 2); //value used to adapt probability theory to cri
 define('EPSILON', 1.2e-6);
 
 /*** Battle constants, default as Ogame ***/
-define('ROUNDS', 100); //how many rounds a battle have, no limits.
+define('ROUNDS', 6); //how many rounds a battle have, no limits.
 define('SHIELDS_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the shield, in percentage from 0 to 1.
 define('ARMOUR_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the armour, in percentage from 0 to 1.
 define('WEAPONS_TECH_INCREMENT_FACTOR', 0.1); //how much a level increase the weapon, in percentage from 0 to 1.

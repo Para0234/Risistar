@@ -309,6 +309,7 @@ $LNG['tech'] = array(
 654 => 'Classe : Mineur',
 655 => 'Classe : Célestin',
 656 => 'Classe : Marchand',
+657 => 'Classe : Pirate',
 
 700 => 'Premium Optimisations',
 701 => 'Optimisation des Armes',
@@ -508,6 +509,7 @@ $LNG['shortDescription'] = array(
 654 => 'Dans une autre vie, vous étiez le meilleur fermier de l\'URSS. Après être mort de faim et que votre cadavre soit exécuté pour trahison, vous avez pu conserver vos compétences en productivité. Maintenant, à la tête de votre empire, vous êtes en mesure d\'enfin mettre à profit vos compétences. <br><br>-Vous avez accès à la recherche "Couronne de patates", qui augmente votre productivité et diminue le prix des bâtiments.',
 655 => 'Vous restez sur votre planète comme vous restez dans votre chambre. Cependant, cela vous donne des capacités... pour le moins étranges.<br><br>-Impossible de coloniser. Vous pouvez créer des vaisseaux de colonisation, mais toute tentative de colonisation échouera.<br>-Vous avez accès à Gilbert.<br>-Vous avez accès à un second terraformateur.',
 656 => 'Vous avez un sens aïgu de la finance. La finance est votre amie, et vous avez un excellent flair pour repérer les bonnes affaires.<br><br>-Vous avez accès à la recherche "Augmentation des marges", qui diminue le prix de construction et le temps de construction des vaisseaux et des défenses.<br>Vous pouvez déployer des flottes sur des planètes qui ne sont pas les vôtres.<br>Vous avez accès à certains vaisseaux exclusifs',
+657 => 'Ceci est un pirate.',
 
 701 => 'Augmente la valeur d\'attaque des vaisseaux et des moyens de défense de %s%%. Le bonus n\'est que temporaire.',
 702 => 'Augmente la valeur des boucliers des vaisseaux et des moyens de défense de %s%%. Le bonus n\'est que temporaire.',
@@ -600,7 +602,7 @@ $LNG['longDescription'] = array(
 227 => 'Classe : Orbital <br>Une station spatiale de modèle civile réaménagée pour être équipée d\'armes, elle permet d\'offrir une défense à moindre coût. Cependant, cette station n\'est pas équipée de boucliers..',
 228 => 'Classe : Orbital <br>Equipée d\'armement de petit et moyen calibre, cette station est une station basée sur un modèle civil retravaillée pour le combat. Mieux protégée que son précécesseur, cette station est équipée d\'un armement mixte, y compris une plateforme conçue pour s\'attaquer aux chasseurs ennemis.',
 229 => 'Classe : Orbital <br>C\'est à partir de ce modèle de station que les Stations Spatiales militaires ont reçu des plans totalement inédits. Conçue uniquement pour la guerre, et ne se basant sur aucun modèle passé, cette station est beaucoup plus efficace que tous ses prédecesseurs.',
-230 => 'Classe : Orbital <br>La meilleure station dite "classique", le modèle Protector est une station extrêmement efficace, capable de faire face à un Thanatos à armes égales. Une station défensive qui sera par conséquent crainte par tous les attaquants voulant piller une planète sans défense.',
+230 => 'Classe : Orbital <br>Une station défensive d\'une énorme puissance. Conçue pour pouvoir essuyer la plupart des attaques avec facilité. Une seule de ces stations est capable de garantir la protection d\'une planète sans difficulté. De plus, la nature statique de la station la rend parfaite pour coordonner une flotte de défense planétaire, et est par conséquent équipée de large hangars capables de supporter un nombre plus que conséquent d\'appareils.<br><br>Capacité de transport : <br>Intercépteur avancé : 250<br>Torpilleur Avancé : 100<br>Chasseur Omnirôle : 25',
 231 => 'Classe : Orbital <br>Ce chantier orbital est le seul moyen qu\'ont trouvé vos ingénieurs pour vous permettre de construire des vaisseaux de type "Vaisseau capital" (les gros machins qui font mal). Cependant, sa position en fait une cible facile pour toute personne souhaitant sa destruction. Vos ingénieurs l\'ont donc équipé d\'un bouclier assez puissant, et de quelques systèmes d\'autodéfense, qui, bien que moins efficaces que vos meilleurs appareils, pourront se défendre face à une flotte de petite taille.',
 232 => 'Classe : Auxiliaire <br>Une copie revalorisée et grandement améliorée d\'un appareil d\'origine inconnue. Il sert de vaisseau de commandement d\'expéditions. Son équipement est centré autour des explorations, et il peut guider toute une flotte pour explorer des secteurs entiers sans la moindre difficulté. <i>On devine sur le côté une inscription: A Clea, qui a quitté cette vie trop tôt.</i><br><br>Divise le temps d\'exploration par 2 quand il est dans la flotte.',
 233 => 'Classe : Capital <br>L\'apogée de la destruction. L\'Etoile de la Mort est une station de combat capable d\'abattre des flottes entières, et équipée d\'une version améliorée du destructeur de lune. Lorsque l\'ombre de l\'Etoile de la Mort survole une planète, seule la terreur existe dans le coeur de ses habitants.',
@@ -700,6 +702,7 @@ $LNG['longDescription'] = array(
 654 => 'Dans une autre vie, vous étiez le meilleur fermier de l\'URSS. Après être mort de faim et que votre cadavre soit exécuté pour trahison, vous avez pu conserver vos compétences en productivité. Maintenant, à la tête de votre empire, vous êtes en mesure d\'enfin mettre à profit vos compétences. <br><br>-Vous avez accès à la recherche "Couronne de patates", qui augmente votre productivité et diminue le prix des bâtiments.',
 655 => 'Vous restez sur votre planète comme vous restez dans votre chambre. Cependant, cela vous donne des capacités... pour le moins étranges.<br><br>-Impossible de coloniser. Vous pouvez créer des vaisseaux de colonisation, mais toute tentative de colonisation échouera.<br>-Vous avez accès à Gilbert.<br>-Vous avez accès à un second terraformateur.',
 656 => 'Vous avez un sens aïgu de la finance. La finance est votre amie, et vous avez un excellent flair pour repérer les bonnes affaires.<br><br>-Vous avez accès à la recherche "Augmentation des marges", qui diminue le prix de construction et le temps de construction des vaisseaux et des défenses.<br>Vous pouvez déployer des flottes sur des planètes qui ne sont pas les vôtres.<br>Vous avez accès à certains vaisseaux exclusifs',
+657 => 'Ceci est un Pirate.',
 
 701 => 'Augmente la valeur d\'attaque des vaisseaux et défenses.',
 702 => 'Augmente la valeur des vaisseaux et des boucliers et des défenses',

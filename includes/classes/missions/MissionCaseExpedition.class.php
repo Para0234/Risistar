@@ -347,7 +347,7 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 				{
 					$remainingFleetPoints = ($fleetPoints / 10);
 				}
-				elseif(eventSize > 0)
+				elseif($eventSize > 0)
 				{
 					$remainingFleetPoints = ($fleetPoints / 3);
 				}
