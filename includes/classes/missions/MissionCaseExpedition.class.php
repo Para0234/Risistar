@@ -347,7 +347,7 @@ class MissionCaseExpedition extends MissionFunctions implements Mission
 				{
 					$remainingFleetPoints = ($fleetPoints / 10);
 				}
-				elseif(eventSize > 0)
+				elseif($eventSize > 0)
 				{
 					$remainingFleetPoints = ($fleetPoints / 3);
 				}
@@ -548,6 +548,11 @@ HTML;
 								}
 							}
 						}
+						//and then we hijack this function itself to remove all the containers too.
+						if ($singleship['shipclass'] == 1001)
+						{
+							$fleetAttack[$fleetID]['unit'][$CarrierShip] = 0;
+						}
 					}
 				}
 				$fleetDefend = array();
@@ -598,6 +603,11 @@ HTML;
 								}
 							}
 						}
+						//and then we hijack this function itself to remove all the containers too.
+						if ($singleship['shipclass'] == 1001)
+						{
+							$fleetDefend[0]['unit'][$CarrierShip] = 0;
+						}
 					}
 				}
 				require_once 'includes/classes/missions/functions/calculateAttack.php';
@@ -615,7 +625,7 @@ HTML;
 						':shipID'	=> $element
 					));
 					// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
-					if ($singleship['shipclass'] != 1000)
+					if ($singleship['shipclass'] < 1000)
 					{
 						$totalCount += $amount;
 						$fleetArray .= $element.','.$amount.';';

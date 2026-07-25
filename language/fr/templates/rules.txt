@@ -6,6 +6,7 @@
 	<li>
 		<h1>2. Règle de Grogir</h1>
 		<p>L'usage de tout logiciel tiers est totalement Interdit. Y compris les macros sur le navigateur ou toute autre méthode d'automatisation. Et juste au cas où certains veulent faire les malins, l'usage d'un navigateur est autorisé.</p>
+		<p>La seule exception à cette règle est Onchbot, qui est un "joueur" entièrement joué par une IA.</p>
 	</li>
 	<li>
 				<h1>3. Bashing</h1>

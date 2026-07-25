@@ -42,7 +42,7 @@ $LNG['questions'][1][4]['title']	= 'Etape 4 : Les bases d\'un empire prospère, 
 $LNG['questions'][1][4]['body']		= <<<BODY
 <p>Cette partie du tutoriel est dédié à la défense de vos planètes, mais aussi les premiers déploiment avec votre propre flotte de vaisseaux.</p>
 <h3>Recherche et Galaxie</h3>
-<p>Ces outils sont utilisé pour trouver d'autres joueurs. Vous trouverez des informations détaillées sur d'autres planètes, et vous pourrez également envoyer un peu de votre flotte directement à partir de la galaxie. En outre, vous pouvez récupérer des informations sur les planètes et les lunes depuis la galaxie, contacter d'autres joueurs, ou encore espionner une autre planète. pour le dernier, vous aurez besoin de sondes d'espionnage.
+<p>Ces outils sont utilisé pour trouver d'autres joueurs. Vous trouverez des informations détaillées sur d'autres planètes, et vous pourrez également envoyer un peu de votre flotte directement à partir de la galaxie. Mais faites attention! Voir différents systèmes solaires coûte 10 deutérium!. En outre, vous pouvez récupérer des informations sur les planètes et les lunes depuis la galaxie, contacter d'autres joueurs, ou encore espionner une autre planète. pour le dernier, vous aurez besoin de sondes d'espionnage.
 <div class="btn-group">
   <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>Voulez-vous vous diriger vers</a>
   <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>

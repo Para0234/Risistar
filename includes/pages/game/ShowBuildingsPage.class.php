@@ -122,13 +122,53 @@ class ShowBuildingsPage extends AbstractGamePage
 	{
 		global $PLANET, $USER, $resource, $reslist, $pricelist;
 		
-		if(!in_array($Element, $reslist['allow'][$PLANET['planet_type']])
-			|| !BuildFunctions::isTechnologieAccessible($USER, $PLANET, $Element) 
-			|| ($Element == 31 && $USER["b_tech_planet"] != 0) 
-			|| (($Element == 15 || $Element == 21) && !empty($PLANET['b_hangar_id']))
-			|| (!$AddMode && $PLANET[$resource[$Element]] == 0)
-		)
-			return;
+		if($USER['class_ability_lunar'] == 0)
+		{	
+			if(!in_array($Element, $reslist['allow'][$PLANET['planet_type']])
+				|| !BuildFunctions::isTechnologieAccessible($USER, $PLANET, $Element) 
+				|| ($Element == 31 && $USER["b_tech_planet"] != 0) 
+				|| (($Element == 15 || $Element == 21) && !empty($PLANET['b_hangar_id']))
+				|| (!$AddMode && $PLANET[$resource[$Element]] == 0)
+			) 
+			{
+				return;
+			}
+		}
+		else
+		{
+			if($PLANET['planet_type'] == 1)
+			{
+				if(!in_array($Element, $reslist['allow'][$PLANET['planet_type']])
+					|| !BuildFunctions::isTechnologieAccessible($USER, $PLANET, $Element) 
+					|| ($Element == 31 && $USER["b_tech_planet"] != 0) 
+					|| (($Element == 15 || $Element == 21) && !empty($PLANET['b_hangar_id']))
+					|| (!$AddMode && $PLANET[$resource[$Element]] == 0)
+				) 
+				{
+					return;
+				}
+			}
+			else
+			{
+				if(!in_array($Element, $reslist['allow'][$PLANET['planet_type']])
+					|| !BuildFunctions::isTechnologieAccessible($USER, $PLANET, $Element) 
+					|| ($Element == 31 && $USER["b_tech_planet"] != 0) 
+					|| (($Element == 15 || $Element == 21) && !empty($PLANET['b_hangar_id']))
+					|| (!$AddMode && $PLANET[$resource[$Element]] == 0)
+				) 
+				{
+					if(!in_array($Element, $reslist['allow'][1])
+						|| !BuildFunctions::isTechnologieAccessible($USER, $PLANET, $Element) 
+						|| ($Element == 31 && $USER["b_tech_planet"] != 0) 
+						|| (($Element == 15 || $Element == 21) && !empty($PLANET['b_hangar_id']))
+						|| (!$AddMode && $PLANET[$resource[$Element]] == 0)
+					)
+					{
+						return;
+					}
+				}
+			}
+		}
 		
 		$CurrentQueue  		= unserialize($PLANET['b_building_id']);
 
@@ -280,8 +320,21 @@ class ShowBuildingsPage extends AbstractGamePage
 		$BuildTemp          = $PLANET['temp_max'];
 
         $BuildInfoList      = array();
-
-		$Elements			= $reslist['allow'][$PLANET['planet_type']];
+		if($USER['class_ability_lunar'] == 0)
+		{	
+			$Elements			= $reslist['allow'][$PLANET['planet_type']];
+		}
+		else
+		{
+			if($PLANET['planet_type'] == 1)
+			{
+				$Elements			= $reslist['allow'][$PLANET['planet_type']];
+			}
+			else
+			{
+				$Elements			= array_merge($reslist['allow'][1], $reslist['allow'][3]);
+			}
+		}
 		
 		foreach($Elements as $Element)
 		{

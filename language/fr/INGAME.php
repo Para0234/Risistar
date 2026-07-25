@@ -217,6 +217,9 @@ $LNG['gl_to']								= 'à';
 $LNG['px_no_deuterium']						= 'Vous n\'avez pas assez de deutérium !';
 $LNG['px_scan_position']					= 'Scanner une position';
 $LNG['px_fleet_movement']					= 'Mouvement de flotte actuel';
+$LNG['px_remaining_time']					= 'Délai avant arrivée';
+$LNG['px_fleet_arrival']					= 'Heure d\'arrivée';
+$LNG['px_fleet_message']					= 'Informations';
 $LNG['px_no_fleet']							= 'Pas de mouvement de flotte.';
 $LNG['px_out_of_range']						= 'Hors de portée';
 

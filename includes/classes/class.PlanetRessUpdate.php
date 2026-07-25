@@ -135,14 +135,21 @@ class ResourceUpdate
 	
 	private function ExecCalc()
 	{
-		if($this->PLANET['planet_type'] == 3)
-			return;
+//		if($this->PLANET['planet_type'] == 3)
+//			return;
 			
 		$MaxMetalStorage		= $this->PLANET['metal_max']     * $this->config->max_overflow;
 		$MaxCristalStorage		= $this->PLANET['crystal_max']   * $this->config->max_overflow;
 		$MaxDeuteriumStorage	= $this->PLANET['deuterium_max'] * $this->config->max_overflow;
 		
-		$MetalTheoretical		= $this->ProductionTime * (($this->config->metal_basic_income * $this->config->resource_multiplier) + $this->PLANET['metal_perhour']) / 3600;
+		if($this->PLANET['planet_type'] != 3)
+		{
+			$MetalTheoretical		= $this->ProductionTime * (($this->config->metal_basic_income * $this->config->resource_multiplier) + $this->PLANET['metal_perhour']) / 3600;
+		}
+		if($this->PLANET['planet_type'] == 3)
+		{
+			$MetalTheoretical		= $this->ProductionTime * ($this->PLANET['metal_perhour']) / 3600;
+		}
 		
 		if($MetalTheoretical < 0)
 		{
@@ -152,8 +159,15 @@ class ResourceUpdate
 		{
 			$this->PLANET['metal']      = min($this->PLANET['metal'] + $MetalTheoretical, $MaxMetalStorage);
 		}
-		
-		$CristalTheoretical	= $this->ProductionTime * (($this->config->crystal_basic_income * $this->config->resource_multiplier) + $this->PLANET['crystal_perhour']) / 3600;
+				
+		if($this->PLANET['planet_type'] != 3)
+		{
+			$CristalTheoretical	= $this->ProductionTime * (($this->config->crystal_basic_income * $this->config->resource_multiplier) + $this->PLANET['crystal_perhour']) / 3600;
+		}
+		if($this->PLANET['planet_type'] == 3)
+		{
+			$CristalTheoretical	= $this->ProductionTime * ($this->PLANET['crystal_perhour']) / 3600;
+		}
 		if ($CristalTheoretical < 0)
 		{
 			$this->PLANET['crystal']      = max($this->PLANET['crystal'] + $CristalTheoretical, 0);
@@ -163,7 +177,14 @@ class ResourceUpdate
 			$this->PLANET['crystal']      = min($this->PLANET['crystal'] + $CristalTheoretical, $MaxCristalStorage);
 		}
 		
-		$DeuteriumTheoretical	= $this->ProductionTime * (($this->config->deuterium_basic_income * $this->config->resource_multiplier) + $this->PLANET['deuterium_perhour']) / 3600;
+		if($this->PLANET['planet_type'] != 3)
+		{
+			$DeuteriumTheoretical	= $this->ProductionTime * (($this->config->deuterium_basic_income * $this->config->resource_multiplier) + $this->PLANET['deuterium_perhour']) / 3600;
+		}
+		if($this->PLANET['planet_type'] == 3)
+		{
+			$DeuteriumTheoretical	= $this->ProductionTime * (($this->config->deuterium_basic_income * $this->config->resource_multiplier) + $this->PLANET['deuterium_perhour']) / 3600;
+		}
 		if ($DeuteriumTheoretical < 0)
 		{
 			$this->PLANET['deuterium']    = max($this->PLANET['deuterium'] + $DeuteriumTheoretical, 0);

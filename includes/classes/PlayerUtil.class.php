@@ -111,7 +111,8 @@ class PlayerUtil
 			}
 			
 			do {
-				$position = mt_rand(round($config->max_planets * 0.4), round($config->max_planets * 0.6));
+//				$position = mt_rand(round($config->max_planets * 0.4), round($config->max_planets * 0.6));
+				$position = $config->max_planets * 0.5;
 				if ($planet < 3) {
 					$planet += 1;
 				} else {

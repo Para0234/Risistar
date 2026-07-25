@@ -425,15 +425,18 @@ class ShipType extends Type
 
         if ($this->currentLife < 0)
         {
-            throw new Exception('Negative currentLife!');
+            //throw new Exception('Negative currentLife!');
+          	$this->currentLife = 0;
         }
         if ($this->currentShield < 0)
         {
-            throw new Exception('Negative currentShield!');
+            //throw new Exception('Negative currentShield!');
+          	$this->currentShield = 0;
         }
         if ($this->lastShipHit < 0)
         {
-            throw new Exception('Negative lastShipHit!');
+            //throw new Exception('Negative lastShipHit!');
+          	$this->lastShipHit = 0;
         }
         return $ps; //for web
     }

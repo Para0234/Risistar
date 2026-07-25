@@ -29,6 +29,19 @@ class Defense extends ShipType
 {
     public function getRepairProb($idPlayer = 0)
     {
+      	if(($idPlayer != 0) && ($idPlayer < 1000))
+		{
+			$db				= Database::get();
+
+			$sql			= 'SELECT * FROM %%USERS%% WHERE id = :userId;';
+			$senderUser		= $db->selectSingle($sql, array(
+				':userId'	=> $idPlayer
+			));
+          	if($senderUser['npc_class_pirate'] == 1)
+            {
+            	return 1;
+            }
+		}
         return DEFENSE_REPAIR_PROB;
     }
 }

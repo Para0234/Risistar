@@ -249,8 +249,17 @@ class BattleReport
                 {
                     foreach ($values as $idShipType => $lost)
                     {
-                        $metal += $lost[0];
-                        $crystal += $lost[1];      
+						$db				= Database::get();
+
+						$sql			= 'SELECT * FROM %%VARS%% WHERE elementID = :idShipType;';
+						$destroyedShip		= $db->selectSingle($sql, array(
+							':idShipType'	=> $idShipType
+						));
+						if($destroyedShip['nodebris'] == 0)
+						{
+							$metal += $lost[0];
+							$crystal += $lost[1];
+						}							
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
                     $metal *= $factor;
@@ -276,13 +285,15 @@ class BattleReport
                         $crystal += $lost[1];      
                     }
                     $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                    $metal *= 0.30;//$factor;
-                    $crystal *= 0.30;//$factor;*/
+                    $metal *= 0.50;//$factor;
+                    //$metal *= $factor;
+                    //$crystal *= $factor;
+                    $crystal *= 0.50;//$factor;*/
 				  foreach ($values as $idShipType => $lost)
                     {
                         $factor = constant(strtoupper($role).'_DEBRIS_FACTOR');
-                        $metal += $lost[0]*0.3;
-                        $crystal += $lost[1]*0.3;
+                        $metal += $lost[0]*0.5;
+                        $crystal += $lost[1]*0.5;
                     }
                 }
             }
