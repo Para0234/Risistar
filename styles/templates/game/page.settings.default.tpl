@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<td width="50%">{$LNG.op_username}</td>
-			<td width="50%" style="height:22px;">{if $changeNickTime < 0}<input name="username" size="20" value="{$username}" type="text">{else}{$username}{/if}</td>
+			<td width="50%" style="height:22px;">{if $changeNickTime < 0}<input name="username" size="20" type="text" autocomplete="off">{else}{$username}{/if}</td>
 		</tr>
 		<tr>
 			<td>{$LNG.op_old_pass}</td>

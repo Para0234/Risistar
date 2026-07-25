@@ -74,3 +74,9 @@ composer.phar
 
 /includes/backups/*
 !/includes/backups/.gitkeep
+*.bu
+*.bu2
+*.bu3
+*.bu4
+*.bu5
+*.bu6

@@ -155,6 +155,11 @@ HTML;
 							}
 						}
 					}
+					//and then we hijack this function itself to remove all the containers too.
+					if ($singleship['shipclass'] == 1001)
+					{
+						$fleetAttack[$fleetID]['unit'][$CarrierShip] = 0;
+					}
 				}
 			}
 			
@@ -214,6 +219,11 @@ HTML;
 							}
 						}
 					}
+					//and then we hijack this function itself to remove all the containers too.
+					if ($singleship['shipclass'] == 1001)
+					{
+						$fleetDefend[$fleetID]['unit'][$CarrierShip] = 0;
+					}
 				}
 			}
 			
@@ -265,6 +275,11 @@ HTML;
 							$fleetDefend[0]['unit'][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $fleetDefend[0]['unit'][$CarrierShip]);
 						}
 					}
+					//and then we hijack this function itself to remove all the containers too.
+					if ($singleship['shipclass'] == 1001)
+					{
+						$fleetDefend[0]['unit'][$CarrierShip] = 0;
+					}
 				}
 			}
 		}
@@ -290,8 +305,8 @@ HTML;
 				$singleship	= $db->selectSingle($sql, array(
 					':shipID'	=> $elementID
 				));
-				// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
-				if ($singleship['shipclass'] != 1000)
+				// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored. Just in case, all containers are also removed.
+				if ($singleship['shipclass'] < 1000)
 				{
 					$totalCount += $amount;
 					$fleetArray .= $elementID.','.floatToString($amount).';';
@@ -361,8 +376,8 @@ HTML;
 					$singleship	= $db->selectSingle($sql, array(
 						':shipID'	=> $elementID
 					));
-					// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored.
-					if ($singleship['shipclass'] != 1000)
+					// A shipclass of 1000 means the ship is a carried ship, not a standard ship. Therefore, all non-1000 ships are added to the array, all carried ships are ignored. Just in case, containers are also removed.
+					if ($singleship['shipclass'] < 1000)
 					{
 						$totalCount += $amount;
 						$fleetArray .= $elementID.','.floatToString($amount).';';
@@ -429,8 +444,8 @@ HTML;
 					$singleship	= $db->selectSingle($sql, array(
 						':shipID'	=> $elementID
 					));
-					//A shipclass of 1000 indicates a carried ship that needs to be discarded after battle
-					if ($singleship['shipclass'] == 1000)
+					//A shipclass of 1000 indicates a carried ship that needs to be discarded after battle. Just in case, shipclass 1001 (containers) are also discarded.
+					if ($singleship['shipclass'] >= 1000)
 					{
 						$params[':'.$resource[$elementID]]	= 0;
 					}

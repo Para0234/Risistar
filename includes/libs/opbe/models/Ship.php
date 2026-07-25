@@ -37,13 +37,17 @@ class Ship extends ShipType
 			$senderUser		= $db->selectSingle($sql, array(
 				':userId'	=> $idPlayer
 			));
-			$repair = min(20,$senderUser['escalation']);
+			$repair = min(5,$senderUser['class_ability_lucky']);
+          	if($senderUser['npc_class_pirate'] == 1)
+            {
+            	return 1;
+            }
 		}
 		else
 		{
 			$repair = 0;
 		}
-			$repairchance = SHIP_REPAIR_PROB + ($repair * 0.03);
+			$repairchance = SHIP_REPAIR_PROB + ($repair * 0.06);
         return $repairchance;
     }
 }

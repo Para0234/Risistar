@@ -103,6 +103,11 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 								}
 							}
 						}
+						//and then we hijack this function itself to remove all the containers too.
+						if ($singleship['shipclass'] == 1001)
+						{
+							$BattleSlot[0][$CarrierShip] = 0;
+						}
 					}
 				}
 				
@@ -173,6 +178,11 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 									$BattleSlot[1][$singleshipnumber] = ($singleshiparray[$singleshipnumber] * $BattleSlot[1][$CarrierShip]);
 								}
 							}
+						}
+						//and then we hijack this function itself to remove all the containers too.
+						if ($singleship['shipclass'] == 1001)
+						{
+							$BattleSlot[1][$CarrierShip] = 0;
 						}
 					}
 				}
