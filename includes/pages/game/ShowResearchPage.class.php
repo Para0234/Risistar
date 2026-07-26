@@ -55,6 +55,16 @@ class ShowResearchPage extends AbstractGamePage
 			return false;
 		}
 
+		// Security (defense in depth): the refund below is committed immediately
+		// (cross-planet via a direct PLANETS update) while the research queue is
+		// cleared in-memory and only persisted through the economy save. Refuse
+		// to process the cancel when the economy layer is inactive, otherwise the
+		// queue-clear is dropped and the refund can be replayed from another
+		// colony to duplicate resources. (Also avoids a null ecoObj fatal below.)
+		if(!isset($this->ecoObj)) {
+			return false;
+		}
+
 		$db = Database::get();
 
 		$elementId		= $USER['b_tech_id'];
