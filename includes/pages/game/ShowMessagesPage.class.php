@@ -210,7 +210,7 @@ class ShowMessagesPage extends AbstractGamePage
                     $this->redirectTo($redirectUrl);
                 }
 
-                $sql = 'UPDATE %%MESSAGES%% SET message_unread = 0 WHERE message_id IN ('.implode(',', array_keys($messageIDs)).') AND message_owner = :userID;';
+                $sql = 'UPDATE %%MESSAGES%% SET message_unread = 0 WHERE message_id IN ('.implode(',', array_map('intval', array_keys($messageIDs))).') AND message_owner = :userID;';
                 $db->update($sql, array(
                     ':userID'       => $USER['id'],
                 ));
@@ -259,13 +259,13 @@ class ShowMessagesPage extends AbstractGamePage
                 }
 
                 if(Config::get()->message_delete_behavior == 1) {
-                    $sql = 'UPDATE %%MESSAGES%% SET message_deleted = :timestamp WHERE message_id IN (' . implode(',', array_keys($messageIDs)) . ') AND message_owner = :userId;';
+                    $sql = 'UPDATE %%MESSAGES%% SET message_deleted = :timestamp WHERE message_id IN (' . implode(',', array_map('intval', array_keys($messageIDs))) . ') AND message_owner = :userId;';
                     $db->update($sql, array(
                         ':timestamp' => TIMESTAMP,
                         ':userId' => $USER['id'],
                     ));
                 } else {
-                    $sql = 'DELETE FROM %%MESSAGES%% WHERE message_id IN (' . implode(',', array_keys($messageIDs)) . ') AND message_owner = :userId;';
+                    $sql = 'DELETE FROM %%MESSAGES%% WHERE message_id IN (' . implode(',', array_map('intval', array_keys($messageIDs))) . ') AND message_owner = :userId;';
                     $db->delete($sql, array(
                         ':userId' => $USER['id'],
                     ));
@@ -285,13 +285,13 @@ class ShowMessagesPage extends AbstractGamePage
                 }
 
                 if(Config::get()->message_delete_behavior == 1) {
-                    $sql = 'UPDATE %%MESSAGES%% SET message_deleted = :timestamp WHERE message_id NOT IN (' . implode(',', array_keys($messageIDs)) . ') AND message_owner = :userId;';
+                    $sql = 'UPDATE %%MESSAGES%% SET message_deleted = :timestamp WHERE message_id NOT IN (' . implode(',', array_map('intval', array_keys($messageIDs))) . ') AND message_owner = :userId;';
                     $db->update($sql, array(
                         ':timestamp' => TIMESTAMP,
                         ':userId' => $USER['id'],
                     ));
                 } else {
-                    $sql = 'DELETE FROM %%MESSAGES%% WHERE message_id NOT IN ('.implode(',', array_keys($messageIDs)).') AND message_owner = :userId;';
+                    $sql = 'DELETE FROM %%MESSAGES%% WHERE message_id NOT IN ('.implode(',', array_map('intval', array_keys($messageIDs))).') AND message_owner = :userId;';
                     $db->delete($sql, array(
                         ':userId'       => $USER['id'],
                     ));
