@@ -409,6 +409,15 @@ class ShowFleetStep3Page extends AbstractGamePage
 			)));
 		}
 		
+		// Security (defense in depth): never commit a fleet dispatch while the
+		// economy persistence layer is inactive. The cargo deduction below is
+		// applied in-memory and persisted via the economy save; without it the
+		// fleet (with cargo) would still be written to the DB while the origin
+		// planet keeps its resources - duplicating them.
+		if(!isset($this->ecoObj)) {
+			$this->redirectTo('game.php?page=fleetTable');
+		}
+
 		$PLANET[$resource[901]]	-= $fleetResource[901];
 		$PLANET[$resource[902]]	-= $fleetResource[902];
 		$PLANET[$resource[903]]	-= $fleetResource[903] + $consumption;
