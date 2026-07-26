@@ -24,7 +24,8 @@ function ShowCreatorPage()
 
 	$template	= new template();
 
-	switch ($_GET['mode'])
+	$mode = HTTP::_GP('mode', '');
+	switch ($mode)
 	{
 		case 'user':
 			$LNG->includeData(array('PUBLIC'));

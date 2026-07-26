@@ -21,11 +21,12 @@ function ShowSearchPage()
 {
 	global $LNG, $USER;
 	
-	if ($_GET['delete'] == 'user') {
-        PlayerUtil::deletePlayer((int) $_GET['user']);
+	$deleteMode = HTTP::_GP('delete', '');
+	if ($deleteMode === 'user') {
+        PlayerUtil::deletePlayer((int) HTTP::_GP('user', 0));
         message($LNG['se_delete_succes_p'], '?page=search&search=users&minimize=on', 2);
-	} elseif ($_GET['delete'] == 'planet'){
-		PlayerUtil::deletePlanet((int) $_GET['planet']);
+	} elseif ($deleteMode === 'planet'){
+		PlayerUtil::deletePlanet((int) HTTP::_GP('planet', 0));
         message($LNG['se_delete_succes_p'], '?page=search&search=planet&minimize=on', 2);
     }
 	
@@ -331,11 +332,11 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 	
 		$UrlForPage	= "?page=search
 						&search=".$SearchFile."
-						&search_in=".$_GET['search_in']."
-						&fuki=".$_GET['fuki']."
-						&key_user=".$_GET['key_user']."
-						&key_order=".$_GET['key_order']."
-						&key_acc=".$_GET['key_acc']."
+						&search_in=".$SearchFor."
+						&fuki=".$SearchMethod."
+						&key_user=".$SearchKey."
+						&key_order=".$Order."
+						&key_acc=".$OrderBY."
 						&limit=".$Limit;
 						 
 		if($NumberOfPages > 1)
@@ -397,7 +398,7 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 		{
 			$Search['LIST']	 .= "<tr>";
 			if ($Table == "users"){				
-				$WhileResult[3] = $_GET['search'] == "online" ? pretty_time( TIMESTAMP - $WhileResult[3] ) : _date($LNG['php_tdformat'], $WhileResult[3] , $USER['timezone']);
+				$WhileResult[3] = (HTTP::_GP('search', '') == "online") ? pretty_time( TIMESTAMP - $WhileResult[3] ) : _date($LNG['php_tdformat'], $WhileResult[3] , $USER['timezone']);
 				$WhileResult[4]	= _date($LNG['php_tdformat'], $WhileResult[4], $USER['timezone']);
 				
 				$WhileResult[6]	= $LNG['rank_'.$WhileResult[6]];
