@@ -401,8 +401,8 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 				$WhileResult[4]	= _date($LNG['php_tdformat'], $WhileResult[4], $USER['timezone']);
 				
 				$WhileResult[6]	= $LNG['rank_'.$WhileResult[6]];
-				(($WhileResult[7] == '1')	? $WhileResult[7] = "<font color=lime>".$LNG['one_is_no_1']."</font>" : $WhileResult[7] = $LNG['one_is_no_0']);
-				(($WhileResult[8] == '1')	? $WhileResult[8] = "<font color=lime>".$LNG['one_is_no_1']."</font>" : $WhileResult[8] = $LNG['one_is_no_0']);
+				(($WhileResult[7] == '1')	? $WhileResult[7] = "<font color=red>".$LNG['one_is_no_1']."</font>" : $WhileResult[7] = $LNG['one_is_no_0']);
+				(($WhileResult[8] == '1')	? $WhileResult[8] = "<font color=orange>".$LNG['one_is_no_1']."</font>" : $WhileResult[8] = $LNG['one_is_no_0']);
 			}
 			
 			if ($Table == "banned"){

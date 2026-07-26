@@ -111,6 +111,25 @@ abstract class AbstractGamePage
 
 		$config			= Config::get();
 
+		if (empty($PLANET) || !is_array($PLANET)) {
+			$this->assign(array(
+				'PlanetSelect'		=> array(),
+				'new_message' 		=> isset($USER['messages']) ? $USER['messages'] : 0,
+				'vacation'			=> false,
+				'delete'			=> false,
+				'darkmatter'		=> isset($USER['darkmatter']) ? $USER['darkmatter'] : 0,
+				'current_pid'		=> 0,
+				'image'				=> '',
+				'resourceTable'		=> array(),
+				'shortlyNumber'		=> 0,
+				'closed'			=> !$config->game_disable,
+				'hasBoard'			=> filter_var($config->forum_url, FILTER_VALIDATE_URL),
+				'hasAdminAccess'	=> !empty(Session::load()->adminAccess),
+				'hasGate'			=> false,
+			));
+			return;
+		}
+
 		$PlanetSelect	= array();
 
 		if(!isset($USER['PLANETS'])) {

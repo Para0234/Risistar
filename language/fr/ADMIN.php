@@ -43,8 +43,8 @@ $LNG['info_information']	= 'Soumettre les bugs à : <a href="%s" target="tracker
 $LNG['one_is_yes_1']					= 'Oui';
 $LNG['one_is_yes_0']					= 'Non';
 
-$LNG['one_is_no_1']					= 'Non';
-$LNG['one_is_no_0']					= 'Oui';
+$LNG['one_is_no_1']					= 'Oui';
+$LNG['one_is_no_0']					= 'Non';
 //###########################################################//
 
 
@@ -869,14 +869,14 @@ $LNG['se_expand']					=	'Développer';
 $LNG['se_contrac']					=	'Réduire';
 $LNG['se__next']					=	'Suivant';
 $LNG['se__before']					=	'Précédent';
-$LNG['se_search_info']					=	'Chercher';
+$LNG['se_search_info']					=	'Éditer';
 $LNG['se_asc_desc']					=	'Croissant/Décroissant';
 $LNG['se_search_order']					=	'Ordre';
-$LNG['se_search_edit']					=	'Editer';
+$LNG['se_search_edit']					=	'Éditer';
 $LNG['se_delete_succes_p']				=	'Supprimé avec succès';
 $LNG['se_confirm_planet']				=	'La Planète (principale ou colonie) sélectionnée va être complètement supprimée, souhaitez-vous continuez ? Nom de la Planète :';
 
-// B�SQUEDA EN TABLA DE USUARIOS
+// BSQUEDA EN TABLA DE USUARIOS
 $LNG['se_search_users_0']				=	'ID';
 $LNG['se_search_users_1']				=	'Nom';
 $LNG['se_search_users_2']				=	'Email';
@@ -885,12 +885,12 @@ $LNG['se_search_users_4']				=	'Date d\'enregistrement';
 $LNG['se_search_users_5']				=	'Dernière IP';
 $LNG['se_search_users_6']				=	'Autorité';
 $LNG['se_search_users_7']				=	'Bannis ?';
-$LNG['se_search_users_8']				=	'Vaccances ?';
+$LNG['se_search_users_8']				=	'Vacances ?';
 
-// B�SQUEDA EN TABLA DE PLANETAS
+// BSQUEDA EN TABLA DE PLANETAS
 $LNG['se_search_planets_0']				=	'ID';
 $LNG['se_search_planets_1']				=	'Nom';
-$LNG['se_search_planets_2']				=	"Porpiétaire";
+$LNG['se_search_planets_2']				=	"Propriétaire";
 $LNG['se_search_planets_3']				=	"Dernière Activité";
 $LNG['se_search_planets_4']				=	"Galaxie";
 $LNG['se_search_planets_5']				=	"Système";

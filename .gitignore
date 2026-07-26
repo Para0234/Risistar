@@ -84,3 +84,4 @@ composer.phar
 .phpunit.result.cache
 includes/ENABLE_INSTALL_TOOL
 includes/libs/opbe/errors/26-07-26*.html
+.agents/
