@@ -34,7 +34,16 @@ class ShowBuildingsPage extends AbstractGamePage
 			$PLANET['b_building']		= 0;
 			return false;
 		}
-	
+
+		// Security (defense in depth): the refund and the queue-clear below are
+		// both applied in-memory and only persisted through the economy save.
+		// Refuse to process the cancel when the economy persistence layer is
+		// inactive so the split-commit cannot be abused to replay a refund.
+		// (Also avoids a null ecoObj fatal further down.)
+		if(!isset($this->ecoObj)) {
+			return false;
+		}
+
 		$Element             	= $CurrentQueue[0][0];
 		$BuildMode          	= $CurrentQueue[0][4];
 		
