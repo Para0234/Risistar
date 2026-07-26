@@ -11,7 +11,7 @@ class FleetFunctionsTest extends TestCase
     const ID_LARGE_CARGO = 203;
     const ID_CRUISER = 204;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!defined('ROOT_PATH')) {
             define('ROOT_PATH', dirname(__DIR__) . '/');

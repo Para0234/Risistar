@@ -7,7 +7,7 @@ use PlayerUtil;
 
 class PlayerUtilTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!defined('ROOT_PATH')) {
             define('ROOT_PATH', dirname(__DIR__) . '/');

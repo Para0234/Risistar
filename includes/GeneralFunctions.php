@@ -472,7 +472,9 @@ function exceptionHandler($exception)
 		E_USER_WARNING		=> 'USER WARNING',
 		E_USER_NOTICE		=> 'USER NOTICE',
 		E_STRICT			=> 'STRICT NOTICE',
-		E_RECOVERABLE_ERROR	=> 'RECOVERABLE ERROR'
+		E_RECOVERABLE_ERROR	=> 'RECOVERABLE ERROR',
+		E_DEPRECATED		=> 'DEPRECATED',
+		E_USER_DEPRECATED	=> 'USER DEPRECATED'
 	);
 	
 	if(file_exists(ROOT_PATH.'install/VERSION'))
@@ -571,9 +573,11 @@ function exceptionHandler($exception)
 
 	echo str_replace(array('\\', ROOT_PATH, substr(ROOT_PATH, 0, 15)), array('/', '/', 'FILEPATH '), ob_get_clean());
 	
-	$errorText	= date("[d-M-Y H:i:s]", TIMESTAMP).' '.$errorType[$errno].': "'.strip_tags($exception->getMessage())."\"\r\n";
+	$typeStr	= isset($errorType[$errno]) ? $errorType[$errno] : 'ERROR '.$errno;
+	$errorText	= date("[d-M-Y H:i:s]", TIMESTAMP).' '.$typeStr.': "'.strip_tags($exception->getMessage())."\"\r\n";
 	$errorText	.= 'File: '.$exception->getFile().' | Line: '.$exception->getLine()."\r\n";
-	$errorText	.= 'URL: '.PROTOCOL.HTTP_HOST.$_SERVER['REQUEST_URI'].' | Version: '.$VERSION."\r\n";
+	$reqUri     = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/CLI';
+	$errorText	.= 'URL: '.PROTOCOL.HTTP_HOST.$reqUri.' | Version: '.$VERSION."\r\n";
 	$errorText	.= "Stack trace:\r\n";
 	$errorText	.= str_replace(ROOT_PATH, '/', htmlspecialchars(str_replace('\\', '/',$exception->getTraceAsString())))."\r\n";
 	

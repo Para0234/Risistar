@@ -23,6 +23,33 @@ require_once ROOT_PATH . 'includes/vars.php';
 require_once ROOT_PATH . 'includes/classes/class.statbuilder.php';
 
 $isCli = (PHP_SAPI === 'cli');
+
+// Sécurité : Bloquer l'accès Web pour tout utilisateur non-administrateur
+if (!$isCli) {
+    $session = Session::create();
+    $db = Database::get();
+    
+    $userAuthLevel = 0;
+    if (!empty($session->userId)) {
+        $userData = $db->selectSingle("SELECT authlevel FROM %%USERS%% WHERE id = :userId;", array(
+            ':userId' => $session->userId
+        ));
+        if (!empty($userData)) {
+            $userAuthLevel = (int) $userData['authlevel'];
+        }
+    }
+
+    // Seuls les administrateurs (AUTH_ADM = 3) peuvent exécuter ce script via le Web
+    if ($userAuthLevel < AUTH_ADM) {
+        HTTP::sendHeader('HTTP/1.1 403 Forbidden');
+        echo '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><title>403 Accès Refusé</title></head><body style="background:#0f172a;color:#f8fafc;font-family:sans-serif;padding:50px;text-align:center;">';
+        echo '<h1 style="color:#ef4444;">403 Accès Refusé</h1>';
+        echo '<p>Seuls les administrateurs connectés ou la ligne de commande (CLI) peuvent exécuter ce script.</p>';
+        echo '</body></html>';
+        exit;
+    }
+}
+
 $confirm = $isCli ? true : (isset($_GET['confirm']) && $_GET['confirm'] == '1');
 $doReset = $isCli ? (isset($argv) && (in_array('--reset', $argv) || in_array('reset', $argv))) : (isset($_GET['reset']) && $_GET['reset'] == '1');
 
@@ -554,7 +581,7 @@ foreach ($playersConfig as $pConfig) {
                 // Bâtiments
                 1 => 32, 2 => 28, 3 => 25, 4 => 28, 12 => 8, 14 => 10, 15 => 4, 21 => 12, 22 => 10, 23 => 8, 24 => 8, 31 => 12,
                 // Vaisseaux
-                202 => 800, 203 => 400, 204 => 3000, 205 => 1000, 206 => 500, 207 => 250, 208 => 5, 209 => 200, 210 => 150, 211 => 50, 212 => 100, 213 => 40, 214 => ($pInfo['isHome'] ? 2 : 0), 215 => 100, 219 => 5,
+                202 => 800, 203 => 400, 204 => 3000, 205 => 1000, 206 => 500, 207 => 250, 208 => 5, 209 => 200, 210 => 150, 211 => 50, 212 => 100, 213 => 40, 214 => ($pInfo['isHome'] ? 2 : 0), 215 => 100, 219 => 5, 223 => 30000,
                 // Défenses
                 401 => 3000, 402 => 1500, 403 => 400, 404 => 100, 405 => 80, 406 => 30, 407 => 1, 408 => 1, 409 => 40, 410 => 15,
             ];
@@ -732,6 +759,61 @@ if ($planetCount >= 2) {
         }
     }
     logMessage("  ✅ {$flyingFleetCount} flottes actives en vol créées.", 'success', $isCli);
+}
+
+// 5b. Flottes d'attaque imminentes pour l'Admin (impacts espacés de 5 secondes)
+logMessage("⚔️ Création de flottes d'attaque imminentes pour l'Admin (impacts à +5s, +10s, +15s, +20s, +25s)...", 'info', $isCli);
+
+$adminPlanet = $db->selectSingle("SELECT id, galaxy, system, planet, planet_type FROM %%PLANETS%% WHERE id_owner = 1 AND planet_type = 1 LIMIT 1;");
+$targetPlanet = $db->selectSingle("SELECT id, id_owner, galaxy, system, planet, planet_type FROM %%PLANETS%% WHERE id_owner > 1 AND planet_type = 1 LIMIT 1;");
+
+if (!empty($adminPlanet) && !empty($targetPlanet)) {
+    $imminentAttacksCount = 0;
+    $now = TIMESTAMP;
+
+    $attackFleetsComposition = [
+        1 => [204 => 300, 205 => 100, 206 => 50, 223 => 5000],
+        2 => [206 => 120, 207 => 40, 223 => 5000],
+        3 => [207 => 80, 213 => 15, 223 => 5000],
+        4 => [214 => 2, 215 => 50, 223 => 5000],
+        5 => [202 => 200, 203 => 100, 204 => 500, 207 => 100, 223 => 5000],
+    ];
+
+    foreach ($attackFleetsComposition as $index => $ships) {
+        $impactDelay = $index * 5;
+        $startTime   = $now + $impactDelay;
+        $stayTime    = $startTime;
+        $endTime     = $startTime + 300;
+
+        try {
+            FleetFunctions::sendFleet(
+                $ships,
+                1,
+                1,
+                $adminPlanet['id'],
+                $adminPlanet['galaxy'],
+                $adminPlanet['system'],
+                $adminPlanet['planet'],
+                $adminPlanet['planet_type'],
+                $targetPlanet['id_owner'],
+                $targetPlanet['id'],
+                $targetPlanet['galaxy'],
+                $targetPlanet['system'],
+                $targetPlanet['planet'],
+                $targetPlanet['planet_type'],
+                [901 => 0, 902 => 0, 903 => 0],
+                $startTime,
+                $stayTime,
+                $endTime,
+                0
+            );
+            $imminentAttacksCount++;
+            logMessage("    ⚔️ Vague {$index} lancée : Impact dans {$impactDelay}s sur [{$targetPlanet['galaxy']}:{$targetPlanet['system']}:{$targetPlanet['planet']}].", 'info', $isCli);
+        } catch (Exception $e) {
+            logMessage("    ⚠️ Erreur lors du lancement de la vague {$index} : " . $e->getMessage(), 'warn', $isCli);
+        }
+    }
+    logMessage("  ✅ {$imminentAttacksCount} flottes d'attaque imminentes configurées avec succès !", 'success', $isCli);
 }
 
 // 6. Champs de Débris (TF)

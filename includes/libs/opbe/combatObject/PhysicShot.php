@@ -32,6 +32,7 @@ class PhysicShot
     private $shipType;
     private $damage;
     private $count;
+    private $fighters;
 
     private $assorbedDamage = 0;
     private $bouncedDamage = 0;

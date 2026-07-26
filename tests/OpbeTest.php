@@ -13,7 +13,7 @@ class OpbeTest extends TestCase
     const ID_BATTLESHIP = 207;
     const ID_BATTLECRUISER = 215;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!defined('ROOT_PATH')) {
             define('ROOT_PATH', dirname(__DIR__) . '/');

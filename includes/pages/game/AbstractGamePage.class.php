@@ -113,7 +113,7 @@ abstract class AbstractGamePage
 
 		$PlanetSelect	= array();
 
-		if(isset($USER['PLANETS'])) {
+		if(!isset($USER['PLANETS'])) {
 			$USER['PLANETS']	= getPlanets($USER);
 		}
 
@@ -156,7 +156,7 @@ abstract class AbstractGamePage
 
 		$this->assign(array(
 			'PlanetSelect'		=> $PlanetSelect,
-			'new_message' 		=> $USER['messages'],
+			'new_message' 		=> isset($USER['messages']) ? $USER['messages'] : 0,
 			'vacation'			=> $USER['urlaubs_modus'] ? _date($LNG['php_tdformat'], $USER['urlaubs_until'], $USER['timezone']) : false,
 			'delete'			=> $USER['db_deaktjava'] ? sprintf($LNG['tn_delete_mode'], _date($LNG['php_tdformat'], $USER['db_deaktjava'] + ($config->del_user_manually * 86400)), $USER['timezone']) : false,
 			'darkmatter'		=> $USER['darkmatter'],

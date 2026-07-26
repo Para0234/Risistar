@@ -7,7 +7,7 @@ use BuildFunctions;
 
 class BuildFunctionsTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!defined('ROOT_PATH')) {
             define('ROOT_PATH', dirname(__DIR__) . '/');
@@ -31,11 +31,11 @@ class BuildFunctionsTest extends TestCase
     {
         $bonuses = BuildFunctions::getBonusList();
         $this->assertTrue(is_array($bonuses));
-        $this->assertContains('Attack', $bonuses);
-        $this->assertContains('Defensive', $bonuses);
-        $this->assertContains('Shield', $bonuses);
-        $this->assertContains('Resource', $bonuses);
-        $this->assertContains('FlyTime', $bonuses);
+        $this->assertContainsEquals('Attack', $bonuses);
+        $this->assertContainsEquals('Defensive', $bonuses);
+        $this->assertContainsEquals('Shield', $bonuses);
+        $this->assertContainsEquals('Resource', $bonuses);
+        $this->assertContainsEquals('FlyTime', $bonuses);
     }
 
     public function testGetRestPriceCalculatesMissingResources()

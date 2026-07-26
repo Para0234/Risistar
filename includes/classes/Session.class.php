@@ -35,25 +35,25 @@ class Session
 		}
 		self::$iniSet = true;
 
-		ini_set('session.use_cookies', '1');
-		ini_set('session.use_only_cookies', '1');
-		ini_set('session.use_trans_sid', 0);
-		ini_set('session.auto_start', '0');
-		ini_set('session.serialize_handler', 'php');  
-		ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
-		ini_set('session.gc_probability', '1');
-		ini_set('session.gc_divisor', '1000');
-		ini_set('session.bug_compat_warn', '0');
-		ini_set('session.bug_compat_42', '0');
-		ini_set('session.cookie_httponly', true);
-		ini_set('session.save_path', CACHE_PATH.'sessions');
-		ini_set('upload_tmp_dir', CACHE_PATH.'sessions');
+		@ini_set('session.use_cookies', '1');
+		@ini_set('session.use_only_cookies', '1');
+		@ini_set('session.use_trans_sid', 0);
+		@ini_set('session.auto_start', '0');
+		@ini_set('session.serialize_handler', 'php');  
+		@ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
+		@ini_set('session.gc_probability', '1');
+		@ini_set('session.gc_divisor', '1000');
+		@ini_set('session.bug_compat_warn', '0');
+		@ini_set('session.bug_compat_42', '0');
+		@ini_set('session.cookie_httponly', true);
+		@ini_set('session.save_path', CACHE_PATH.'sessions');
+		@ini_set('upload_tmp_dir', CACHE_PATH.'sessions');
 		
 		$HTTP_ROOT = MODE === 'INSTALL' ? dirname(HTTP_ROOT) : HTTP_ROOT;
 		
-		session_set_cookie_params(SESSION_LIFETIME, $HTTP_ROOT, NULL, HTTPS, true);
-		session_cache_limiter('nocache');
-		session_name('2Moons');
+		@session_set_cookie_params(SESSION_LIFETIME, $HTTP_ROOT, NULL, HTTPS, true);
+		@session_cache_limiter('nocache');
+		@session_name('2Moons');
 
 		return true;
 	}
@@ -134,7 +134,7 @@ class Session
 		if(!self::existsActiveSession())
 		{
 			self::init();
-			session_start();
+			@session_start();
 			if(isset($_SESSION['obj']))
 			{
 				self::$obj	= unserialize($_SESSION['obj']);
@@ -248,7 +248,7 @@ class Session
 		$db->update($sql, array(
 		   ':userAddress'	=> $userIpAddress,
 		   ':lastActivity'	=> TIMESTAMP,
-		   ':userClient'	=> $_SERVER['HTTP_USER_AGENT'],//$userClient,
+		   ':userClient'	=> isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'CLI',
 		   ':userId'		=> $this->data['userId'],
 		));
 		// Remove multisessions

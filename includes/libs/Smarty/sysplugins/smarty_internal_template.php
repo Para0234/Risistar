@@ -23,8 +23,13 @@
  *
  * @method bool mustCompile()
  */
+#[\AllowDynamicProperties]
 class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
 {
+    public $compiled = null;
+    public $cached = null;
+    public $compiler = null;
+
     /**
      * This object type (Smarty = 1, template = 2, data = 4)
      *
