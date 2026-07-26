@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  2Moons 
+ *  2Moons
  *   by Jan-Otto Kröpke 2009-2016
  *
  * For the full copyright and license information, please view the LICENSE
@@ -50,7 +50,7 @@ class ReferralCronJob implements CronjobTask
 			}
 
 			$userConfig	= Config::get($user['universe']);
-			
+
 			$LNG	= $langObjects[$user['lang']];
 			$sql	= 'UPDATE %%USERS%% SET `darkmatter` = `darkmatter` + :bonus WHERE `id` = :userId;';
 
@@ -71,4 +71,4 @@ class ReferralCronJob implements CronjobTask
 		*/
 		return true;
 	}
-}µ
+}
