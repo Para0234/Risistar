@@ -438,6 +438,7 @@ function ShowConfigUniPage()
 		'max_system'					=> $config->max_system,
 		'max_planets'					=> $config->max_planets,
 		'min_player_planets'			=> $config->min_player_planets,
+		'max_player_planets'			=> 0, // Clé obsolète présente uniquement dans un bloc HTML commenté de ConfigBodyUni.tpl
 		'planets_tech'					=> $config->planets_tech,
 		'planets_officier'				=> $config->planets_officier,
 		'planets_per_tech'				=> $config->planets_per_tech,

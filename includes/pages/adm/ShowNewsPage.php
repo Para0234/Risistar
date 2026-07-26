@@ -64,13 +64,16 @@ function ShowNewsPage(){
 		$template->assign_vars(array(	
 			'mode'			=> 2,
 			'nws_head'		=> $LNG['nws_head_create'],
+			'news_id'		=> 0,
+			'news_title'	=> '',
+			'news_text'		=> '',
 		));
 	}
 	
 	$template->assign_vars(array(	
 		'NewsList'		=> $NewsList,
 		'button_submit'	=> $LNG['button_submit'],
-		'nws_total'		=> sprintf($LNG['nws_total'], Database::get()->rowCount($NewsList)),
+		'nws_total'		=> sprintf($LNG['nws_total'], count($NewsList)),
 		'nws_news'		=> $LNG['nws_news'],
 		'nws_id'		=> $LNG['nws_id'],
 		'nws_title'		=> $LNG['nws_title'],

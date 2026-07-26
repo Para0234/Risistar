@@ -34,6 +34,7 @@ function ShowAccountDataPage()
 		}
 		else
 		{
+			$SpecifyItemsUQ = '';
 			foreach(array_merge($reslist['officier'], $reslist['tech']) as $ID)
 			{
 				$SpecifyItemsUQ	.= "u.`".$resource[$ID]."`,";
@@ -42,7 +43,7 @@ function ShowAccountDataPage()
 			// COMIENZA SAQUEO DE DATOS DE LA TABLA DE USUARIOS
 			$SpecifyItemsU	= 
 			"u.id,u.username,u.email,u.email_2,u.authlevel,u.id_planet,u.galaxy,u.system,u.planet,u.user_lastip,u.ip_at_reg,u.darkmatter,u.register_time,u.onlinetime,u.urlaubs_modus,u.
-			 urlaubs_until,u.ally_id,a.ally_name,".$SpecifyItemsUQ."
+			 urlaubs_until,u.ally_id,u.user_lastclient as user_ua,a.ally_name,".$SpecifyItemsUQ."
 			 u.ally_register_time,u.ally_rank_id,u.bana,u.banaday";
 			
 			$UserQuery 	= 	$GLOBALS['DATABASE']->getFirstRow("SELECT ".$SpecifyItemsU." FROM ".USERS." as u LEFT JOIN ".ALLIANCE." a ON a.id = u.ally_id WHERE u.`id` = '".$id_u."';");
@@ -60,7 +61,7 @@ function ShowAccountDataPage()
 			$g				= $UserQuery['galaxy'];
 			$s				= $UserQuery['system'];
 			$p				= $UserQuery['planet'];
-			$info			= $UserQuery['user_ua'];
+			$info			= isset($UserQuery['user_ua']) ? $UserQuery['user_ua'] : '';
 			$alianza		= $UserQuery['ally_name'];
 			$nivel			= $LNG['rank_'.$UserQuery['authlevel']];
 			$vacas 			= $LNG['one_is_yes_'.$UserQuery['urlaubs_modus']];
@@ -86,18 +87,24 @@ function ShowAccountDataPage()
 				$techoffi .= isset($officier[$i]) ? "<td>".$LNG['tech'][$officier[$i]].": <font color=aqua>".$UserQuery[$resource[$officier[$i]]]."</font></td></tr>" : "<td>&nbsp;</td></tr>";				
 			}
 			
+			$mas        = '';
+			$sus_longer = '';
+			$sus_time   = '';
+			$sus_reason = '';
+			$sus_author = '';
+
 			if ($UserQuery['bana'] != 0)
 			{
 				$mas			= '<a ref="#" onclick="$(\'#banned\').slideToggle();return false"> '.$LNG['ac_more'].'</a>';
 				
 				$BannedQuery	= $GLOBALS['DATABASE']->getFirstRow("SELECT theme,time,longer,author FROM ".BANNED." WHERE `who` = '".$UserQuery['username']."';");
 				
-				
-				$sus_longer	= _date($LNG['php_tdformat'], $BannedQuery['longer'], $USER['timezone']);
-				$sus_time	= _date($LNG['php_tdformat'], $BannedQuery['time'], $USER['timezone']);
-				$sus_reason	= $BannedQuery['theme'];
-				$sus_author	= $BannedQuery['author'];
-				
+				if (!empty($BannedQuery)) {
+					$sus_longer	= _date($LNG['php_tdformat'], $BannedQuery['longer'], $USER['timezone']);
+					$sus_time	= _date($LNG['php_tdformat'], $BannedQuery['time'], $USER['timezone']);
+					$sus_reason	= $BannedQuery['theme'];
+					$sus_author	= $BannedQuery['author'];
+				}
 			}
 			
 			
@@ -108,37 +115,66 @@ function ShowAccountDataPage()
 			
 			$StatQuery	= $GLOBALS['DATABASE']->getFirstRow("SELECT ".$SpecifyItemsS." FROM ".STATPOINTS." WHERE `id_owner` = '".$id_u."' AND `stat_type` = '1';");
 
-			$count_tecno	= pretty_number($StatQuery['tech_count']);
-			$count_def		= pretty_number($StatQuery['defs_count']);
-			$count_fleet	= pretty_number($StatQuery['fleet_count']);
-			$count_builds	= pretty_number($StatQuery['build_count']);
+			$count_tecno	= isset($StatQuery['tech_count']) ? pretty_number($StatQuery['tech_count']) : 0;
+			$count_def		= isset($StatQuery['defs_count']) ? pretty_number($StatQuery['defs_count']) : 0;
+			$count_fleet	= isset($StatQuery['fleet_count']) ? pretty_number($StatQuery['fleet_count']) : 0;
+			$count_builds	= isset($StatQuery['build_count']) ? pretty_number($StatQuery['build_count']) : 0;
 				
-			$point_builds	= pretty_number($StatQuery['build_points']);
-			$point_tecno	= pretty_number($StatQuery['tech_points']);
-			$point_def		= pretty_number($StatQuery['defs_points']);
-			$point_fleet	= pretty_number($StatQuery['fleet_points']);
+			$point_builds	= isset($StatQuery['build_points']) ? pretty_number($StatQuery['build_points']) : 0;
+			$point_tecno	= isset($StatQuery['tech_points']) ? pretty_number($StatQuery['tech_points']) : 0;
+			$point_def		= isset($StatQuery['defs_points']) ? pretty_number($StatQuery['defs_points']) : 0;
+			$point_fleet	= isset($StatQuery['fleet_points']) ? pretty_number($StatQuery['fleet_points']) : 0;
 				
 				
-			$ranking_tecno		= $StatQuery['tech_rank'];
-			$ranking_builds	= $StatQuery['build_rank'];
-			$ranking_def		= $StatQuery['defs_rank'];
-			$ranking_fleet		= $StatQuery['fleet_rank'];
+			$ranking_tecno	= isset($StatQuery['tech_rank']) ? $StatQuery['tech_rank'] : 0;
+			$ranking_builds	= isset($StatQuery['build_rank']) ? $StatQuery['build_rank'] : 0;
+			$ranking_def	= isset($StatQuery['defs_rank']) ? $StatQuery['defs_rank'] : 0;
+			$ranking_fleet	= isset($StatQuery['fleet_rank']) ? $StatQuery['fleet_rank'] : 0;
 				
-			$total_points	= pretty_number($StatQuery['total_points']);
+			$total_points	= isset($StatQuery['total_points']) ? pretty_number($StatQuery['total_points']) : 0;
 			
 
 			
 			// COMIENZA EL SAQUEO DE DATOS DE LA ALIANZA
 			$AliID	= $UserQuery['ally_id'];
+			$id_ali = '';
+			$id_aliz = 0;
+			$tag = '';
+			$ali_nom = '';
+			$ali_cant = 0;
+			$ally_register_time = '';
+			$ali_lider = '';
+			$ali_web = '';
+			$ali_ext = '';
+			$ali_ext2 = '';
+			$ali_int = '';
+			$ali_int2 = '';
+			$ali_sol = '';
+			$ali_sol2 = '';
+			$ali_logo = '';
+			$ali_logo2 = '';
+			$count_tecno_ali = 0;
+			$count_def_ali = 0;
+			$count_fleet_ali = 0;
+			$count_builds_ali = 0;
+			$point_builds_ali = 0;
+			$point_tecno_ali = 0;
+			$point_def_ali = 0;
+			$point_fleet_ali = 0;
+			$ranking_tecno_ali = 0;
+			$ranking_builds_ali = 0;
+			$ranking_def_ali = 0;
+			$ranking_fleet_ali = 0;
+			$total_points_ali = 0;
+			$AllianceHave = '';
 			
-			
-			if ($alianza == 0 && $AliID == 0)
+			if (empty($alianza) && $AliID == 0)
 			{
 				$alianza	= $LNG['ac_no_ally'];
 				$AllianceHave	= "<span class=\"no_moon\"><img src=\"./styles/resource/images/admin/arrowright.png\" width=\"16\" height=\"10\"/> 
 							".$LNG['ac_alliance']."&nbsp;".$LNG['ac_no_alliance']."</span>";	
 			}
-			elseif ($alianza != NULL && $AliID != 0)
+			elseif (!empty($alianza) && $AliID != 0)
 			{
 				include_once('includes/classes/BBCode.class.php');	
 				
@@ -152,88 +188,89 @@ function ShowAccountDataPage()
 				
 				$AllianceQuery		= $GLOBALS['DATABASE']->getFirstRow("SELECT ".$SpecifyItemsA." FROM ".ALLIANCE." WHERE `ally_name` = '".$alianza."';");
 				
-				
-				$alianza				= $alianza;
-				$id_ali					= " (".$LNG['ac_ali_idid']."&nbsp;".$AliID.")";	
-				$id_aliz				= $AllianceQuery['id'];
-				$tag					= $AllianceQuery['ally_tag'];
-				$ali_nom				= $AllianceQuery['ally_name'];
-				$ali_cant				= $AllianceQuery['ally_members'];
-				$ally_register_time		= _date($LNG['php_tdformat'], $AllianceQuery['ally_register_time'], $USER['timezone']);
-				$ali_lider				= $AllianceQuery['ally_owner'];
-				$ali_web				= $AllianceQuery['ally_web'] != NULL ? "<a href=".$AllianceQuery['ally_web']." target=_blank>".$AllianceQuery['ally_web']."</a>" : $LNG['ac_no_web'];
-										
-					
-				if($AllianceQuery['ally_description'] != NULL)
-				{
-					$ali_ext2 = BBCode::parse($AllianceQuery['ally_description']);
-					$ali_ext  = "<a href=\"#\" rel=\"toggle[externo]\">".$LNG['ac_view_text_ext']."</a>";
-				}
-				else
-				{
-					$ali_ext = $LNG['ac_no_text_ext'];
-				}
-					
-					
-				if($AllianceQuery['ally_text'] != NULL)
-				{
-					$ali_int2 = BBCode::parse($AllianceQuery['ally_text']);
-					$ali_int  = "<a href=\"#\" rel=\"toggle[interno]\">".$LNG['ac_view_text_int']."</a>";
-				}
-				else
-				{
-					$ali_int = $LNG['ac_no_text_int'];
-				}
-					
-					
-				if($AllianceQuery['ally_request'] != NULL)
-				{
-					$ali_sol2 = BBCode::parse($AllianceQuery['ally_request']);
-					$ali_sol  = "<a href=\"#\" rel=\"toggle[solicitud]\">".$LNG['ac_view_text_sol']."</a>";
-				}
-				else
-				{
-					$ali_sol = $LNG['ac_no_text_sol'];
-				}
-					
-					
-				if($AllianceQuery['ally_image'] != NULL)
-				{
-					$ali_logo2 = $AllianceQuery['ally_image'];
-					$ali_logo = "<a href=\"#\" rel=\"toggle[imagen]\">".$LNG['ac_view_image2']."</a>";
-				}
-				else
-				{
-					$ali_logo = $LNG['ac_no_img'];
-				}
-				
-				
-				$SearchLeader		= $GLOBALS['DATABASE']->getFirstRow("SELECT `username` FROM ".USERS." WHERE `id` = '".$ali_lider."';");
-				$ali_lider	= $SearchLeader['username'];
-
-
-
-				$StatQueryAlly	= $GLOBALS['DATABASE']->getFirstRow("SELECT ".$SpecifyItemsS." FROM ".STATPOINTS." WHERE `id_owner` = '".$ali_lider."' AND `stat_type` = '2';");
+				if (!empty($AllianceQuery)) {
+					$alianza				= $alianza;
+					$id_ali					= " (".$LNG['ac_ali_idid']."&nbsp;".$AliID.")";	
+					$id_aliz				= $AllianceQuery['id'];
+					$tag					= $AllianceQuery['ally_tag'];
+					$ali_nom				= $AllianceQuery['ally_name'];
+					$ali_cant				= $AllianceQuery['ally_members'];
+					$ally_register_time		= _date($LNG['php_tdformat'], $AllianceQuery['ally_register_time'], $USER['timezone']);
+					$ali_lider				= $AllianceQuery['ally_owner'];
+					$ali_web				= $AllianceQuery['ally_web'] != NULL ? "<a href=".$AllianceQuery['ally_web']." target=_blank>".$AllianceQuery['ally_web']."</a>" : $LNG['ac_no_web'];
+											
 						
-				$count_tecno_ali	= pretty_number($StatQueryAlly['tech_count']);
-				$count_def_ali		= pretty_number($StatQueryAlly['defs_count']);
-				$count_fleet_ali	= pretty_number($StatQueryAlly['fleet_count']);
-				$count_builds_ali	= pretty_number($StatQueryAlly['build_count']);
-				
-				$point_builds_ali	= pretty_number($StatQueryAlly['build_points']);
-				$point_tecno_ali	= pretty_number($StatQueryAlly['tech_points']);
-				$point_def_ali		= pretty_number($StatQueryAlly['defs_points']);
-				$point_fleet_ali	= pretty_number($StatQueryAlly['fleet_points']);
-				
-				
-				$ranking_tecno_ali		= pretty_number($StatQueryAlly['tech_rank']);
-				$ranking_builds_ali	= pretty_number($StatQueryAlly['build_rank']);
-				$ranking_def_ali		= pretty_number($StatQueryAlly['defs_rank']);
-				$ranking_fleet_ali		= pretty_number($StatQueryAlly['fleet_rank']);
-				
-				$total_points_ali		= pretty_number($StatQueryAlly['total_points']);
+					if($AllianceQuery['ally_description'] != NULL)
+					{
+						$ali_ext2 = BBCode::parse($AllianceQuery['ally_description']);
+						$ali_ext  = "<a href=\"#\" rel=\"toggle[externo]\">".$LNG['ac_view_text_ext']."</a>";
+					}
+					else
+					{
+						$ali_ext = $LNG['ac_no_text_ext'];
+					}
+						
+						
+					if($AllianceQuery['ally_text'] != NULL)
+					{
+						$ali_int2 = BBCode::parse($AllianceQuery['ally_text']);
+						$ali_int  = "<a href=\"#\" rel=\"toggle[interno]\">".$LNG['ac_view_text_int']."</a>";
+					}
+					else
+					{
+						$ali_int = $LNG['ac_no_text_int'];
+					}
+						
+						
+					if($AllianceQuery['ally_request'] != NULL)
+					{
+						$ali_sol2 = BBCode::parse($AllianceQuery['ally_request']);
+						$ali_sol  = "<a href=\"#\" rel=\"toggle[solicitud]\">".$LNG['ac_view_text_sol']."</a>";
+					}
+					else
+					{
+						$ali_sol = $LNG['ac_no_text_sol'];
+					}
+						
+						
+					if($AllianceQuery['ally_image'] != NULL)
+					{
+						$ali_logo2 = $AllianceQuery['ally_image'];
+						$ali_logo = "<a href=\"#\" rel=\"toggle[imagen]\">".$LNG['ac_view_image2']."</a>";
+					}
+					else
+					{
+						$ali_logo = $LNG['ac_no_img'];
+					}
+					
+					
+					$SearchLeader		= $GLOBALS['DATABASE']->getFirstRow("SELECT `username` FROM ".USERS." WHERE `id` = '".$ali_lider."';");
+					$ali_lider	= isset($SearchLeader['username']) ? $SearchLeader['username'] : '';
+
+					$StatQueryAlly	= $GLOBALS['DATABASE']->getFirstRow("SELECT ".$SpecifyItemsS." FROM ".STATPOINTS." WHERE `id_owner` = '".$ali_lider."' AND `stat_type` = '2';");
+					if (!empty($StatQueryAlly)) {
+						$count_tecno_ali	= pretty_number($StatQueryAlly['tech_count']);
+						$count_def_ali		= pretty_number($StatQueryAlly['defs_count']);
+						$count_fleet_ali	= pretty_number($StatQueryAlly['fleet_count']);
+						$count_builds_ali	= pretty_number($StatQueryAlly['build_count']);
+						
+						$point_builds_ali	= pretty_number($StatQueryAlly['build_points']);
+						$point_tecno_ali	= pretty_number($StatQueryAlly['tech_points']);
+						$point_def_ali		= pretty_number($StatQueryAlly['defs_points']);
+						$point_fleet_ali	= pretty_number($StatQueryAlly['fleet_points']);
+						
+						
+						$ranking_tecno_ali		= pretty_number($StatQueryAlly['tech_rank']);
+						$ranking_builds_ali	= pretty_number($StatQueryAlly['build_rank']);
+						$ranking_def_ali		= pretty_number($StatQueryAlly['defs_rank']);
+						$ranking_fleet_ali		= pretty_number($StatQueryAlly['fleet_rank']);
+						
+						$total_points_ali		= pretty_number($StatQueryAlly['total_points']);
+					}
+				}
 			}		
 			
+			$SpecifyItemsPQ = '';
 			foreach(array_merge($reslist['fleet'], $reslist['build'], $reslist['defense']) as $ID)
 			{
 				$SpecifyItemsPQ	.= "`".$resource[$ID]."`,";
@@ -245,6 +282,17 @@ function ShowAccountDataPage()
 			$SpecifyItemsP	= "planet_type,id,name,galaxy,system,planet,destruyed,diameter,field_current,field_max,temp_min,temp_max,metal,crystal,deuterium,energy,".$SpecifyItemsPQ."energy_used";
 				
 			$PlanetsQuery	= $GLOBALS['DATABASE']->query("SELECT ".$SpecifyItemsP." FROM ".PLANETS." WHERE `id_owner` = '".$id_u."';");
+			
+			$planets_moons = '';
+			$resources = '';
+			$destroyed = '';
+			$DestruyeD = 0;
+			$MoonZ = 0;
+			$MoonHave = '';
+			$build = '';
+			$fleet = '';
+			$defense = '';
+			$input_id = $id;
 			
 			while ($PlanetsWhile	= $GLOBALS['DATABASE']->fetch_array($PlanetsQuery))
 			{

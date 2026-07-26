@@ -315,7 +315,7 @@ $LNG['ow_forum']					= 'Forums';
 $LNG['ow_proyect_leader']			= 'Chef de projet';
 $LNG['ow_translator']				= 'Traducteurs';
 $LNG['ow_special_thanks']			= 'Remerciements spéciaux';
-$LNG['ow_file_detected']			= 'Le %s n\'a été trouvée. S\'il vous plaît renommer ou supprimer-le, puis votre jeu sera protégé.';
+$LNG['ow_file_detected']					= 'Le fichier %s a été détecté. Pour des raisons de sécurité, veuillez le renommer ou le supprimer.';
 $LNG['ow_config_file_writable']		= 'Le fichier config.php est en mode écriture, nous vous recommandons de définir les permissions du fichier en CHMOD 444 (lecture seule).';
 $LNG['ow_database_errors']			= 'Il y a des erreurs présentes !';
 $LNG['ow_smtp_errors']				= 'Vérifiez vos paramètres SMTP ! - Actuellement aucun mails ne sont envoyés !';
@@ -581,7 +581,7 @@ $LNG['ff_goback_succes']        			= 'La Flotte retourne maintenant à son point
 $LNG['sb_top_memory']					= 'Crête Mémoire: %p KB / max. %m KB <br>';
 $LNG['sb_final_memory']					= 'Mémoire utilisée à la fin : %e KB / max. %m KB<br>';
 $LNG['sb_start_memory']					= 'Mémoire utilisée au début : %i KB / max. %m KB<br>';
-$LNG['sb_stats_update']					= 'Stats mises à jour : %t secondes<<br>';
+$LNG['sb_stats_update']					= 'Stats mises à jour en : %s secondes<br>';
 $LNG['sb_stats_updated']				= 'Statistiques mises à jour! <br>Détails :<br>';
 $LNG['sb_sql_counts']					= 'Requêtes SQL : %d';
 

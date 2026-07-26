@@ -36,16 +36,15 @@ function ShowRightsPage()
 					exit;
 				}
 				
-				if(!isset($_POST['rights'])) {
-					$_POST['rights']	= array();
+				$rights = HTTP::_GP('rights', array());
+				$action = HTTP::_GP('action', '');
+				
+				if($action == 'send') {
+					$GLOBALS['DATABASE']->query("UPDATE ".USERS." SET `rights` = '".serialize(array_map('intval', $rights))."' WHERE `id` = '".$id."';");
 				}
 				
-				if($_POST['action'] == 'send') {
-					$GLOBALS['DATABASE']->query("UPDATE ".USERS." SET `rights` = '".serialize(array_map('intval', $_POST['rights']))."' WHERE `id` = '".$id."';");
-				}
-				
-				$Rights	= $GLOBALS['DATABASE']->getFirstRow("SELECT rights FROM ".USERS." WHERE `id` = '".$id."';");
-				if(($Rights['rights'] = unserialize($Rights['rights'])) === false) {
+				$Rights	= $GLOBALS['DATABASE']->getFirstRow("SELECT username, authlevel, rights FROM ".USERS." WHERE `id` = '".$id."';");
+				if(empty($Rights) || ($Rights['rights'] = unserialize($Rights['rights'])) === false) {
 					$Rights['rights']	= array();
 				}
 				
@@ -54,6 +53,8 @@ function ShowRightsPage()
 				$template->assign_vars(array(	
 					'Files'						=> $Files, 
 					'Rights'					=> $Rights['rights'], 
+					'User'						=> isset($Rights['username']) ? $Rights['username'] : '', 
+					'authlevel'					=> isset($Rights['authlevel']) ? $Rights['authlevel'] : 0, 
 					'id'						=> $id, 
 					'yesorno'					=> array(1 => $LNG['one_is_yes_1'], 0 => $LNG['one_is_yes_0']),
 					'ad_authlevel_title'		=> $LNG['ad_authlevel_title'], 

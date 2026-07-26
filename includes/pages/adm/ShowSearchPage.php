@@ -84,14 +84,12 @@ function ShowSearchPage()
 	
 	
 	
-	if (HTTP::_GP('minimize', '') == 'on')
-	{
-		$Minimize			= "&amp;minimize=on";
-		$template->assign_vars(array(	
-			'minimize'	=> 'checked = "checked"',
-			'diisplaay'	=> 'style="display:none;"',
-		));
-	}
+	$isMinimized = (HTTP::_GP('minimize', '') == 'on');
+	$Minimize    = $isMinimized ? "&amp;minimize=on" : "";
+	$template->assign_vars(array(	
+		'minimize'	=> $isMinimized ? 'checked = "checked"' : '',
+		'diisplaay'	=> $isMinimized ? 'style="display:none;"' : '',
+	));
 
     $SpecialSpecify	= "";
 	
@@ -265,9 +263,10 @@ function ShowSearchPage()
 		'SearchFile'			=> $SearchFile,
 		'SearchFor'				=> $SearchFor,
 		'SearchMethod'			=> $SearchMethod,
+		'Searchmethod'			=> $SearchMethod,
 		'Order'					=> $Order,
 		'OrderBY'				=> $OrderBY,
-		'OrderBYParse'			=> $OrderBYParse,
+		'OrderBYParse'			=> isset($OrderBYParse) ? $OrderBYParse : array(),
 		'se_search'				=> $LNG['se_search'],
 		'se_limit'				=> $LNG['se_limit'],
 		'se_asc_desc'			=> $LNG['se_asc_desc'],
@@ -279,8 +278,8 @@ function ShowSearchPage()
 		'se_contrac'			=> $LNG['se_contrac'],
 		'se_search_order'		=> $LNG['se_search_order'],
 		'ac_minimize_maximize'	=> $LNG['ac_minimize_maximize'],
-		'LIST'					=> $RESULT['LIST'],
-		'PAGES'					=> $RESULT['PAGES'],
+		'LIST'					=> isset($RESULT['LIST']) ? $RESULT['LIST'] : '',
+		'PAGES'					=> isset($RESULT['PAGES']) ? $RESULT['PAGES'] : '',
 	));
 	
 	$template->show('SearchPage.tpl');
@@ -332,9 +331,9 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 	
 		$UrlForPage	= "?page=search
 						&search=".$SearchFile."
-						&search_in=".$SearchFor."
-						&fuki=".$SearchMethod."
-						&key_user=".$SearchKey."
+						&search_in=".HTTP::_GP('search_in', '')."
+						&fuki=".HTTP::_GP('fuki', '')."
+						&key_user=".HTTP::_GP('key_user', '', UTF8_SUPPORT)."
 						&key_order=".$Order."
 						&key_acc=".$OrderBY."
 						&limit=".$Limit;
