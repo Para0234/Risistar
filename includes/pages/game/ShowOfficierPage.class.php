@@ -34,7 +34,16 @@ class ShowOfficierPage extends AbstractGamePage
 		if (!BuildFunctions::isElementBuyable($USER, $PLANET, $Element, $costResources)) {
 			return;
 		}
-			
+
+		// Security (defense in depth): the resource cost below is deducted
+		// in-memory and persisted via the economy save, while the purchase is
+		// committed immediately through the USERS update. Refuse to commit the
+		// purchase when the economy layer is inactive - otherwise the cost is
+		// dropped and the officer/extra is granted for free.
+		if(!isset($this->ecoObj)) {
+			return;
+		}
+
 		$USER[$resource[$Element]]	= max($USER[$resource[$Element]], TIMESTAMP) + $pricelist[$Element]['time'];
 			
 		if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
@@ -64,7 +73,14 @@ class ShowOfficierPage extends AbstractGamePage
 			|| $pricelist[$Element]['max'] <= $USER[$resource[$Element]]) {
 			return;
 		}
-		
+
+		// Security (defense in depth): see UpdateExtra(). Do not commit the
+		// officer level-up while the economy persistence layer is inactive,
+		// otherwise the in-memory resource cost is silently dropped.
+		if(!isset($this->ecoObj)) {
+			return;
+		}
+
 		$USER[$resource[$Element]]	+= 1;
 		
 		if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
