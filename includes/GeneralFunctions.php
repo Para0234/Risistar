@@ -558,7 +558,7 @@ function exceptionHandler($exception)
 			<b>Message: </b>'.$exception->getMessage().'<br>
 			<b>File: </b>'.$exception->getFile().'<br>
 			<b>Line: </b>'.$exception->getLine().'<br>
-			<b>URL: </b>'.PROTOCOL.HTTP_HOST.$_SERVER['REQUEST_URI'].'<br>
+			<b>URL: </b>'.PROTOCOL.HTTP_HOST.(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/CLI').'<br>
 			<b>PHP-Version: </b>'.PHP_VERSION.'<br>
 			<b>PHP-API: </b>'.php_sapi_name().'<br>
 			<b>2Moons Version: </b>'.$VERSION.'<br>

@@ -1,0 +1,9 @@
+parameters:
+    level: 0
+    paths:
+        - includes
+        - tests
+    excludePaths:
+        - includes/libs
+    bootstrapFiles:
+        - includes/constants.php
