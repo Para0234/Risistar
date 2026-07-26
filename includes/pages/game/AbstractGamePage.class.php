@@ -30,17 +30,28 @@ abstract class AbstractGamePage
 	protected $ecoObj;
 	protected $window;
 	protected $disableEcoSystem = false;
+	private $saved = false;
 
 	protected function __construct() {
+
+		// Security: economy calculation and persistence must NOT depend on the
+		// client-controlled AJAX_REQUEST flag. Previously, sending ajax=1 skipped
+		// ecoObj construction entirely, so save()/SavePlanetToDB() became a no-op
+		// while direct DB writes (fleet dispatch, officer purchase, research
+		// refund) still committed - allowing resource duplication. The economy
+		// layer is now built for every request (except pages that explicitly opt
+		// out via $disableEcoSystem), and its persistence is guaranteed by a
+		// shutdown handler so it runs even if the request ends early or fatals.
+		if(!$this->disableEcoSystem)
+		{
+			$this->ecoObj	= new ResourceUpdate();
+			$this->ecoObj->CalcResource();
+			register_shutdown_function(array($this, 'save'));
+		}
 
 		if(!AJAX_REQUEST)
 		{
 			$this->setWindow('full');
-			if(!$this->disableEcoSystem)
-			{
-				$this->ecoObj	= new ResourceUpdate();
-				$this->ecoObj->CalcResource();
-			}
 			$this->initTemplate();
 		} else {
 			$this->setWindow('ajax');
@@ -215,8 +226,15 @@ abstract class AbstractGamePage
 		$this->display('error.default.tpl');
 	}
 
-	protected function save() {
+	// Public so it can be used as a register_shutdown_function() callback.
+	// Guarded by $saved so the economy is persisted exactly once per request
+	// (SavePlanetToDB() applies relative build increments and must not run twice).
+	public function save() {
+		if($this->saved) {
+			return;
+		}
 		if(isset($this->ecoObj)) {
+			$this->saved	= true;
 			$this->ecoObj->SavePlanetToDB();
 		}
 	}
