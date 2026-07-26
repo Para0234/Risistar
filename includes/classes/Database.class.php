@@ -76,6 +76,26 @@ class Database
 		return $this->dbHandle;
 	}
 
+	public function beginTransaction()
+	{
+		return $this->dbHandle->beginTransaction();
+	}
+
+	public function commit()
+	{
+		return $this->dbHandle->commit();
+	}
+
+	public function rollBack()
+	{
+		return $this->dbHandle->rollBack();
+	}
+
+	public function inTransaction()
+	{
+		return $this->dbHandle->inTransaction();
+	}
+
 	public function lastInsertId()
 	{
 		return $this->lastInsertId;

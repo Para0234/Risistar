@@ -409,42 +409,53 @@ class ShowFleetStep3Page extends AbstractGamePage
 			)));
 		}
 		
-		// Security (defense in depth): never commit a fleet dispatch while the
-		// economy persistence layer is inactive. The cargo deduction below is
-		// applied in-memory and persisted via the economy save; without it the
-		// fleet (with cargo) would still be written to the DB while the origin
-		// planet keeps its resources - duplicating them.
+		// Security (defense in depth): without the economy layer the cargo deduction is never persisted, duplicating the resources.
 		if(!isset($this->ecoObj)) {
+			error_log('ShowFleetStep3Page::show: aborted, economy layer inactive');
 			$this->redirectTo('game.php?page=fleetTable');
 		}
 
-		$PLANET[$resource[901]]	-= $fleetResource[901];
-		$PLANET[$resource[902]]	-= $fleetResource[902];
-		$PLANET[$resource[903]]	-= $fleetResource[903] + $consumption;
-
-		$fleetStartTime		= $duration + TIMESTAMP;
-		$timeDifference		= round(max(0, $fleetStartTime - $ACSTime));
-		
-		if($fleetGroup != 0)
+		// The cargo deduction and the fleet row must land together or not at all.
+		$db->beginTransaction();
+		try
 		{
-			if($timeDifference != 0)
+			$PLANET[$resource[901]]	-= $fleetResource[901];
+			$PLANET[$resource[902]]	-= $fleetResource[902];
+			$PLANET[$resource[903]]	-= $fleetResource[903] + $consumption;
+
+			$fleetStartTime		= $duration + TIMESTAMP;
+			$timeDifference		= round(max(0, $fleetStartTime - $ACSTime));
+
+			if($fleetGroup != 0)
 			{
-				FleetFunctions::setACSTime($timeDifference, $fleetGroup);
+				if($timeDifference != 0)
+				{
+					FleetFunctions::setACSTime($timeDifference, $fleetGroup);
+				}
+				else
+				{
+					$fleetStartTime		= $ACSTime;
+				}
 			}
-			else
-			{
-				$fleetStartTime		= $ACSTime;
-			}
+
+			$fleetStayTime		= $fleetStartTime + $StayDuration;
+			$fleetEndTime		= $fleetStayTime + $duration;
+
+			FleetFunctions::sendFleet($fleetArray, $targetMission, $USER['id'], $PLANET['id'], $PLANET['galaxy'],
+				$PLANET['system'], $PLANET['planet'], $PLANET['planet_type'], $targetPlanetData['id_owner'],
+				$targetPlanetData['id'], $targetGalaxy, $targetSystem, $targetPlanet, $targetType, $fleetResource,
+				$fleetStartTime, $fleetStayTime, $fleetEndTime, $fleetGroup);
+
+			$this->save();
+			$db->commit();
 		}
-		
-		$fleetStayTime		= $fleetStartTime + $StayDuration;
-		$fleetEndTime		= $fleetStayTime + $duration;
-		
-		FleetFunctions::sendFleet($fleetArray, $targetMission, $USER['id'], $PLANET['id'], $PLANET['galaxy'],
-			$PLANET['system'], $PLANET['planet'], $PLANET['planet_type'], $targetPlanetData['id_owner'],
-			$targetPlanetData['id'], $targetGalaxy, $targetSystem, $targetPlanet, $targetType, $fleetResource,
-			$fleetStartTime, $fleetStayTime, $fleetEndTime, $fleetGroup);
-		
+		catch (Throwable $e)
+		{
+			$this->discardEconomy();
+			$db->rollBack();
+			throw $e;
+		}
+
 		foreach ($fleetArray as $Ship => $Count)
 		{
 			$fleetList[$LNG['tech'][$Ship]]	= $Count;

@@ -46,13 +46,17 @@ abstract class AbstractGamePage
 		{
 			$this->ecoObj	= new ResourceUpdate();
 			$this->ecoObj->CalcResource();
-			register_shutdown_function(array($this, 'save'));
+			// Closure, not array($this, ...), so saveOnShutdown() can stay non-public:
+			// game.php dispatches any public method named by the client's `mode` param.
+			register_shutdown_function(function() { $this->saveOnShutdown(); });
 		}
+
+		// tplObj is always built: ajax pages still call assign()/gotoside() and would fatal on NULL.
+		$this->initTemplate();
 
 		if(!AJAX_REQUEST)
 		{
 			$this->setWindow('full');
-			$this->initTemplate();
 		} else {
 			$this->setWindow('ajax');
 		}
@@ -226,10 +230,20 @@ abstract class AbstractGamePage
 		$this->display('error.default.tpl');
 	}
 
-	// Public so it can be used as a register_shutdown_function() callback.
+	// register_shutdown_function() callback. An open transaction here means the request
+	// died between beginTransaction() and commit(): the pending writes are about to be
+	// rolled back by the connection close, so the in-memory economy no longer matches
+	// the database and must not be persisted.
+	protected function saveOnShutdown() {
+		if(Database::get()->inTransaction()) {
+			return;
+		}
+		$this->save();
+	}
+
 	// Guarded by $saved so the economy is persisted exactly once per request
 	// (SavePlanetToDB() applies relative build increments and must not run twice).
-	public function save() {
+	protected function save() {
 		if($this->saved) {
 			return;
 		}
@@ -237,6 +251,12 @@ abstract class AbstractGamePage
 			$this->saved	= true;
 			$this->ecoObj->SavePlanetToDB();
 		}
+	}
+
+	// Call after a rollBack(): the in-memory $USER/$PLANET still hold the reverted
+	// mutations, so suppress the pending economy save instead of committing them.
+	protected function discardEconomy() {
+		$this->saved	= true;
 	}
 
 	protected function assign($array, $nocache = true) {

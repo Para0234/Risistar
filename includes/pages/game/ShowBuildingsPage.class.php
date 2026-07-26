@@ -35,12 +35,9 @@ class ShowBuildingsPage extends AbstractGamePage
 			return false;
 		}
 
-		// Security (defense in depth): the refund and the queue-clear below are
-		// both applied in-memory and only persisted through the economy save.
-		// Refuse to process the cancel when the economy persistence layer is
-		// inactive so the split-commit cannot be abused to replay a refund.
-		// (Also avoids a null ecoObj fatal further down.)
+		// Defense in depth: without the economy layer the refund below is never persisted and ecoObj would fatal.
 		if(!isset($this->ecoObj)) {
+			error_log('ShowBuildingsPage::CancelBuildingFromQueue: aborted, economy layer inactive');
 			return false;
 		}
 

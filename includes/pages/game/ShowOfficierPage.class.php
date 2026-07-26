@@ -35,31 +35,42 @@ class ShowOfficierPage extends AbstractGamePage
 			return;
 		}
 
-		// Security (defense in depth): the resource cost below is deducted
-		// in-memory and persisted via the economy save, while the purchase is
-		// committed immediately through the USERS update. Refuse to commit the
-		// purchase when the economy layer is inactive - otherwise the cost is
-		// dropped and the officer/extra is granted for free.
+		// Security: without the economy layer the in-memory cost is never persisted, so the extra would be free.
 		if(!isset($this->ecoObj)) {
+			error_log('ShowOfficierPage::UpdateExtra: aborted, economy layer inactive');
 			return;
 		}
 
-		$USER[$resource[$Element]]	= max($USER[$resource[$Element]], TIMESTAMP) + $pricelist[$Element]['time'];
-			
-		if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
-		if(isset($costResources[902])) { $PLANET[$resource[902]]	-= $costResources[902]; }
-		if(isset($costResources[903])) { $PLANET[$resource[903]]	-= $costResources[903]; }
-		if(isset($costResources[921])) { $USER[$resource[921]]		-= $costResources[921]; }
+		$db	= Database::get();
+		$db->beginTransaction();
+		try
+		{
+			$USER[$resource[$Element]]	= max($USER[$resource[$Element]], TIMESTAMP) + $pricelist[$Element]['time'];
 
-		$sql	= 'UPDATE %%USERS%% SET
-				'.$resource[$Element].' = :newTime
-				WHERE
-				id = :userId;';
+			if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
+			if(isset($costResources[902])) { $PLANET[$resource[902]]	-= $costResources[902]; }
+			if(isset($costResources[903])) { $PLANET[$resource[903]]	-= $costResources[903]; }
+			if(isset($costResources[921])) { $USER[$resource[921]]		-= $costResources[921]; }
 
-		Database::get()->update($sql, array(
-			':newTime'	=> $USER[$resource[$Element]],
-			':userId'	=> $USER['id']
-		));
+			$sql	= 'UPDATE %%USERS%% SET
+					'.$resource[$Element].' = :newTime
+					WHERE
+					id = :userId;';
+
+			$db->update($sql, array(
+				':newTime'	=> $USER[$resource[$Element]],
+				':userId'	=> $USER['id']
+			));
+
+			$this->save();
+			$db->commit();
+		}
+		catch (Throwable $e)
+		{
+			$this->discardEconomy();
+			$db->rollBack();
+			throw $e;
+		}
 	}
 
 	public function UpdateOfficier($Element)
@@ -74,29 +85,42 @@ class ShowOfficierPage extends AbstractGamePage
 			return;
 		}
 
-		// Security (defense in depth): see UpdateExtra(). Do not commit the
-		// officer level-up while the economy persistence layer is inactive,
-		// otherwise the in-memory resource cost is silently dropped.
+		// Security: see UpdateExtra(); without the economy layer the level-up cost is silently dropped.
 		if(!isset($this->ecoObj)) {
+			error_log('ShowOfficierPage::UpdateOfficier: aborted, economy layer inactive');
 			return;
 		}
 
-		$USER[$resource[$Element]]	+= 1;
-		
-		if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
-		if(isset($costResources[902])) { $PLANET[$resource[902]]	-= $costResources[902]; }
-		if(isset($costResources[903])) { $PLANET[$resource[903]]	-= $costResources[903]; }
-		if(isset($costResources[921])) { $USER[$resource[921]]		-= $costResources[921]; }
+		$db	= Database::get();
+		$db->beginTransaction();
+		try
+		{
+			$USER[$resource[$Element]]	+= 1;
 
-		$sql	= 'UPDATE %%USERS%% SET
-		'.$resource[$Element].' = :newTime
-		WHERE
-		id = :userId;';
+			if(isset($costResources[901])) { $PLANET[$resource[901]]	-= $costResources[901]; }
+			if(isset($costResources[902])) { $PLANET[$resource[902]]	-= $costResources[902]; }
+			if(isset($costResources[903])) { $PLANET[$resource[903]]	-= $costResources[903]; }
+			if(isset($costResources[921])) { $USER[$resource[921]]		-= $costResources[921]; }
 
-		Database::get()->update($sql, array(
-			':newTime'	=> $USER[$resource[$Element]],
-			':userId'	=> $USER['id']
-		));
+			$sql	= 'UPDATE %%USERS%% SET
+			'.$resource[$Element].' = :newTime
+			WHERE
+			id = :userId;';
+
+			$db->update($sql, array(
+				':newTime'	=> $USER[$resource[$Element]],
+				':userId'	=> $USER['id']
+			));
+
+			$this->save();
+			$db->commit();
+		}
+		catch (Throwable $e)
+		{
+			$this->discardEconomy();
+			$db->rollBack();
+			throw $e;
+		}
 	}
 	
 	public function show()
