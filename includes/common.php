@@ -157,8 +157,10 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 		ShowErrorPage::printError($LNG['sys_closed_game'].'<br><br>'.$config->close_reason, false);
 	}
 
-	if($USER['bana'] == 1) {
-		ShowErrorPage::printError("<font size=\"6px\">".$LNG['css_account_banned_message']."</font><br><br>".sprintf($LNG['css_account_banned_expire'], _date($LNG['php_tdformat'], $USER['banaday'], $USER['timezone']))."<br><br>".$LNG['css_goto_homeside'], false);
+	$page = HTTP::_GP('page', '');
+	$allowedBannedPages = array('logout', 'banlist');
+	if($USER['bana'] == 1 && !in_array(strtolower($page), $allowedBannedPages)) {
+		ShowErrorPage::printError("<font size=\"6px\">".$LNG['css_account_banned_message']."</font><br><br>".sprintf($LNG['css_account_banned_expire'], _date($LNG['php_tdformat'], $USER['banaday'], $USER['timezone']))."<br><br><a href=\"game.php?page=banList\">[ ".$LNG['lm_banned']." ]</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href=\"game.php?page=logout\">[ ".$LNG['lm_logout']." ]</a>", false);
 	}
 	
 	if (MODE === 'INGAME')
