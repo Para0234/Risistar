@@ -31,30 +31,45 @@ class FleetFunctions
 		return isset($Ships[$ShipID]) && count($Ships) === 1;
 	}
 
+	private static function GetUpgradedBaseSpeed($shipData)
+	{
+		return !empty($shipData['speed2']) ? $shipData['speed2'] : $shipData['speed'];
+	}
+
 	private static function GetShipSpeed($Ship, $Player)
 	{
 		global $pricelist;
 		
 		$techSpeed	= $pricelist[$Ship]['tech'];
+		$baseSpeed	= $pricelist[$Ship]['speed'];
 		
 		if($techSpeed == 4) {
-			$techSpeed = $Player['impulse_motor_tech'] >= 5 ? 2 : 1;
+			if($Player['impulse_motor_tech'] >= 5) {
+				$techSpeed = 2;
+				$baseSpeed = self::GetUpgradedBaseSpeed($pricelist[$Ship]);
+			} else {
+				$techSpeed = 1;
+			}
 		}
 		if($techSpeed == 5) {
-			$techSpeed = $Player['hyperspace_motor_tech'] >= 8 ? 3 : 2;
+			if($Player['hyperspace_motor_tech'] >= 8) {
+				$techSpeed = 3;
+				$baseSpeed = self::GetUpgradedBaseSpeed($pricelist[$Ship]);
+			} else {
+				$techSpeed = 2;
+			}
 		}
 			
-		
 		switch($techSpeed)
 		{
 			case 1:
-				$speed	= $pricelist[$Ship]['speed'] * (1 + (0.1 * $Player['combustion_tech']));
+				$speed	= $baseSpeed * (1 + (0.1 * $Player['combustion_tech']));
 			break;
 			case 2:
-				$speed	= $pricelist[$Ship]['speed'] * (1 + (0.2 * $Player['impulse_motor_tech']));
+				$speed	= $baseSpeed * (1 + (0.2 * $Player['impulse_motor_tech']));
 			break;
 			case 3:
-				$speed	= $pricelist[$Ship]['speed'] * (1 + (0.3 * $Player['hyperspace_motor_tech']));
+				$speed	= $baseSpeed * (1 + (0.3 * $Player['hyperspace_motor_tech']));
 			break;
 			default:
 				$speed	= 0;

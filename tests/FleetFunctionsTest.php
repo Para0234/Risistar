@@ -27,14 +27,85 @@ class FleetFunctionsTest extends TestCase
         require_once ROOT_PATH . 'includes/classes/class.FleetFunctions.php';
 
         $GLOBALS['pricelist'] = [
-            self::ID_SMALL_CARGO => ['capacity' => 5000, 'speed' => 10000, 'consumption' => 20, 'tech' => 1],
-            self::ID_LARGE_CARGO => ['capacity' => 25000, 'speed' => 7500, 'consumption' => 300, 'tech' => 1],
-            self::ID_CRUISER => ['capacity' => 800, 'speed' => 15000, 'consumption' => 300, 'tech' => 2]
+            self::ID_SMALL_CARGO => ['capacity' => 5000, 'speed' => 5000, 'speed2' => 10000, 'consumption' => 10, 'consumption2' => 20, 'tech' => 4],
+            self::ID_LARGE_CARGO => ['capacity' => 25000, 'speed' => 7500, 'speed2' => 7500, 'consumption' => 50, 'consumption2' => 50, 'tech' => 1],
+            self::ID_CRUISER => ['capacity' => 800, 'speed' => 15000, 'consumption' => 300, 'tech' => 2],
+            211 => ['capacity' => 500, 'speed' => 4000, 'speed2' => 5000, 'consumption' => 1000, 'consumption2' => 1000, 'tech' => 5]
         ];
         $GLOBALS['resource'] = [
             108 => 'computer_tech',
             124 => 'expedition_tech'
         ];
+    }
+
+    public function testGetShipSpeedSmallCargoEngineUpgrade()
+    {
+        // Case 1: Impulse Tech < 5 -> Uses Combustion Tech with base speed 5000
+        $playerCombustionOnly = [
+            'combustion_tech' => 10,
+            'impulse_motor_tech' => 4,
+            'hyperspace_motor_tech' => 0
+        ];
+        $speedPtCombustion = FleetFunctions::GetFleetMaxSpeed(self::ID_SMALL_CARGO, $playerCombustionOnly);
+        // Base 5000 * (1 + 0.1 * 10) = 10000
+        $this->assertEquals(10000, $speedPtCombustion);
+
+        // Case 2: Impulse Tech >= 5 -> Uses Impulse Tech with upgraded base speed (speed2 = 10000)
+        $playerImpulse = [
+            'combustion_tech' => 10,
+            'impulse_motor_tech' => 5,
+            'hyperspace_motor_tech' => 0
+        ];
+        $speedPtImpulse = FleetFunctions::GetFleetMaxSpeed(self::ID_SMALL_CARGO, $playerImpulse);
+        $speedGtImpulse = FleetFunctions::GetFleetMaxSpeed(self::ID_LARGE_CARGO, $playerImpulse);
+
+        // Base speed2 10000 * (1 + 0.2 * 5) = 20000
+        $this->assertEquals(20000, $speedPtImpulse);
+
+        // GT speed with Combustion 10: 7500 * (1 + 0.1 * 10) = 15000
+        $this->assertEquals(15000, $speedGtImpulse);
+
+        // PT must be faster than GT once Impulse Tech 5 is reached!
+        $this->assertGreaterThan($speedGtImpulse, $speedPtImpulse);
+    }
+
+    public function testGetShipSpeedBomberEngineUpgrade()
+    {
+        // Case 1: Hyperspace Tech < 8 -> Uses Impulse Tech with base speed 4000
+        $playerImpulseOnly = [
+            'combustion_tech' => 0,
+            'impulse_motor_tech' => 6,
+            'hyperspace_motor_tech' => 7
+        ];
+        $speedBomberImpulse = FleetFunctions::GetFleetMaxSpeed(211, $playerImpulseOnly);
+        // Base 4000 * (1 + 0.2 * 6) = 8800
+        $this->assertEquals(8800, $speedBomberImpulse);
+
+        // Case 2: Hyperspace Tech >= 8 -> Uses Hyperspace Tech with upgraded base speed (speed2 = 5000)
+        $playerHyperspace = [
+            'combustion_tech' => 0,
+            'impulse_motor_tech' => 6,
+            'hyperspace_motor_tech' => 8
+        ];
+        $speedBomberHyperspace = FleetFunctions::GetFleetMaxSpeed(211, $playerHyperspace);
+        // Base speed2 5000 * (1 + 0.3 * 8) = 17000
+        $this->assertEquals(17000, $speedBomberHyperspace);
+    }
+
+    public function testGetShipSpeedFallbackWhenSpeed2IsNull()
+    {
+        // Define ship with tech 5 but null speed2
+        $GLOBALS['pricelist'][299] = ['capacity' => 500, 'speed' => 6000, 'speed2' => null, 'consumption' => 1000, 'consumption2' => 1000, 'tech' => 5];
+
+        $player = [
+            'combustion_tech' => 0,
+            'impulse_motor_tech' => 6,
+            'hyperspace_motor_tech' => 8
+        ];
+
+        // Should fall back to speed1 (6000) * (1 + 0.3 * 8) = 20400 instead of 0
+        $speed = FleetFunctions::GetFleetMaxSpeed(299, $player);
+        $this->assertEquals(20400, $speed);
     }
 
     public function testCheckUserSpeed()
