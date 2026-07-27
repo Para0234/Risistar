@@ -74,57 +74,6 @@ class ShowOverviewPage extends AbstractGamePage
 		return $fleetTableObj->renderTable();
 	}
 	
-	function savePlanetAction()
-	{
-		global $USER, $PLANET, $LNG;
-		$password =	HTTP::_GP('password', '', true);
-		if (!empty($password))
-		{
-			$db = Database::get();
-            $sql = "SELECT COUNT(*) as state FROM %%FLEETS%% WHERE
-                      (fleet_owner = :userID AND (fleet_start_id = :planetID OR fleet_start_id = :lunaID)) OR
-                      (fleet_target_owner = :userID AND (fleet_end_id = :planetID OR fleet_end_id = :lunaID));";
-            $IfFleets = $db->selectSingle($sql, array(
-                ':userID'   => $USER['id'],
-                ':planetID' => $PLANET['id'],
-                ':lunaID'   => $PLANET['id_luna']
-            ), 'state');
-
-            if ($IfFleets > 0)
-				exit(json_encode(array('message' => $LNG['ov_abandon_planet_not_possible'])));
-			elseif ($USER['id_planet'] == $PLANET['id'])
-				exit(json_encode(array('message' => $LNG['ov_principal_planet_cant_abanone'])));
-			elseif (PlayerUtil::cryptPassword($password) != $USER['password'])
-				exit(json_encode(array('message' => $LNG['ov_wrong_pass'])));
-			else
-			{
-				if($PLANET['planet_type'] == 1) {
-					$sql = "UPDATE %%PLANETS%% SET destruyed = :time WHERE id = :planetID;";
-                    $db->update($sql, array(
-                        ':time'   => TIMESTAMP + 86400,
-                        ':planetID' => $PLANET['id'],
-                    ));
-                    $sql = "DELETE FROM %%PLANETS%% WHERE id = :lunaID;";
-                    $db->delete($sql, array(
-                        ':lunaID' => $PLANET['id_luna']
-                    ));
-                } else {
-                    $sql = "UPDATE %%PLANETS%% SET id_luna = 0 WHERE id_luna = :planetID;";
-                    $db->update($sql, array(
-                        ':planetID' => $PLANET['id'],
-                    ));
-                    $sql = "DELETE FROM %%PLANETS%% WHERE id = :planetID;";
-                    $db->delete($sql, array(
-                        ':planetID' => $PLANET['id'],
-                    ));
-                }
-				
-				$PLANET['id']	= $USER['id_planet'];
-				exit(json_encode(array('ok' => true, 'message' => $LNG['ov_planet_abandoned'])));
-			}
-		}
-	}
-		
 	function show()
 	{
 		global $LNG, $PLANET, $USER;
@@ -357,6 +306,18 @@ class ShowOverviewPage extends AbstractGamePage
 			} elseif (PlayerUtil::cryptPassword($password) != $USER['password']) {
 				$this->sendJSON(array('message' => $LNG['ov_wrong_pass']));
 			} else {
+                // Flush the economy while the current planet row still exists.
+                // SavePlanetToDB() writes one joined UPDATE keyed on
+                // "p.id = :planetId AND u.id = :userId", so once that row is gone the
+                // statement matches nothing and the save is silently dropped - including
+                // the %%USERS%% columns (darkmatter, b_tech*) it also carries, which have
+                // nothing to do with the abandoned planet. Only the else branch below
+                // deletes the current row, so only abandoning a moon loses data; the
+                // planet branch flags it destruyed for the cleaner cronjob and deletes
+                // the moon instead. sendJSON() saves again below, but save() is guarded
+                // by $saved and correctly no-ops there.
+                $this->save();
+
                 if($PLANET['planet_type'] == 1) {
                     $sql = "UPDATE %%PLANETS%% SET destruyed = :time WHERE id = :planetID;";
                     $db->update($sql, array(
