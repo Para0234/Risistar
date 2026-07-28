@@ -45,9 +45,11 @@ if(empty($cronjobID))
 
 require_once 'includes/classes/Cronjob.class.php';
 
-$cronjobsTodo	= Cronjob::getNeedTodoExecutedJobs();
-/*if(!in_array($cronjobID, $cronjobsTodo))
+$cronjobsTodo	= array_map('intval', Cronjob::getNeedTodoExecutedJobs());
+
+if(!in_array($cronjobID, $cronjobsTodo, true))
 {
 	exit;
-}*/
+}
+
 Cronjob::execute($cronjobID);

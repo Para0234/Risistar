@@ -24,54 +24,85 @@ class Cronjob
 	
 	static function execute($cronjobID)
 	{
-		$lockToken	= md5(TIMESTAMP);
+		$cronjobID	= (int) $cronjobID;
+		$lockToken	= md5(uniqid(TIMESTAMP.'_'.$cronjobID, true));
 
 		$db	= Database::get();
 
-		$sql = 'SELECT class FROM %%CRONJOBS%% WHERE isActive = :isActive AND cronjobID = :cronjobId AND `lock` IS NULL;';
-
-		$cronjobClassName	= $db->selectSingle($sql, array(
-			':isActive'		=> 1,
-			':cronjobId'	=> $cronjobID
-		), 'class');
-
-		if(empty($cronjobClassName))
-		{
-			throw new Exception(sprintf("Unknown cronjob %s or cronjob is deactive!", $cronjobID));
-		}
-		
-		$sql = 'UPDATE %%CRONJOBS%% SET `lock` = :lock WHERE cronjobID = :cronjobId;';
+		// cronjob.php is reachable by every logged in player, so the schedule is
+		// what decides whether a job may run, not the caller. Claiming the lock
+		// and checking that the job is due must be the same statement: with a
+		// SELECT followed by an UPDATE two parallel requests both pass the check
+		// and the job runs twice.
+		$sql = 'UPDATE %%CRONJOBS%% SET `lock` = :lock
+		WHERE cronjobID = :cronjobId AND isActive = :isActive
+		AND `lock` IS NULL AND nextTime < :time;';
 
 		$db->update($sql, array(
 			':lock'			=> $lockToken,
+			':cronjobId'	=> $cronjobID,
+			':isActive'		=> 1,
+			':time'			=> TIMESTAMP
+		));
+
+		// Unknown, disabled, already running or not due yet.
+		if($db->rowCount() != 1)
+		{
+			return false;
+		}
+
+		$sql = 'SELECT class FROM %%CRONJOBS%% WHERE cronjobID = :cronjobId;';
+
+		$cronjobClassName	= $db->selectSingle($sql, array(
 			':cronjobId'	=> $cronjobID
-		));
-		
-		$cronjobPath		= 'includes/classes/cronjob/'.$cronjobClassName.'.class.php';
-		
-		// die hard, if file not exists.
-		require_once($cronjobPath);
+		), 'class');
 
-		/** @var $cronjobObj CronjobTask */
-		$cronjobObj			= new $cronjobClassName;
-		$cronjobObj->run();
+		try
+		{
+			if(!preg_match('/^[A-Za-z0-9_]+$/', $cronjobClassName))
+			{
+				throw new Exception(sprintf("Invalid cronjob class name %s!", $cronjobClassName));
+			}
 
-		self::reCalculateCronjobs($cronjobID);
-		$sql = 'UPDATE %%CRONJOBS%% SET `lock` = NULL WHERE cronjobID = :cronjobId;';
+			$cronjobPath	= 'includes/classes/cronjob/'.$cronjobClassName.'.class.php';
 
-		$db->update($sql, array(
-			':cronjobId'	=> $cronjobID
-		));
+			// Deliberately not require_once on a missing file: a fatal error would
+			// skip the release below and leave the job locked for good.
+			if(!file_exists($cronjobPath))
+			{
+				throw new Exception(sprintf("Cronjob class file %s not found!", $cronjobPath));
+			}
 
-		$sql = 'INSERT INTO %%CRONJOBS_LOG%% SET `cronjobId` = :cronjobId,
-		`executionTime` = :executionTime, `lockToken` = :lockToken';
-		
-		$db->insert($sql, array(
-			':cronjobId'		=> $cronjobID,
-			':executionTime'	=> Database::formatDate(TIMESTAMP),
-			':lockToken'		=> $lockToken
-		));
-		
+			require_once($cronjobPath);
+
+			/** @var $cronjobObj CronjobTask */
+			$cronjobObj		= new $cronjobClassName;
+			$cronjobObj->run();
+
+			$sql = 'INSERT INTO %%CRONJOBS_LOG%% SET `cronjobId` = :cronjobId,
+			`executionTime` = :executionTime, `lockToken` = :lockToken';
+
+			$db->insert($sql, array(
+				':cronjobId'		=> $cronjobID,
+				':executionTime'	=> Database::formatDate(TIMESTAMP),
+				':lockToken'		=> $lockToken
+			));
+		}
+		finally
+		{
+			// Move to the next slot and release even when run() threw, otherwise the
+			// job stays locked forever and every page load retries the same failure.
+			self::reCalculateCronjobs($cronjobID);
+
+			$sql = 'UPDATE %%CRONJOBS%% SET `lock` = NULL WHERE cronjobID = :cronjobId AND `lock` = :lock;';
+
+			$db->update($sql, array(
+				':cronjobId'	=> $cronjobID,
+				':lock'			=> $lockToken
+			));
+		}
+
+		return true;
 	}
 	
 	static function getNeedTodoExecutedJobs()
