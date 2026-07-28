@@ -84,7 +84,12 @@ class ShowInformationPage extends AbstractGamePage
 			if(!isset($Ships[$Ship]) || $Ship == 212)
 				continue;
 
-			$ShipArray[$Ship]	= max(0, min($Ships[$Ship], $PLANET[$resource[$Ship]]));
+			// Security: $Ships[$Ship] comes from HTTP::_GP('ship', array()), whose
+			// values are only htmlspecialchars-escaped (quotes) - NOT integer-cast.
+			// $ShipArray[$Ship] is concatenated below into the UPDATE SET clause, a
+			// numeric context needing no quotes, so a non-numeric string here is a
+			// SQL injection. Force an integer amount.
+			$ShipArray[$Ship]	= max(0, min((int) $Ships[$Ship], (int) $PLANET[$resource[$Ship]]));
 
 			if(empty($ShipArray[$Ship]))
 				continue;

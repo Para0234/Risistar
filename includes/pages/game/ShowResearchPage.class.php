@@ -55,87 +55,107 @@ class ShowResearchPage extends AbstractGamePage
 			return false;
 		}
 
+		// Security: without the economy layer the queue-clear is never persisted, so the refund below could be replayed.
+		if(!isset($this->ecoObj)) {
+			error_log('ShowResearchPage::CancelBuildingFromQueue: aborted, economy layer inactive');
+			return false;
+		}
+
 		$db = Database::get();
 
-		$elementId		= $USER['b_tech_id'];
-		$costResources	= BuildFunctions::getElementPrice($USER, $PLANET, $elementId);
-		
-		if($PLANET['id'] == $USER['b_tech_planet'])
+		// Refund and queue-clear must land together, else the refund can be replayed.
+		$db->beginTransaction();
+		try
 		{
-			if(isset($costResources[901])) { $PLANET[$resource[901]]	+= $costResources[901]; }
-			if(isset($costResources[902])) { $PLANET[$resource[902]]	+= $costResources[902]; }
-			if(isset($costResources[903])) { $PLANET[$resource[903]]	+= $costResources[903]; }
-		}
-		else
-		{
-			$params = array('techPlanet' => $USER['b_tech_planet']);
-			$sql = "UPDATE %%PLANETS%% SET ";
-			if(isset($costResources[901])) {
-				$sql	.= $resource[901]." = ".$resource[901]." + :".$resource[901].", ";
-				$params[':'.$resource[901]] = $costResources[901];
-			}
-			if(isset($costResources[902])) {
-				$sql	.= $resource[902]." = ".$resource[902]." + :".$resource[902].", ";
-				$params[':'.$resource[902]] = $costResources[902];
-			}
-			if(isset($costResources[903])) {
-				$sql	.= $resource[903]." = ".$resource[903]." + :".$resource[903].", ";
-				$params[':'.$resource[903]] = $costResources[903];
-			}
+			$elementId		= $USER['b_tech_id'];
+			$costResources	= BuildFunctions::getElementPrice($USER, $PLANET, $elementId);
 
-			$sql = substr($sql, 0, -2);
-			$sql .= " WHERE id = :techPlanet;";
-
-			$db->update($sql, $params);
-		}
-		
-		if(isset($costResources[921])) { $USER[$resource[921]]		+= $costResources[921]; }
-		
-		$USER['b_tech_id']			= 0;
-		$USER['b_tech']      		= 0;
-		$USER['b_tech_planet']		= 0;
-
-		array_shift($CurrentQueue);
-
-		if (count($CurrentQueue) == 0) {
-			$USER['b_tech_queue']	= '';
-			$USER['b_tech_planet']	= 0;
-			$USER['b_tech_id']		= 0;
-			$USER['b_tech']			= 0;
-		} else {
-			$BuildEndTime		= TIMESTAMP;
-			$NewCurrentQueue	= array();
-			foreach($CurrentQueue as $ListIDArray)
+			if($PLANET['id'] == $USER['b_tech_planet'])
 			{
-				if($elementId == $ListIDArray[0] || empty($ListIDArray[0]))
-					continue;
-					
-				if($ListIDArray[4] != $PLANET['id']) {
-					$sql = "SELECT :resource6, :resource31, id FROM %%PLANETS%% WHERE id = :id;";
-					$CPLANET = $db->selectSingle($sql, array(
-						':resource6'	=> $resource[6],
-						':resource31'	=> $resource[31],
-						':id'			=> $ListIDArray[4]
-					));
-				} else
-					$CPLANET		= $PLANET;
-				
-				$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
-				$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
-				$ListIDArray[3]						= $BuildEndTime;
-				$NewCurrentQueue[]					= $ListIDArray;				
+				if(isset($costResources[901])) { $PLANET[$resource[901]]	+= $costResources[901]; }
+				if(isset($costResources[902])) { $PLANET[$resource[902]]	+= $costResources[902]; }
+				if(isset($costResources[903])) { $PLANET[$resource[903]]	+= $costResources[903]; }
 			}
-			
-			if(!empty($NewCurrentQueue)) {
-				$USER['b_tech']    			= TIMESTAMP;
-				$USER['b_tech_queue'] 		= serialize($NewCurrentQueue);
-				$this->ecoObj->setData($USER, $PLANET);
-				$this->ecoObj->SetNextQueueTechOnTop();
-				list($USER, $PLANET)		= $this->ecoObj->getData();
+			else
+			{
+				$params = array('techPlanet' => $USER['b_tech_planet']);
+				$sql = "UPDATE %%PLANETS%% SET ";
+				if(isset($costResources[901])) {
+					$sql	.= $resource[901]." = ".$resource[901]." + :".$resource[901].", ";
+					$params[':'.$resource[901]] = $costResources[901];
+				}
+				if(isset($costResources[902])) {
+					$sql	.= $resource[902]." = ".$resource[902]." + :".$resource[902].", ";
+					$params[':'.$resource[902]] = $costResources[902];
+				}
+				if(isset($costResources[903])) {
+					$sql	.= $resource[903]." = ".$resource[903]." + :".$resource[903].", ";
+					$params[':'.$resource[903]] = $costResources[903];
+				}
+
+				$sql = substr($sql, 0, -2);
+				$sql .= " WHERE id = :techPlanet;";
+
+				$db->update($sql, $params);
+			}
+
+			if(isset($costResources[921])) { $USER[$resource[921]]		+= $costResources[921]; }
+
+			$USER['b_tech_id']			= 0;
+			$USER['b_tech']      		= 0;
+			$USER['b_tech_planet']		= 0;
+
+			array_shift($CurrentQueue);
+
+			if (count($CurrentQueue) == 0) {
+				$USER['b_tech_queue']	= '';
+				$USER['b_tech_planet']	= 0;
+				$USER['b_tech_id']		= 0;
+				$USER['b_tech']			= 0;
 			} else {
-				$USER['b_tech']    			= 0;
-				$USER['b_tech_queue'] 		= '';
+				$BuildEndTime		= TIMESTAMP;
+				$NewCurrentQueue	= array();
+				foreach($CurrentQueue as $ListIDArray)
+				{
+					if($elementId == $ListIDArray[0] || empty($ListIDArray[0]))
+						continue;
+
+					if($ListIDArray[4] != $PLANET['id']) {
+						$sql = "SELECT :resource6, :resource31, id FROM %%PLANETS%% WHERE id = :id;";
+						$CPLANET = $db->selectSingle($sql, array(
+							':resource6'	=> $resource[6],
+							':resource31'	=> $resource[31],
+							':id'			=> $ListIDArray[4]
+						));
+					} else
+						$CPLANET		= $PLANET;
+
+					$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
+					$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
+					$ListIDArray[3]						= $BuildEndTime;
+					$NewCurrentQueue[]					= $ListIDArray;
+				}
+
+				if(!empty($NewCurrentQueue)) {
+					$USER['b_tech']    			= TIMESTAMP;
+					$USER['b_tech_queue'] 		= serialize($NewCurrentQueue);
+					$this->ecoObj->setData($USER, $PLANET);
+					$this->ecoObj->SetNextQueueTechOnTop();
+					list($USER, $PLANET)		= $this->ecoObj->getData();
+				} else {
+					$USER['b_tech']    			= 0;
+					$USER['b_tech_queue'] 		= '';
+				}
 			}
+
+			$this->save();
+			$db->commit();
+		}
+		catch (Throwable $e)
+		{
+			$this->discardEconomy();
+			$db->rollBack();
+			throw $e;
 		}
 
 		return true;

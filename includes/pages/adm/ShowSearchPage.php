@@ -303,7 +303,13 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 
 	if (!$Order || !in_array($Order, $ArrayOSec))
 		$Order	= $ArrayEx[0];
-		
+
+	// Security: $OrderBY (key_acc) is concatenated into the ORDER BY clause
+	// below and only passes through htmlspecialchars (no quotes needed to break
+	// out of an ORDER BY). Unlike $Order it was never validated, allowing SQL
+	// injection into the raw ->query(). Whitelist it to a sort direction.
+	$OrderBY	= in_array(strtoupper($OrderBY), array('ASC', 'DESC'), true) ? strtoupper($OrderBY) : 'ASC';
+
 	$CountArray	= count($ArrayEx);
 	
 	

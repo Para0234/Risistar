@@ -30,18 +30,33 @@ abstract class AbstractGamePage
 	protected $ecoObj;
 	protected $window;
 	protected $disableEcoSystem = false;
+	private $saved = false;
 
 	protected function __construct() {
+
+		// Security: economy calculation and persistence must NOT depend on the
+		// client-controlled AJAX_REQUEST flag. Previously, sending ajax=1 skipped
+		// ecoObj construction entirely, so save()/SavePlanetToDB() became a no-op
+		// while direct DB writes (fleet dispatch, officer purchase, research
+		// refund) still committed - allowing resource duplication. The economy
+		// layer is now built for every request (except pages that explicitly opt
+		// out via $disableEcoSystem), and its persistence is guaranteed by a
+		// shutdown handler so it runs even if the request ends early or fatals.
+		if(!$this->disableEcoSystem)
+		{
+			$this->ecoObj	= new ResourceUpdate();
+			$this->ecoObj->CalcResource();
+			// Closure, not array($this, ...), so saveOnShutdown() can stay non-public:
+			// game.php dispatches any public method named by the client's `mode` param.
+			register_shutdown_function(function() { $this->saveOnShutdown(); });
+		}
+
+		// tplObj is always built: ajax pages still call assign()/gotoside() and would fatal on NULL.
+		$this->initTemplate();
 
 		if(!AJAX_REQUEST)
 		{
 			$this->setWindow('full');
-			if(!$this->disableEcoSystem)
-			{
-				$this->ecoObj	= new ResourceUpdate();
-				$this->ecoObj->CalcResource();
-			}
-			$this->initTemplate();
 		} else {
 			$this->setWindow('ajax');
 		}
@@ -215,10 +230,33 @@ abstract class AbstractGamePage
 		$this->display('error.default.tpl');
 	}
 
+	// register_shutdown_function() callback. An open transaction here means the request
+	// died between beginTransaction() and commit(): the pending writes are about to be
+	// rolled back by the connection close, so the in-memory economy no longer matches
+	// the database and must not be persisted.
+	protected function saveOnShutdown() {
+		if(Database::get()->inTransaction()) {
+			return;
+		}
+		$this->save();
+	}
+
+	// Guarded by $saved so the economy is persisted exactly once per request
+	// (SavePlanetToDB() applies relative build increments and must not run twice).
 	protected function save() {
+		if($this->saved) {
+			return;
+		}
 		if(isset($this->ecoObj)) {
+			$this->saved	= true;
 			$this->ecoObj->SavePlanetToDB();
 		}
+	}
+
+	// Call after a rollBack(): the in-memory $USER/$PLANET still hold the reverted
+	// mutations, so suppress the pending economy save instead of committing them.
+	protected function discardEconomy() {
+		$this->saved	= true;
 	}
 
 	protected function assign($array, $nocache = true) {

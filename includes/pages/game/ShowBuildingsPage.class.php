@@ -34,7 +34,13 @@ class ShowBuildingsPage extends AbstractGamePage
 			$PLANET['b_building']		= 0;
 			return false;
 		}
-	
+
+		// Defense in depth: without the economy layer the refund below is never persisted and ecoObj would fatal.
+		if(!isset($this->ecoObj)) {
+			error_log('ShowBuildingsPage::CancelBuildingFromQueue: aborted, economy layer inactive');
+			return false;
+		}
+
 		$Element             	= $CurrentQueue[0][0];
 		$BuildMode          	= $CurrentQueue[0][4];
 		
