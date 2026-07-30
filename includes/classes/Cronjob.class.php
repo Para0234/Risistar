@@ -21,9 +21,11 @@ class Cronjob
 	{
 		
 	}
-	
+
 	static function execute($cronjobID)
 	{
+		self::clearStaleLocks();
+
 		$cronjobID	= (int) $cronjobID;
 		$lockToken	= md5(uniqid(TIMESTAMP.'_'.$cronjobID, true));
 
@@ -88,6 +90,17 @@ class Cronjob
 				':lockToken'		=> $lockToken
 			));
 		}
+		catch (\Throwable $e)
+		{
+			error_log(sprintf(
+				"[CRONJOB ERROR] Cronjob #%d (%s) failed: %s in %s:%d",
+				$cronjobID,
+				isset($cronjobClassName) ? $cronjobClassName : 'Unknown',
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+		}
 		finally
 		{
 			// Move to the next slot and release even when run() threw, otherwise the
@@ -105,8 +118,10 @@ class Cronjob
 		return true;
 	}
 	
-	static function getNeedTodoExecutedJobs()
+	static function getDueJobs()
 	{
+		self::clearStaleLocks();
+
 		$sql			= 'SELECT cronjobID
 		FROM %%CRONJOBS%%
 		WHERE isActive = :isActive AND nextTime < :time AND `lock` IS NULL;';
@@ -124,6 +139,45 @@ class Cronjob
 		}
 		
 		return $cronjobList;
+	}
+
+	static function clearStaleLocks($lockTimeout = 900)
+	{
+		$db = Database::get();
+		$staleThreshold = TIMESTAMP - (int) $lockTimeout;
+
+		$sqlSelectStaleJobs = 'SELECT cronjobID, name, nextTime, `lock` FROM %%CRONJOBS%%
+		WHERE `lock` IS NOT NULL AND nextTime < :staleThreshold;';
+
+		$staleJobs = $db->select($sqlSelectStaleJobs, array(
+			':staleThreshold' => $staleThreshold
+		));
+
+		foreach ($staleJobs as $job)
+		{
+			error_log(sprintf(
+				"[CRONJOB ALERT] Auto-released stale lock for cronjob #%d (%s), scheduled at %s (lock: %s)",
+				$job['cronjobID'],
+				$job['name'],
+				date('Y-m-d H:i:s', $job['nextTime']),
+				$job['lock']
+			));
+		}
+
+		$sqlClearStaleJobs = 'UPDATE %%CRONJOBS%% SET `lock` = NULL
+		WHERE `lock` IS NOT NULL AND nextTime < :staleThreshold;';
+
+		$db->update($sqlClearStaleJobs, array(
+			':staleThreshold' => $staleThreshold
+		));
+	}
+
+	/**
+	 * @deprecated Use getDueJobs() instead.
+	 */
+	static function getNeedTodoExecutedJobs()
+	{
+		return self::getDueJobs();
 	}
 
 	static function getLastExecutionTime($cronjobName)

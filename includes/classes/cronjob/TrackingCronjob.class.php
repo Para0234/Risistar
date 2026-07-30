@@ -21,6 +21,9 @@ class TrackingCronjob implements CronjobTask
 {
 	function run()
 	{
+		// Obsolete 2Moons tracking endpoint (tracking.jkroepke.de) disabled.
+		return;
+
 		$serverData['php']			= PHP_VERSION;
 		
 		try

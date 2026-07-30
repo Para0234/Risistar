@@ -21,6 +21,10 @@ set_include_path(ROOT_PATH);
 
 require 'includes/common.php';
 
+if (function_exists('set_time_limit')) {
+	@set_time_limit(60);
+}
+
 $session	= Session::load();
 
 // Output transparent gif
@@ -45,7 +49,7 @@ if(empty($cronjobID))
 
 require_once 'includes/classes/Cronjob.class.php';
 
-$cronjobsTodo	= array_map('intval', Cronjob::getNeedTodoExecutedJobs());
+$cronjobsTodo	= array_map('intval', Cronjob::getDueJobs());
 
 if(!in_array($cronjobID, $cronjobsTodo, true))
 {
