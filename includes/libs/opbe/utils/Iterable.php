@@ -26,31 +26,36 @@
  * @version alpha(2013-2-4)
  * @link https://github.com/jstar88/opbe
  */
-class Iterable implements Iterator
+class OpbeIterable implements Iterator
 {
 
     /* Iterator functions */
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return next($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->current() !== false;

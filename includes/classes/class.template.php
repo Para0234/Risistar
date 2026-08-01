@@ -17,6 +17,7 @@
 
 require('includes/libs/Smarty/Smarty.class.php');
 		
+#[\AllowDynamicProperties]
 class template extends Smarty
 {
 	protected $window	= 'full';

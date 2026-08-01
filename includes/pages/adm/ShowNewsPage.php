@@ -20,18 +20,23 @@ if (!allowedTo(str_replace(array(dirname(__FILE__), '\\', '/', '.php'), '', __FI
 function ShowNewsPage(){
 	global $LNG, $USER;
 
-	if($_GET['action'] == 'send') {
-		$edit_id 	= HTTP::_GP('id', 0);
+	$action = HTTP::_GP('action', '');
+	$mode   = HTTP::_GP('mode', 0);
+	$id     = HTTP::_GP('id', 0);
+
+	if($action == 'send') {
+		$edit_id 	= $id;
 		$title 		= $GLOBALS['DATABASE']->sql_escape(HTTP::_GP('title', '', true));
 		$text 		= $GLOBALS['DATABASE']->sql_escape(HTTP::_GP('text', '', true));
-		$query		= ($_GET['mode'] == 2) ? "INSERT INTO ".NEWS." (`id` ,`user` ,`date` ,`title` ,`text`) VALUES ( NULL , '".$USER['username']."', '".TIMESTAMP."', '".$title."', '".$text."');" : "UPDATE ".NEWS." SET `title` = '".$title."', `text` = '".$text."', `date` = '".TIMESTAMP."' WHERE `id` = '".$edit_id."' LIMIT 1;";
+		$query		= ($mode == 2) ? "INSERT INTO ".NEWS." (`id` ,`user` ,`date` ,`title` ,`text`) VALUES ( NULL , '".$USER['username']."', '".TIMESTAMP."', '".$title."', '".$text."');" : "UPDATE ".NEWS." SET `title` = '".$title."', `text` = '".$text."', `date` = '".TIMESTAMP."' WHERE `id` = '".$edit_id."' LIMIT 1;";
 		
 		$GLOBALS['DATABASE']->query($query);
-	} elseif($_GET['action'] == 'delete' && isset($_GET['id'])) {
-		$GLOBALS['DATABASE']->query("DELETE FROM ".NEWS." WHERE `id` = '".HTTP::_GP('id', 0)."';");
+	} elseif($action == 'delete' && !empty($id)) {
+		$GLOBALS['DATABASE']->query("DELETE FROM ".NEWS." WHERE `id` = '".$id."';");
 	}
 
 	$query = $GLOBALS['DATABASE']->query("SELECT * FROM ".NEWS." ORDER BY id ASC");
+	$NewsList = array();
 
 	while ($u = $GLOBALS['DATABASE']->fetch_array($query)) {
 		$NewsList[]	= array(
@@ -46,8 +51,8 @@ function ShowNewsPage(){
 	$template	= new template();
 
 
-	if($_GET['action'] == 'edit' && isset($_GET['id'])) {
-		$News = $GLOBALS['DATABASE']->getFirstRow("SELECT id, title, text FROM ".NEWS." WHERE id = '".$GLOBALS['DATABASE']->sql_escape($_GET['id'])."';");
+	if($action == 'edit' && !empty($id)) {
+		$News = $GLOBALS['DATABASE']->getFirstRow("SELECT id, title, text FROM ".NEWS." WHERE id = '".$GLOBALS['DATABASE']->sql_escape($id)."';");
 		$template->assign_vars(array(	
 			'mode'			=> 1,
 			'nws_head'		=> sprintf($LNG['nws_head_edit'], $News['title']),
@@ -55,17 +60,20 @@ function ShowNewsPage(){
 			'news_title'	=> $News['title'],
 			'news_text'		=> $News['text'],
 		));
-	} elseif($_GET['action'] == 'create') {
+	} elseif($action == 'create') {
 		$template->assign_vars(array(	
 			'mode'			=> 2,
 			'nws_head'		=> $LNG['nws_head_create'],
+			'news_id'		=> 0,
+			'news_title'	=> '',
+			'news_text'		=> '',
 		));
 	}
 	
 	$template->assign_vars(array(	
 		'NewsList'		=> $NewsList,
 		'button_submit'	=> $LNG['button_submit'],
-		'nws_total'		=> sprintf($LNG['nws_total'], Database::get()->rowCount($NewsList)),
+		'nws_total'		=> sprintf($LNG['nws_total'], count($NewsList)),
 		'nws_news'		=> $LNG['nws_news'],
 		'nws_id'		=> $LNG['nws_id'],
 		'nws_title'		=> $LNG['nws_title'],

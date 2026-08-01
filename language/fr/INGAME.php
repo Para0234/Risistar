@@ -39,9 +39,9 @@ $LNG['user_level_3']                        = 'Administrateur';
 
 $LNG['page_doesnt_exist']					= 'Cette page n\'existe pas';
 $LNG['bad_forum_url']				    	= 'Le lien vers le Forum est incorrect!';
-$LNG['admin_access_1']				    	= 'Les joueurs ont accès temporairement aux fonctions administratives!';
+$LNG['admin_access_1']				    	= 'Vous disposez d\'un accès temporaire aux fonctions d\'administration. ';
 $LNG['admin_access_link']				    = 'Désactiver cet accès';
-$LNG['admin_access_2']				    	= ", Si vous n'en avez plus besion dans l'immédiat";
+$LNG['admin_access_2']				    	= ', si vous n\'en avez plus besoin dans l\'immédiat.';
 
 
 //----------------------------------------------------------------------------//

@@ -24,19 +24,16 @@ require 'includes/pages/login/ShowErrorPage.class.php';
 require 'includes/common.php';
 /** @var $LNG Language */
 
-$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+$page 		= HTTP::_GP('page', 'index');
+$mode 		= HTTP::_GP('mode', 'show');
 
-
-if (strpos($url,'index.php?page=rules') !== false) {
-	}
- else {
-		if (Session::load()->isValidSession()) {
+$allowedPublicPages = array('rules', 'banlist', 'logout', 'disclaimer', 'screens');
+if (!in_array(strtolower($page), $allowedPublicPages)) {
+	if (Session::load()->isValidSession()) {
 		HTTP::sendHeader('Location', "game.php");
 		exit;
 	}
 }
-$page 		= HTTP::_GP('page', 'index');
-$mode 		= HTTP::_GP('mode', 'show');
 $page		= str_replace(array('_', '\\', '/', '.', "\0"), '', $page);
 $pageClass	= 'Show'.ucfirst($page).'Page';
 

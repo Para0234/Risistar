@@ -21,11 +21,12 @@ function ShowSearchPage()
 {
 	global $LNG, $USER;
 	
-	if ($_GET['delete'] == 'user') {
-        PlayerUtil::deletePlayer((int) $_GET['user']);
+	$deleteMode = HTTP::_GP('delete', '');
+	if ($deleteMode === 'user') {
+        PlayerUtil::deletePlayer((int) HTTP::_GP('user', 0));
         message($LNG['se_delete_succes_p'], '?page=search&search=users&minimize=on', 2);
-	} elseif ($_GET['delete'] == 'planet'){
-		PlayerUtil::deletePlanet((int) $_GET['planet']);
+	} elseif ($deleteMode === 'planet'){
+		PlayerUtil::deletePlanet((int) HTTP::_GP('planet', 0));
         message($LNG['se_delete_succes_p'], '?page=search&search=planet&minimize=on', 2);
     }
 	
@@ -83,14 +84,12 @@ function ShowSearchPage()
 	
 	
 	
-	if (HTTP::_GP('minimize', '') == 'on')
-	{
-		$Minimize			= "&amp;minimize=on";
-		$template->assign_vars(array(	
-			'minimize'	=> 'checked = "checked"',
-			'diisplaay'	=> 'style="display:none;"',
-		));
-	}
+	$isMinimized = (HTTP::_GP('minimize', '') == 'on');
+	$Minimize    = $isMinimized ? "&amp;minimize=on" : "";
+	$template->assign_vars(array(	
+		'minimize'	=> $isMinimized ? 'checked = "checked"' : '',
+		'diisplaay'	=> $isMinimized ? 'style="display:none;"' : '',
+	));
 
     $SpecialSpecify	= "";
 	
@@ -264,9 +263,10 @@ function ShowSearchPage()
 		'SearchFile'			=> $SearchFile,
 		'SearchFor'				=> $SearchFor,
 		'SearchMethod'			=> $SearchMethod,
+		'Searchmethod'			=> $SearchMethod,
 		'Order'					=> $Order,
 		'OrderBY'				=> $OrderBY,
-		'OrderBYParse'			=> $OrderBYParse,
+		'OrderBYParse'			=> isset($OrderBYParse) ? $OrderBYParse : array(),
 		'se_search'				=> $LNG['se_search'],
 		'se_limit'				=> $LNG['se_limit'],
 		'se_asc_desc'			=> $LNG['se_asc_desc'],
@@ -278,8 +278,8 @@ function ShowSearchPage()
 		'se_contrac'			=> $LNG['se_contrac'],
 		'se_search_order'		=> $LNG['se_search_order'],
 		'ac_minimize_maximize'	=> $LNG['ac_minimize_maximize'],
-		'LIST'					=> $RESULT['LIST'],
-		'PAGES'					=> $RESULT['PAGES'],
+		'LIST'					=> isset($RESULT['LIST']) ? $RESULT['LIST'] : '',
+		'PAGES'					=> isset($RESULT['PAGES']) ? $RESULT['PAGES'] : '',
 	));
 	
 	$template->show('SearchPage.tpl');
@@ -331,11 +331,11 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 	
 		$UrlForPage	= "?page=search
 						&search=".$SearchFile."
-						&search_in=".$_GET['search_in']."
-						&fuki=".$_GET['fuki']."
-						&key_user=".$_GET['key_user']."
-						&key_order=".$_GET['key_order']."
-						&key_acc=".$_GET['key_acc']."
+						&search_in=".HTTP::_GP('search_in', '')."
+						&fuki=".HTTP::_GP('fuki', '')."
+						&key_user=".HTTP::_GP('key_user', '', UTF8_SUPPORT)."
+						&key_order=".$Order."
+						&key_acc=".$OrderBY."
 						&limit=".$Limit;
 						 
 		if($NumberOfPages > 1)
@@ -397,12 +397,12 @@ function MyCrazyLittleSearch($SpecifyItems, $WhereItem, $SpecifyWhere, $SpecialS
 		{
 			$Search['LIST']	 .= "<tr>";
 			if ($Table == "users"){				
-				$WhileResult[3] = $_GET['search'] == "online" ? pretty_time( TIMESTAMP - $WhileResult[3] ) : _date($LNG['php_tdformat'], $WhileResult[3] , $USER['timezone']);
+				$WhileResult[3] = (HTTP::_GP('search', '') == "online") ? pretty_time( TIMESTAMP - $WhileResult[3] ) : _date($LNG['php_tdformat'], $WhileResult[3] , $USER['timezone']);
 				$WhileResult[4]	= _date($LNG['php_tdformat'], $WhileResult[4], $USER['timezone']);
 				
 				$WhileResult[6]	= $LNG['rank_'.$WhileResult[6]];
-				(($WhileResult[7] == '1')	? $WhileResult[7] = "<font color=lime>".$LNG['one_is_no_1']."</font>" : $WhileResult[7] = $LNG['one_is_no_0']);
-				(($WhileResult[8] == '1')	? $WhileResult[8] = "<font color=lime>".$LNG['one_is_no_1']."</font>" : $WhileResult[8] = $LNG['one_is_no_0']);
+				(($WhileResult[7] == '1')	? $WhileResult[7] = "<font color=red>".$LNG['one_is_no_1']."</font>" : $WhileResult[7] = $LNG['one_is_no_0']);
+				(($WhileResult[8] == '1')	? $WhileResult[8] = "<font color=orange>".$LNG['one_is_no_1']."</font>" : $WhileResult[8] = $LNG['one_is_no_0']);
 			}
 			
 			if ($Table == "banned"){

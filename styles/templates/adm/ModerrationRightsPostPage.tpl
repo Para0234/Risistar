@@ -6,11 +6,12 @@
 <tr>
 	<th colspan="2">{$ad_authlevel_title}</th>
 </tr>
+<tr>
 	<td>
 		{$User}
 	</td>
 	<td>
-		<a href="javascript:;" onclick="$('.yes').attr('checked', 'checked');">{$yesorno.1}</a> <a href="javascript:;" onclick="$('.no').attr('checked', 'checked');">{$yesorno.0}</a>
+		<a href="javascript:;" onclick="$('.yes').attr('checked', 'checked');">{$yesorno.1}</a> | <a href="javascript:;" onclick="$('.no').attr('checked', 'checked');">{$yesorno.0}</a>
 	</td>
 </tr>
 {foreach item=File from=$Files}
@@ -19,7 +20,7 @@
 		{$File}
 	</td>
 	<td>
-		{$yesorno.1} <input class="yes" name="rights[{$File}]" type="radio"{if $Rights.$File == 1} checked="checked"{/if} value="1"> {$yesorno.0} <input class="no" name="rights[{$File}]" type="radio"{if $Rights.$File != 1} checked="checked"{/if} value="0">
+		{$yesorno.1} <input class="yes" name="rights[{$File}]" type="radio"{if (isset($Rights.$File) && $Rights.$File == 1) || (!isset($Rights.$File) && $authlevel == 3)} checked="checked"{/if} value="1"> {$yesorno.0} <input class="no" name="rights[{$File}]" type="radio"{if (isset($Rights.$File) && $Rights.$File == 0) || (!isset($Rights.$File) && $authlevel != 3)} checked="checked"{/if} value="0">
 	</td>
 </tr>
 {/foreach}

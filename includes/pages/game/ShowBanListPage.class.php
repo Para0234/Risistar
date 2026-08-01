@@ -22,6 +22,10 @@ class ShowBanListPage extends AbstractGamePage
 	function __construct()
 	{
 		parent::__construct();
+		global $USER;
+		if (isset($USER['bana']) && $USER['bana'] == 1) {
+			$this->setWindow('popup');
+		}
 	}
 
 	function show()

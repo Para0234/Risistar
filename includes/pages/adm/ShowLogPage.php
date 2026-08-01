@@ -67,7 +67,7 @@ function ShowLogOverview() {
 }
 
 function ShowLogDetail() {
-	global $LNG;
+	global $LNG, $USER;
 	$logid = HTTP::_GP('id', 0);
 	$result   	= $GLOBALS['DATABASE']->getFirstRow("SELECT l.*, u_a.username as admin_username FROM ".LOG." as l LEFT JOIN ".USERS." as u_a ON  u_a.id = l.admin  WHERE l.id = ".$logid."");
 	
@@ -129,6 +129,7 @@ function ShowLogDetail() {
 		'field_max'		=> $LNG['qe_fields'],
 	);
 	
+	$LogArray = array();
 	foreach ($conf_before as $key => $val) {
 		if ($key != 'universe') {
 			if(isset($LNG['tech'][$key]))
@@ -171,7 +172,7 @@ function ShowLogDetail() {
 }
 
 function ShowLogSettingsList() {
-	global $LNG;
+	global $LNG, $USER;
 	$result    = $GLOBALS['DATABASE']->query("SELECT l.id, l.admin, l.time, l.universe, l.target,u_a.username as admin_username FROM ".LOG." as l LEFT JOIN ".USERS." as u_a ON  u_a.id = l.admin WHERE mode = 3 ORDER BY id DESC");
 
 	$template	= new template();	
@@ -187,6 +188,7 @@ function ShowLogSettingsList() {
 		5 => $LNG['log_disclamersettings']
 	);
 	
+	$LogArray = array();
 	while ($LogRow = $GLOBALS['DATABASE']->fetch_array($result))
 	{			
 		$LogArray[]	= array(
@@ -212,7 +214,7 @@ function ShowLogSettingsList() {
 }
 
 function ShowLogPlanetsList() {
-	global $LNG;
+	global $LNG, $USER;
 
 	$result    = $GLOBALS['DATABASE']->query("SELECT DISTINCT l.id, l.admin, l.target, l.time, l.universe,u_t.username as target_username, p.galaxy as target_galaxy, p.system as target_system, p.planet as target_planet,u_a.username as admin_username FROM ".LOG." as l LEFT JOIN ".USERS." as u_a ON  u_a.id = l.admin LEFT JOIN ".PLANETS." as p ON p.id = l.target LEFT JOIN ".USERS." as u_t ON u_t.id = p.id_owner WHERE mode = 2 ORDER BY id DESC");
 
@@ -220,6 +222,7 @@ function ShowLogPlanetsList() {
 	if(!$result)
 		$template->message($LNG['log_no_data']);
 		
+	$LogArray = array();
 	while ($LogRow = $GLOBALS['DATABASE']->fetch_array($result))
 	{			
 		$LogArray[]	= array(
@@ -246,7 +249,7 @@ function ShowLogPlanetsList() {
 }
 
 function ShowLogPlayersList() {
-	global $LNG;
+	global $LNG, $USER;
 
 	$result    = $GLOBALS['DATABASE']->query("SELECT DISTINCT l.id, l.admin, l.target, l.time, l.universe,u_t.username as target_username,u_a.username as admin_username FROM ".LOG." as l LEFT JOIN ".USERS." as u_a ON  u_a.id = l.admin LEFT JOIN ".USERS." as u_t ON u_t.id = l.target WHERE mode = 1 ORDER BY l.id DESC");
 
@@ -254,6 +257,7 @@ function ShowLogPlayersList() {
 	if(!$result)
 		$template->message($LNG['log_no_data']);
 		
+	$LogArray = array();
 	while ($LogRow = $GLOBALS['DATABASE']->fetch_array($result))
 	{			
 		$LogArray[]	= array(
@@ -279,7 +283,7 @@ function ShowLogPlayersList() {
 }
 
 function ShowLogPresent() {
-	global $LNG;
+	global $LNG, $USER;
 
 	$result    = $GLOBALS['DATABASE']->query("SELECT DISTINCT l.id, l.admin, l.target, l.time, l.universe, u_a.username as admin_username FROM ".LOG." as l LEFT JOIN ".USERS." as u_a ON u_a.id = l.admin WHERE mode = 4 ORDER BY l.id DESC;");
 
@@ -287,6 +291,7 @@ function ShowLogPresent() {
 	if(!$result)
 		$template->message($LNG['log_no_data']);
 		
+	$LogArray = array();
 	while ($LogRow = $GLOBALS['DATABASE']->fetch_array($result))
 	{			
 		$LogArray[]	= array(

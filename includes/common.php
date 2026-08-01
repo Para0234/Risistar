@@ -30,13 +30,15 @@ if (function_exists('mb_internal_encoding')) {
 }
 
 ignore_user_abort(true);
-error_reporting(E_ALL & ~E_STRICT);
+error_reporting(E_ALL & ~E_STRICT & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 // If date.timezone is invalid
 date_default_timezone_set(@date_default_timezone_get());
 
 ini_set('display_errors', 1);
-header('Content-Type: text/html; charset=UTF-8');
+if (PHP_SAPI !== 'cli' && !headers_sent()) {
+	header('Content-Type: text/html; charset=UTF-8');
+}
 define('TIMESTAMP',	time());
 	
 require 'includes/constants.php';
@@ -155,8 +157,10 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 		ShowErrorPage::printError($LNG['sys_closed_game'].'<br><br>'.$config->close_reason, false);
 	}
 
-	if($USER['bana'] == 1) {
-		ShowErrorPage::printError("<font size=\"6px\">".$LNG['css_account_banned_message']."</font><br><br>".sprintf($LNG['css_account_banned_expire'], _date($LNG['php_tdformat'], $USER['banaday'], $USER['timezone']))."<br><br>".$LNG['css_goto_homeside'], false);
+	$page = HTTP::_GP('page', '');
+	$allowedBannedPages = array('logout', 'banlist');
+	if($USER['bana'] == 1 && !in_array(strtolower($page), $allowedBannedPages)) {
+		ShowErrorPage::printError("<font size=\"6px\">".$LNG['css_account_banned_message']."</font><br><br>".sprintf($LNG['css_account_banned_expire'], _date($LNG['php_tdformat'], $USER['banaday'], $USER['timezone']))."<br><br><a href=\"game.php?page=banList\">[ ".$LNG['lm_banned']." ]</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href=\"game.php?page=logout\">[ ".$LNG['lm_logout']." ]</a>", false);
 	}
 	
 	if (MODE === 'INGAME')

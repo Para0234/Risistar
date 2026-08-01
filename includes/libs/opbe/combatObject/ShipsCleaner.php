@@ -31,6 +31,7 @@ class ShipsCleaner
     private $shipType;
     private $lastShipHit;
     private $lastShots;
+    private $fighters;
 
     private $exploded;
     private $remainLife;

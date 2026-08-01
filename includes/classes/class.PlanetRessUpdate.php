@@ -27,6 +27,8 @@ class ResourceUpdate
 	private $PLANET			= array();
 	private $USER			= array();
 	private $Builded		= array();
+	private $Build			= true;
+	private $Tech			= true;
 	function __construct($Build = true, $Tech = true)
 	{
 		$this->Build	= $Build;
@@ -69,8 +71,9 @@ class ResourceUpdate
 		$Hash[]	= $this->config->resource_multiplier;
 		$Hash[]	= $this->config->storage_multiplier;
 		$Hash[]	= $this->config->energySpeed;
-		$Hash[]	= $this->USER['factor']['Resource'];
-		$Hash[]	= $this->USER['factor']['Energy'];
+		$factor = isset($this->USER['factor']) ? $this->USER['factor'] : (class_exists('BuildFunctions') ? BuildFunctions::getBonusList($this->USER) : array('Resource' => 1, 'Energy' => 1));
+		$Hash[]	= isset($factor['Resource']) ? $factor['Resource'] : 1;
+		$Hash[]	= isset($factor['Energy']) ? $factor['Energy'] : 1;
 		$Hash[]	= $this->PLANET[$resource[22]];
 		$Hash[]	= $this->PLANET[$resource[23]];
 		$Hash[]	= $this->PLANET[$resource[24]];
@@ -87,6 +90,9 @@ class ResourceUpdate
 		$this->PLANET		= $this->isGlobalMode ? $GLOBALS['PLANET'] : $PLANET;
 		$this->TIME			= is_null($TIME) ? TIMESTAMP : $TIME;
 		$this->config		= Config::get($this->USER['universe']);
+		if (empty($this->USER['factor'])) {
+			$this->USER['factor'] = BuildFunctions::getBonusList($this->USER);
+		}
 		
 
 		

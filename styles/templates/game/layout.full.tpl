@@ -1,7 +1,7 @@
 {include file="main.header.tpl" bodyclass="full"}
 {if $hasAdminAccess}
-<div class="container-fluid" class="globalWarning" >
-{$LNG.admin_access_1} <a id="drop-admin">{$LNG.admin_access_link}</a>{$LNG.admin_access_2}
+<div class="container-fluid globalWarning">
+{$LNG.admin_access_1} <a href="javascript:;" id="drop-admin">{$LNG.admin_access_link}</a>{$LNG.admin_access_2}
 </div>
 {/if}
 {include file="main.navigation.tpl"}

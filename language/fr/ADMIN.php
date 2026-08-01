@@ -43,8 +43,8 @@ $LNG['info_information']	= 'Soumettre les bugs à : <a href="%s" target="tracker
 $LNG['one_is_yes_1']					= 'Oui';
 $LNG['one_is_yes_0']					= 'Non';
 
-$LNG['one_is_no_1']					= 'Non';
-$LNG['one_is_no_0']					= 'Oui';
+$LNG['one_is_no_1']					= 'Oui';
+$LNG['one_is_no_0']					= 'Non';
 //###########################################################//
 
 
@@ -315,7 +315,7 @@ $LNG['ow_forum']					= 'Forums';
 $LNG['ow_proyect_leader']			= 'Chef de projet';
 $LNG['ow_translator']				= 'Traducteurs';
 $LNG['ow_special_thanks']			= 'Remerciements spéciaux';
-$LNG['ow_file_detected']			= 'Le %s n\'a été trouvée. S\'il vous plaît renommer ou supprimer-le, puis votre jeu sera protégé.';
+$LNG['ow_file_detected']					= 'Le fichier %s a été détecté. Pour des raisons de sécurité, veuillez le renommer ou le supprimer.';
 $LNG['ow_config_file_writable']		= 'Le fichier config.php est en mode écriture, nous vous recommandons de définir les permissions du fichier en CHMOD 444 (lecture seule).';
 $LNG['ow_database_errors']			= 'Il y a des erreurs présentes !';
 $LNG['ow_smtp_errors']				= 'Vérifiez vos paramètres SMTP ! - Actuellement aucun mails ne sont envoyés !';
@@ -581,7 +581,7 @@ $LNG['ff_goback_succes']        			= 'La Flotte retourne maintenant à son point
 $LNG['sb_top_memory']					= 'Crête Mémoire: %p KB / max. %m KB <br>';
 $LNG['sb_final_memory']					= 'Mémoire utilisée à la fin : %e KB / max. %m KB<br>';
 $LNG['sb_start_memory']					= 'Mémoire utilisée au début : %i KB / max. %m KB<br>';
-$LNG['sb_stats_update']					= 'Stats mises à jour : %t secondes<<br>';
+$LNG['sb_stats_update']					= 'Stats mises à jour en : %s secondes<br>';
 $LNG['sb_stats_updated']				= 'Statistiques mises à jour! <br>Détails :<br>';
 $LNG['sb_sql_counts']					= 'Requêtes SQL : %d';
 
@@ -780,7 +780,7 @@ $LNG['ac_suspended_time']				= 'Bannis';
 $LNG['ac_suspended_longer']				= 'Jusqu\'à';
 $LNG['ac_suspended_reason']				= 'Raison';
 $LNG['ac_suspended_autor']				= 'Bannis pour';
-$LNG['ac_note_k']					.= '<table><tr><th width=10%><font color=lime>T+</font></th><th>Dépasse les Milliards</th></tr>';
+$LNG['ac_note_k']					= '<table><tr><th width=10%><font color=lime>T+</font></th><th>Dépasse les Milliards</th></tr>';
 $LNG['ac_leyend']					= '[ Légende ]';
 $LNG['ac_no_rank_level']				= 'Vous n\'avez pas l\' autorisation suffisante pour voir les informations sur ce joueur !';
 /*
@@ -869,14 +869,14 @@ $LNG['se_expand']					=	'Développer';
 $LNG['se_contrac']					=	'Réduire';
 $LNG['se__next']					=	'Suivant';
 $LNG['se__before']					=	'Précédent';
-$LNG['se_search_info']					=	'Chercher';
+$LNG['se_search_info']					=	'Éditer';
 $LNG['se_asc_desc']					=	'Croissant/Décroissant';
 $LNG['se_search_order']					=	'Ordre';
-$LNG['se_search_edit']					=	'Editer';
+$LNG['se_search_edit']					=	'Éditer';
 $LNG['se_delete_succes_p']				=	'Supprimé avec succès';
 $LNG['se_confirm_planet']				=	'La Planète (principale ou colonie) sélectionnée va être complètement supprimée, souhaitez-vous continuez ? Nom de la Planète :';
 
-// B�SQUEDA EN TABLA DE USUARIOS
+// BSQUEDA EN TABLA DE USUARIOS
 $LNG['se_search_users_0']				=	'ID';
 $LNG['se_search_users_1']				=	'Nom';
 $LNG['se_search_users_2']				=	'Email';
@@ -885,12 +885,12 @@ $LNG['se_search_users_4']				=	'Date d\'enregistrement';
 $LNG['se_search_users_5']				=	'Dernière IP';
 $LNG['se_search_users_6']				=	'Autorité';
 $LNG['se_search_users_7']				=	'Bannis ?';
-$LNG['se_search_users_8']				=	'Vaccances ?';
+$LNG['se_search_users_8']				=	'Vacances ?';
 
-// B�SQUEDA EN TABLA DE PLANETAS
+// BSQUEDA EN TABLA DE PLANETAS
 $LNG['se_search_planets_0']				=	'ID';
 $LNG['se_search_planets_1']				=	'Nom';
-$LNG['se_search_planets_2']				=	"Porpiétaire";
+$LNG['se_search_planets_2']				=	"Propriétaire";
 $LNG['se_search_planets_3']				=	"Dernière Activité";
 $LNG['se_search_planets_4']				=	"Galaxie";
 $LNG['se_search_planets_5']				=	"Système";
