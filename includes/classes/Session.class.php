@@ -248,7 +248,7 @@ class Session
 		$db->update($sql, array(
 		   ':userAddress'	=> $userIpAddress,
 		   ':lastActivity'	=> TIMESTAMP,
-		   ':userClient'	=> isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'CLI',
+		   ':userClient'	=> isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : 'CLI',
 		   ':userId'		=> $this->data['userId'],
 		));
 		// Remove multisessions
