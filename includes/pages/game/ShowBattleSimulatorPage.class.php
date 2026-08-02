@@ -34,6 +34,11 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 		}
 		
 		$BattleArray	= $_REQUEST['battleinput'];
+		array_walk_recursive($BattleArray, function(&$value) {
+			if ($value === '') {
+				$value = 0;
+			}
+		});
 		$elements	= array(0, 0);
 		foreach($BattleArray as $BattleSlotID => $BattleSlot)
 		{
