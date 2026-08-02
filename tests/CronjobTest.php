@@ -102,4 +102,44 @@ class CronjobTest extends TestCase
         $currentLock = $db->selectSingle("SELECT `lock` FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lock');
         $this->assertNull($currentLock, "Lock should be released to NULL in finally block.");
     }
+
+    /**
+     * Test demonstrating the exact reproduction of the old buggy behavior (+24h) vs the fixed behavior.
+     */
+    public function testOldBuggyLogicBehaviorVsFixed()
+    {
+        $midnightTimestamp = strtotime('2026-08-02 00:19:00');
+        $cronTabString = '*/5 * * * *';
+
+        // 1. OLD CODE BEHAVIOR:
+        // At 00:19, hour is 0.
+        // The old code did: if (!$nhour) { ... }
+        // In PHP, !0 evaluates to TRUE, which triggered the fallback error block and added +86400s (+24h).
+        $rtimeHour = 0; // Hour 00
+        $oldLogicBugTriggered = (!$rtimeHour); // !0 == true!
+        $oldCalculatedNextTime = strtotime('2026-08-02 00:00:00') + 86400; // 2026-08-03 00:00:00 (+24h)
+
+        $this->assertTrue($oldLogicBugTriggered, "The old code interpreted hour 0 as falsy (!0 === true).");
+        $this->assertEquals(
+            strtotime('2026-08-03 00:00:00'),
+            $oldCalculatedNextTime,
+            "The old code added +24h, shifting execution to the next day."
+        );
+
+        // 2. FIXED CODE BEHAVIOR:
+        // The fixed code does: if ($nhour === false) { ... }
+        // (0 === false) evaluates to FALSE, so hour 0 is preserved as a valid hour.
+        $newLogicBugTriggered = ($rtimeHour === false); // 0 === false is FALSE!
+        $this->assertFalse($newLogicBugTriggered, "The fixed code no longer triggers the error fallback for hour 0.");
+
+        // 3. VERIFICATION WITH FIXED tdCron ENGINE:
+        require_once ROOT_PATH . 'includes/libs/tdcron/class.tdcron.php';
+        $actualNextTime = \tdCron::getNextOccurrence($cronTabString, $midnightTimestamp + 60);
+
+        // The next calculated slot is 00:20 on the SAME day (difference of 60 seconds instead of 86400s)
+        $expectedNextTimeSameDay = strtotime('2026-08-02 00:20:00');
+        $this->assertEquals($expectedNextTimeSameDay, $actualNextTime);
+        $this->assertNotEquals($oldCalculatedNextTime, $actualNextTime);
+        $this->assertEquals(60, $actualNextTime - $midnightTimestamp, "Delay to next execution should be 60s (00:20) and not 86400s (+24h).");
+    }
 }
