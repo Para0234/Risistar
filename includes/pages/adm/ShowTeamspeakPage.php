@@ -68,7 +68,7 @@ function ShowTeamspeakPage() {
 		$config->save();
 
 		$sql	= "UPDATE %%CRONJOBS%%
-		SET isActive = :isActive, `lock` = NULL, nextTime = 0
+		SET isActive = :isActive, `lock` = NULL, lockedAt = NULL, nextTime = 0
 		WHERE name = 'teamspeak';";
 
 		Database::get()->update($sql, array(

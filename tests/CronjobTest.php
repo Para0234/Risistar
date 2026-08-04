@@ -28,79 +28,98 @@ class CronjobTest extends TestCase
 
     protected function tearDown(): void
     {
-        Database::get()->update("UPDATE %%CRONJOBS%% SET `lock` = NULL WHERE cronjobID = 1;");
+        Database::get()->update("UPDATE %%CRONJOBS%% SET `lock` = NULL, lockedAt = NULL WHERE cronjobID = 1;");
     }
 
     public static function tearDownAfterClass(): void
     {
-        Database::get()->update("UPDATE %%CRONJOBS%% SET `lock` = NULL;");
+        Database::get()->update("UPDATE %%CRONJOBS%% SET `lock` = NULL, lockedAt = NULL;");
     }
 
     public function testLockedCronjobIsIgnoredAndFailsToExecute()
     {
         $db = Database::get();
 
-        // 1. Manually lock cronjob #1 with a recent lock (<15 minutes ago)
-        $recentTime = time() - 120;
+        // Recent lock with an old nextTime: reproduces overnight late start.
+        // clearStaleLocks must use lockedAt, not nextTime, so this lock stays.
+        $oldNextTime = time() - 3600;
+        $recentLockedAt = time() - 120;
         $fakeLock = md5('recent_cronjob_lock_1');
 
-        $db->update("UPDATE %%CRONJOBS%% SET `lock` = :lock, `nextTime` = :nextTime WHERE cronjobID = 1;", [
+        $db->update("UPDATE %%CRONJOBS%% SET `lock` = :lock, lockedAt = :lockedAt, `nextTime` = :nextTime WHERE cronjobID = 1;", [
             ':lock'     => $fakeLock,
-            ':nextTime' => $recentTime,
+            ':lockedAt' => $recentLockedAt,
+            ':nextTime' => $oldNextTime,
         ]);
 
-        // 2. Query jobs needing execution
         $jobsTodo = Cronjob::getDueJobs();
 
-        // Cronjob 1 must NOT be in jobsTodo because its lock is active (< 15 min old)!
         $this->assertNotContains(1, $jobsTodo, "Cronjob #1 should be omitted from getDueJobs() when locked recently.");
 
         $executed = Cronjob::execute(1);
         $this->assertFalse($executed, "Cronjob #1 should fail to execute when locked recently (< 15 min).");
+
+        $currentLock = $db->selectSingle("SELECT `lock` FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lock');
+        $this->assertSame($fakeLock, $currentLock, "Recent lock must not be cleared just because nextTime is old.");
     }
 
     public function testStaleLockAutoReleaseAndRecovery()
     {
         $db = Database::get();
 
-        // Set cronjob #1 to have a stale lock from 1 hour ago
         $staleTime = time() - 3600;
         $staleLock = md5('stale_lock_token');
 
-        $db->update("UPDATE %%CRONJOBS%% SET `lock` = :lock, `nextTime` = :nextTime WHERE cronjobID = 1;", [
+        $db->update("UPDATE %%CRONJOBS%% SET `lock` = :lock, lockedAt = :lockedAt, `nextTime` = :nextTime WHERE cronjobID = 1;", [
             ':lock'     => $staleLock,
+            ':lockedAt' => $staleTime,
             ':nextTime' => $staleTime,
         ]);
 
-        // Call Cronjob::clearStaleLocks(900)
         Cronjob::clearStaleLocks(900);
 
-        // Verify the stale lock was set to NULL
         $currentLock = $db->selectSingle("SELECT `lock` FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lock');
         $this->assertNull($currentLock, "Stale lock should be automatically cleared.");
 
-        // Verify getDueJobs() now includes job #1
+        $currentLockedAt = $db->selectSingle("SELECT lockedAt FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lockedAt');
+        $this->assertNull($currentLockedAt, "lockedAt should be cleared with the stale lock.");
+
         $jobsTodo = Cronjob::getDueJobs();
         $this->assertContains(1, $jobsTodo, "Job #1 should be in getDueJobs() after stale lock is cleared.");
         $this->assertEquals(Cronjob::getDueJobs(), Cronjob::getNeedTodoExecutedJobs(), "Deprecated alias getNeedTodoExecutedJobs() should return same result as getDueJobs().");
+    }
+
+    public function testOrphanLockWithoutLockedAtIsCleared()
+    {
+        $db = Database::get();
+
+        $orphanLock = md5('orphan_lock_token');
+
+        $db->update("UPDATE %%CRONJOBS%% SET `lock` = :lock, lockedAt = NULL, `nextTime` = :nextTime WHERE cronjobID = 1;", [
+            ':lock'     => $orphanLock,
+            ':nextTime' => time() - 100,
+        ]);
+
+        Cronjob::clearStaleLocks(900);
+
+        $currentLock = $db->selectSingle("SELECT `lock` FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lock');
+        $this->assertNull($currentLock, "Pre-migration / orphan locks with lockedAt NULL should be cleared.");
     }
 
     public function testTaskExceptionIsCaughtAndLockIsReleased()
     {
         $db = Database::get();
 
-        // Target cronjob #1 and make it due
-        $db->update("UPDATE %%CRONJOBS%% SET `lock` = NULL, `nextTime` = :nextTime WHERE cronjobID = 1;", [
+        $db->update("UPDATE %%CRONJOBS%% SET `lock` = NULL, lockedAt = NULL, `nextTime` = :nextTime WHERE cronjobID = 1;", [
             ':nextTime' => time() - 100
         ]);
 
-        // Executing cronjob 1 with valid execution should complete cleanly
         $executed = Cronjob::execute(1);
         $this->assertTrue($executed, "Valid cronjob execution should return true.");
 
-        // Verify that lock is reset to NULL in finally block after execution completes
-        $currentLock = $db->selectSingle("SELECT `lock` FROM %%CRONJOBS%% WHERE cronjobID = 1;", [], 'lock');
-        $this->assertNull($currentLock, "Lock should be released to NULL in finally block.");
+        $row = $db->selectSingle("SELECT `lock`, lockedAt FROM %%CRONJOBS%% WHERE cronjobID = 1;");
+        $this->assertNull($row['lock'], "Lock should be released to NULL in finally block.");
+        $this->assertNull($row['lockedAt'], "lockedAt should be released to NULL in finally block.");
     }
 
     /**

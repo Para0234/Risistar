@@ -36,12 +36,13 @@ class Cronjob
 		// and checking that the job is due must be the same statement: with a
 		// SELECT followed by an UPDATE two parallel requests both pass the check
 		// and the job runs twice.
-		$sql = 'UPDATE %%CRONJOBS%% SET `lock` = :lock
+		$sql = 'UPDATE %%CRONJOBS%% SET `lock` = :lock, lockedAt = :lockedAt
 		WHERE cronjobID = :cronjobId AND isActive = :isActive
 		AND `lock` IS NULL AND nextTime < :time;';
 
 		$db->update($sql, array(
 			':lock'			=> $lockToken,
+			':lockedAt'		=> TIMESTAMP,
 			':cronjobId'	=> $cronjobID,
 			':isActive'		=> 1,
 			':time'			=> TIMESTAMP
@@ -107,7 +108,8 @@ class Cronjob
 			// job stays locked forever and every page load retries the same failure.
 			self::reCalculateCronjobs($cronjobID);
 
-			$sql = 'UPDATE %%CRONJOBS%% SET `lock` = NULL WHERE cronjobID = :cronjobId AND `lock` = :lock;';
+			$sql = 'UPDATE %%CRONJOBS%% SET `lock` = NULL, lockedAt = NULL
+			WHERE cronjobID = :cronjobId AND `lock` = :lock;';
 
 			$db->update($sql, array(
 				':cronjobId'	=> $cronjobID,
@@ -146,8 +148,10 @@ class Cronjob
 		$db = Database::get();
 		$staleThreshold = TIMESTAMP - (int) $lockTimeout;
 
-		$sqlSelectStaleJobs = 'SELECT cronjobID, name, nextTime, `lock` FROM %%CRONJOBS%%
-		WHERE `lock` IS NOT NULL AND nextTime < :staleThreshold;';
+		// Stale if held longer than $lockTimeout since lockedAt.
+		// lockedAt NULL = pre-migration / incomplete lock → clear too.
+		$sqlSelectStaleJobs = 'SELECT cronjobID, name, nextTime, lockedAt, `lock` FROM %%CRONJOBS%%
+		WHERE `lock` IS NOT NULL AND (lockedAt IS NULL OR lockedAt < :staleThreshold);';
 
 		$staleJobs = $db->select($sqlSelectStaleJobs, array(
 			':staleThreshold' => $staleThreshold
@@ -156,16 +160,17 @@ class Cronjob
 		foreach ($staleJobs as $job)
 		{
 			error_log(sprintf(
-				"[CRONJOB ALERT] Auto-released stale lock for cronjob #%d (%s), scheduled at %s (lock: %s)",
+				"[CRONJOB ALERT] Auto-released stale lock for cronjob #%d (%s), scheduled at %s, lockedAt %s (lock: %s)",
 				$job['cronjobID'],
 				$job['name'],
 				date('Y-m-d H:i:s', $job['nextTime']),
+				empty($job['lockedAt']) ? 'NULL' : date('Y-m-d H:i:s', $job['lockedAt']),
 				$job['lock']
 			));
 		}
 
-		$sqlClearStaleJobs = 'UPDATE %%CRONJOBS%% SET `lock` = NULL
-		WHERE `lock` IS NOT NULL AND nextTime < :staleThreshold;';
+		$sqlClearStaleJobs = 'UPDATE %%CRONJOBS%% SET `lock` = NULL, lockedAt = NULL
+		WHERE `lock` IS NOT NULL AND (lockedAt IS NULL OR lockedAt < :staleThreshold);';
 
 		$db->update($sqlClearStaleJobs, array(
 			':staleThreshold' => $staleThreshold
