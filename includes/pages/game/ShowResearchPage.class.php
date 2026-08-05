@@ -96,6 +96,7 @@ class ShowResearchPage extends AbstractGamePage
 				$sql = substr($sql, 0, -2);
 				$sql .= " WHERE id = :techPlanet;";
 
+				$db->lockPlanet($USER['b_tech_planet']);
 				$db->update($sql, $params);
 			}
 
