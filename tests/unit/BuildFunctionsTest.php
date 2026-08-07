@@ -1,36 +1,28 @@
 <?php
 
-namespace Risistar\Tests;
+namespace Risistar\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use BuildFunctions;
 
-class BuildFunctionsTest extends TestCase
+class BuildFunctionsTest extends UnitTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        if (!defined('ROOT_PATH')) {
-            define('ROOT_PATH', dirname(__DIR__) . '/');
-        }
-        if (!defined('MODE')) {
-            define('MODE', 'TEST');
-        }
-
-        require_once ROOT_PATH . 'includes/constants.php';
-        require_once ROOT_PATH . 'includes/classes/class.BuildFunctions.php';
+        self::bootConstants();
+        require_once self::rootPath() . 'includes/classes/class.BuildFunctions.php';
 
         $GLOBALS['resource'] = [
             901 => 'metal',
             902 => 'crystal',
             903 => 'deuterium',
-            921 => 'darkmatter'
+            921 => 'darkmatter',
         ];
     }
 
     public function testGetBonusListReturnsArray()
     {
         $bonuses = BuildFunctions::getBonusList();
-        $this->assertTrue(is_array($bonuses));
+        $this->assertIsArray($bonuses);
         $this->assertContainsEquals('Attack', $bonuses);
         $this->assertContainsEquals('Defensive', $bonuses);
         $this->assertContainsEquals('Shield', $bonuses);
@@ -40,28 +32,22 @@ class BuildFunctionsTest extends TestCase
 
     public function testGetRestPriceCalculatesMissingResources()
     {
-        $dummyUser = [
-            'darkmatter' => 0
-        ];
+        $dummyUser = ['darkmatter' => 0];
         $dummyPlanet = [
             'metal' => 500,
             'crystal' => 200,
-            'deuterium' => 0
+            'deuterium' => 0,
         ];
-        
         $elementPrice = [
-            901 => 1000, // Requires 1000 Metal
-            902 => 100,  // Requires 100 Crystal
-            903 => 50    // Requires 50 Deuterium
+            901 => 1000,
+            902 => 100,
+            903 => 50,
         ];
 
         $restPrice = BuildFunctions::getRestPrice($dummyUser, $dummyPlanet, 1, $elementPrice);
 
-        // Player has 500 Metal -> needs 500 more
         $this->assertEquals(500, $restPrice[901]);
-        // Player has 200 Crystal (needs 100) -> 0 missing
         $this->assertEquals(0, $restPrice[902]);
-        // Player has 0 Deuterium -> needs 50 more
         $this->assertEquals(50, $restPrice[903]);
     }
 }

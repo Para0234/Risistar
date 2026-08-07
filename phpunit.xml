@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap_unit.php"
          colors="true"
          verbose="true">
     <testsuites>
-        <testsuite name="Risistar Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/unit</directory>
         </testsuite>
     </testsuites>
     <filter>

@@ -45,7 +45,11 @@ class Database
 	protected function __construct()
 	{
 		$database = array();
-		require 'includes/config.php';
+		if (defined('DATABASE_CONFIG_FILE')) {
+			require DATABASE_CONFIG_FILE;
+		} else {
+			require 'includes/config.php';
+		}
 		//Connect
 		$db = new PDO("mysql:host=".$database['host'].";port=".$database['port'].";dbname=".$database['databasename'], $database['user'], $database['userpw']);
 		//error behaviour
