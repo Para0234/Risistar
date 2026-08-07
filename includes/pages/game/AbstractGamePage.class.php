@@ -101,7 +101,7 @@ abstract class AbstractGamePage
 		require_once 'includes/classes/Cronjob.class.php';
 
 		$this->assign(array(
-			'cronjobs'		=> Cronjob::getNeedTodoExecutedJobs()
+			'cronjobs'		=> Cronjob::getDueJobs()
 		));
 	}
 

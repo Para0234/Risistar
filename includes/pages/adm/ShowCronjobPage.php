@@ -134,12 +134,12 @@ function ShowCronjobDelete($cronjobId) {
 }
 
 function ShowCronjobLock($cronjobId) {
-    $GLOBALS['DATABASE']->query("UPDATE ".CRONJOBS." SET `lock` = MD5(UNIX_TIMESTAMP()) WHERE cronjobID = ".$cronjobId.";");
+    $GLOBALS['DATABASE']->query("UPDATE ".CRONJOBS." SET `lock` = MD5(UNIX_TIMESTAMP()), lockedAt = UNIX_TIMESTAMP() WHERE cronjobID = ".$cronjobId.";");
     HTTP::redirectTo('admin.php?page=cronjob');
 }
 
 function ShowCronjobUnlock($cronjobId) {
-    $GLOBALS['DATABASE']->query("UPDATE ".CRONJOBS." SET `lock` = NULL WHERE cronjobID = ".$cronjobId.";");
+    $GLOBALS['DATABASE']->query("UPDATE ".CRONJOBS." SET `lock` = NULL, lockedAt = NULL WHERE cronjobID = ".$cronjobId.";");
     HTTP::redirectTo('admin.php?page=cronjob');
 }
 

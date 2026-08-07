@@ -370,23 +370,24 @@ CREATE TABLE `%PREFIX%cronjobs` (
   `dow` varchar(32) NOT NULL,
   `class` varchar(32) NOT NULL,
   `nextTime` int(11) DEFAULT NULL,
-  `lock` varchar(32) DEFAULT NULL
+  `lock` varchar(32) DEFAULT NULL,
+  `lockedAt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 --
 -- Déchargement des données de la table `%PREFIX%cronjobs`
 --
 
-INSERT INTO `%PREFIX%cronjobs` (`cronjobID`, `name`, `isActive`, `min`, `hours`, `dom`, `month`, `dow`, `class`, `nextTime`, `lock`) VALUES
-(1, 'referral', 1, '*', '*', '*', '*', '*', 'ReferralCronjob', 1784926860, '5eeae775ea5677cb96082317481b55c5'),
-(2, 'statistic', 1, '*/5', '*', '*', '*', '*', 'StatisticCronjob', 1785012900, NULL),
-(3, 'daily', 1, '25', '2', '*', '*', '*', 'DailyCronjob', 1784939100, '4384bf9d5515e778a0f3b68595dbe2c3'),
-(4, 'cleaner', 1, '5', '2', '*', '*', '*', 'CleanerCronjob', 1784937900, '024bfa6dcd647bb3d285dfb27bd63118'),
-(5, 'inactive', 1, '30', '1', '*', '*', '0,3,6', 'InactiveMailCronjob', 1785022200, NULL),
-(6, 'teamspeak', 0, '*', '*', '*', '*', '*', 'TeamSpeakCronjob', 1784926860, NULL),
-(7, 'databasedump', 1, '30', '1', '*', '*', '1', 'DumpCronjob', 1785108600, 'fa443d35f05b7b1bd7beecbd5393bb17'),
-(8, 'tracking', 1, '8', '21', '*', '*', '0', 'TrackingCronjob', 1785092880, NULL),
-(9, 'DMForMail', 1, '0', '23', '*', '*', '*', 'DmMailCronjob', 1785013200, NULL);
+INSERT INTO `%PREFIX%cronjobs` (`cronjobID`, `name`, `isActive`, `min`, `hours`, `dom`, `month`, `dow`, `class`, `nextTime`, `lock`, `lockedAt`) VALUES
+(1, 'referral', 1, '*', '*', '*', '*', '*', 'ReferralCronjob', 1784926860, NULL, NULL),
+(2, 'statistic', 1, '*/5', '*', '*', '*', '*', 'StatisticCronjob', 1785012900, NULL, NULL),
+(3, 'daily', 1, '25', '2', '*', '*', '*', 'DailyCronjob', 1784939100, NULL, NULL),
+(4, 'cleaner', 1, '5', '2', '*', '*', '*', 'CleanerCronjob', 1784937900, NULL, NULL),
+(5, 'inactive', 1, '30', '1', '*', '*', '0,3,6', 'InactiveMailCronjob', 1785022200, NULL, NULL),
+(6, 'teamspeak', 0, '*', '*', '*', '*', '*', 'TeamSpeakCronjob', 1784926860, NULL, NULL),
+(7, 'databasedump', 1, '30', '1', '*', '*', '1', 'DumpCronjob', 1785108600, NULL, NULL),
+(8, 'tracking', 1, '8', '21', '*', '*', '0', 'TrackingCronjob', 1785092880, NULL, NULL),
+(9, 'DMForMail', 1, '0', '23', '*', '*', '*', 'DmMailCronjob', 1785013200, NULL, NULL);
 
 -- --------------------------------------------------------
 
