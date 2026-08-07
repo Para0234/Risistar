@@ -529,7 +529,7 @@ class FleetFunctions
 		{
 			return false;
 		}
-		$sql	= 'SELECT COUNT(*) as state
+		$sql	= 'SELECT COUNT(DISTINCT IF(fleet_group > 0, fleet_group, fleet_id)) as state
 		FROM %%LOG_FLEETS%%
 		WHERE fleet_owner = :fleetOwner
 		AND fleet_target_owner = :fleetEndOwner

@@ -25,6 +25,8 @@ services:
       MYSQL_DATABASE: 2moons
       MYSQL_USER: 2moons
       MYSQL_PASSWORD: 2moons
+    volumes:
+      - ./docker/db/init:/docker-entrypoint-initdb.d:ro
     ports:
       - 3306:3306
     networks:

@@ -10,6 +10,8 @@
  * - Aide CLI : php populate_universe.php --help
  * - Seeder global : php populate_universe.php [--reset]
  * - Injection de scénario : php populate_universe.php --scenario=incoming_attacks --count=3 --eta=10
+ *
+ * Uses the local game database (2moons via includes/config.php) so results are visible in the browser.
  */
 
 define('MODE', 'INSTALL');
