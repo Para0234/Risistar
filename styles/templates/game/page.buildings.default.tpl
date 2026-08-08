@@ -53,7 +53,7 @@
 		{$LNG.bd_remaining|replace:'"':'\''}<br>
 		{foreach $Element.costOverflow as $ResType => $ResCount}
 		{$LNG.tech.{$ResType}|replace:'"':'\''}: 
-		<span style='font-weight:700'>{$ResCount|number}</span><br>
+		<span style='font-weight:700'>{$ResCount|number:($ResType == 921)}</span><br>
 						{/foreach} </div>" style="font-weight:bold; font-size:1.1em;" href="#" onclick="return Dialog.info({$ID})">{$LNG.tech.{$ID}}<br>{if $Element.level > 0}({$LNG.bd_lvl} {$Element.level}{if $Element.maxLevel != 255}/{$Element.maxLevel}{/if}){else}<br>{/if}</a></div></div>
 		
 
@@ -64,7 +64,7 @@
 				
 					<div style="; height:100px; text-align:right;" >
 					<span>{foreach $Element.costResources as $RessID => $RessAmount}
-					<b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number}</span></b> <img src="{$dpath}images/{$RessID}.gif" alt="{$LNG.tech.{$RessID}}" width="20" height="20"><br>
+					<b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number:($RessID == 921)}</span></b> <img src="{$dpath}images/{$RessID}.gif" alt="{$LNG.tech.{$RessID}}" width="20" height="20"><br>
 					{/foreach}</span>
 					</div>
 						<div style="position:absolute;  top:156px; left:0px;">		{if $Element.level > 0}
@@ -78,7 +78,7 @@
 									{foreach $Element.destroyResources as $ResType => $ResCount}
 									<div>
 										{$LNG.tech.{$ResType}}
-										<span style='color:{if empty($Element.destroyOverflow[$RessID])}lime{else}red{/if}'>{$ResCount|number}</span>
+										<span style='color:{if empty($Element.destroyOverflow[$RessID])}lime{else}red{/if}'>{$ResCount|number:($ResType == 921)}</span>
 									</div>
 									{/foreach}
 									<div>
