@@ -1,26 +1,15 @@
 <?php
 
-namespace Risistar\Tests;
+namespace Risistar\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use ResourceUpdate;
 
-class ResourceUpdateTest extends TestCase
+class ResourceUpdateTest extends UnitTestCase
 {
     public static function setUpBeforeClass(): void
     {
-        if (!defined('ROOT_PATH')) {
-            define('ROOT_PATH', dirname(__DIR__) . '/');
-        }
-        if (!defined('MODE')) {
-            define('MODE', 'TEST');
-        }
-        if (!defined('TIMESTAMP')) {
-            define('TIMESTAMP', time());
-        }
-
-        require_once ROOT_PATH . 'includes/constants.php';
-        require_once ROOT_PATH . 'includes/classes/class.PlanetRessUpdate.php';
+        self::bootConstants();
+        require_once self::rootPath() . 'includes/classes/class.PlanetRessUpdate.php';
     }
 
     public function testResourceUpdateInstanceCreation()
@@ -37,7 +26,7 @@ class ResourceUpdateTest extends TestCase
             'universe' => 1,
             'urlaubs_modus' => 0,
             'b_tech' => 0,
-            'factor' => ['Resource' => 1, 'Energy' => 1]
+            'factor' => ['Resource' => 1, 'Energy' => 1],
         ];
         $dummyPlanet = [
             'id' => 1,
@@ -53,7 +42,7 @@ class ResourceUpdateTest extends TestCase
             'crystal_max' => 100000,
             'deuterium_max' => 100000,
             'b_building' => 0,
-            'b_hangar' => 0
+            'b_hangar' => 0,
         ];
 
         $updater->setData($dummyUser, $dummyPlanet);

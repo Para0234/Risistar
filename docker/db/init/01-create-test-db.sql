@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS `2moons_test` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+GRANT ALL PRIVILEGES ON `2moons_test`.* TO '2moons'@'%';
+FLUSH PRIVILEGES;
