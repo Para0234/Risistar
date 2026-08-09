@@ -205,7 +205,7 @@ class ShowOverviewPage extends AbstractGamePage
 			':statType'	=> 1
 		));
 
-		if($statData['total_rank'] == 0) {
+		if(empty($statData) || $statData['total_rank'] == 0) {
 			$rankInfo	= "-";
 		} else {
 			$rankInfo	= sprintf($LNG['ov_userrank_info'], pretty_number($statData['total_points']), $LNG['ov_place'],
