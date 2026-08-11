@@ -33,6 +33,86 @@ class FlyingFleetHandler
 		11	=> 'MissionCaseFoundDM',
 		15	=> 'MissionCaseExpedition',
 	);
+
+	/**
+	 * True for engine tokens (md5 hex from getRandomString()).
+	 * Admin / custom locks (e.g. ADM_LOCK) are not auto-releasable.
+	 */
+	public static function isAutoReleasableLock($lock)
+	{
+		return is_string($lock) && (bool) preg_match('/^[a-f0-9]{32}$/', $lock);
+	}
+
+	/**
+	 * Release stuck MD5 processing locks older than $lockTimeout seconds.
+	 * Non-hash locks are left untouched.
+	 */
+	public static function clearStaleLocks($lockTimeout = 300)
+	{
+		$db = Database::get();
+		$staleThreshold = TIMESTAMP - (int) $lockTimeout;
+
+		// Candidates: any non-null lock past the timeout (or orphan lockedAt).
+		// isAutoReleasableLock() keeps ADM_LOCK / custom locks untouched.
+		$sqlSelectStale = 'SELECT fleetID, `time`, lockedAt, `lock` FROM %%FLEETS_EVENT%%
+		WHERE `lock` IS NOT NULL AND (lockedAt IS NULL OR lockedAt < :staleThreshold);';
+
+		$staleEvents = $db->select($sqlSelectStale, array(
+			':staleThreshold' => $staleThreshold
+		));
+
+		$staleEvents = array_filter($staleEvents, function ($event) {
+			return self::isAutoReleasableLock($event['lock']);
+		});
+
+		foreach ($staleEvents as $event)
+		{
+			error_log(sprintf(
+				"[FLEET ALERT] Auto-released stale lock for fleet #%d, event time %s, lockedAt %s (lock: %s)",
+				$event['fleetID'],
+				date('Y-m-d H:i:s', $event['time']),
+				empty($event['lockedAt']) ? 'NULL' : date('Y-m-d H:i:s', $event['lockedAt']),
+				$event['lock']
+			));
+
+			$db->update('UPDATE %%FLEETS_EVENT%% SET `lock` = NULL, lockedAt = NULL WHERE fleetID = :fleetId AND `lock` = :lock;', array(
+				':fleetId'	=> $event['fleetID'],
+				':lock'		=> $event['lock'],
+			));
+		}
+	}
+
+	/**
+	 * Run missions for fleets claimed under $token, always releasing the token.
+	 * Uses late static binding so tests can subclass and override run().
+	 */
+	public static function processDueEvents($token)
+	{
+		$db = Database::get();
+
+		try
+		{
+			$fleetObj = new static();
+			$fleetObj->setToken($token);
+			$fleetObj->run();
+		}
+		catch (\Throwable $e)
+		{
+			error_log(sprintf(
+				"[FLEET ERROR] Fleet processing failed for token %s: %s in %s:%d",
+				$token,
+				$e->getMessage(),
+				$e->getFile(),
+				$e->getLine()
+			));
+		}
+		finally
+		{
+			$db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = NULL, lockedAt = NULL WHERE `lock` = :token;", array(
+				':token' => $token
+			));
+		}
+	}
 		
 	function setToken($token)
 	{

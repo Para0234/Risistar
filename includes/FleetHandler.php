@@ -15,22 +15,19 @@
  * @link https://github.com/jkroepke/2Moons
  */
 
+require_once 'includes/classes/class.FlyingFleetHandler.php';
+
+FlyingFleetHandler::clearStaleLocks();
+
 $token	= getRandomString();
 $db		= Database::get();
 
-$fleetResult	= $db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = :token WHERE `lock` IS NULL AND `time` <= :time;", array(
+$db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = :token, lockedAt = :lockedAt WHERE `lock` IS NULL AND `time` <= :time;", array(
 	':time'		=> TIMESTAMP,
-	':token'	=> $token
+	':token'	=> $token,
+	':lockedAt'	=> TIMESTAMP,
 ));
 
 if($db->rowCount() !== 0) {
-	require_once 'includes/classes/class.FlyingFleetHandler.php';
-	
-	$fleetObj	= new FlyingFleetHandler();
-	$fleetObj->setToken($token);
-	$fleetObj->run();
-
-	$db->update("UPDATE %%FLEETS_EVENT%% SET `lock` = NULL WHERE `lock` = :token;", array(
-		':token' => $token
-	));
+	FlyingFleetHandler::processDueEvents($token);
 }

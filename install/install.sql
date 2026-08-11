@@ -465,7 +465,8 @@ CREATE TABLE `%PREFIX%fleets` (
 CREATE TABLE `%PREFIX%fleet_event` (
   `fleetID` int(11) NOT NULL,
   `time` int(11) NOT NULL,
-  `lock` varchar(32) DEFAULT NULL
+  `lock` varchar(32) DEFAULT NULL,
+  `lockedAt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -880,7 +881,7 @@ CREATE TABLE `%PREFIX%system` (
 --
 
 INSERT INTO `%PREFIX%system` (`dbVersion`) VALUES
-(4);
+(7);
 
 -- --------------------------------------------------------
 
