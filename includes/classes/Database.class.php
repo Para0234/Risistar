@@ -21,6 +21,8 @@ class Database
 	protected $lastInsertId = false;
 	protected $rowCount = false;
 	protected $queryCounter = 0;
+	/** @var int Nesting depth for beginTransaction/commit/rollBack (savepoints when > 1). */
+	protected $transactionDepth = 0;
 	protected static $instance = NULL;
 
 
@@ -82,22 +84,102 @@ class Database
 
 	public function beginTransaction()
 	{
-		return $this->dbHandle->beginTransaction();
+		if ($this->transactionDepth === 0) {
+			// Under snapshot isolation, FOR UPDATE can fail if the row changed
+			// while we waited for the lock. READ COMMITTED re-reads the latest
+			// row after the wait, so the lock can proceed.
+			$this->dbHandle->exec('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
+			$this->dbHandle->beginTransaction();
+		} else {
+			$this->dbHandle->exec('SAVEPOINT nest_'.$this->transactionDepth);
+		}
+
+		$this->transactionDepth++;
+		return true;
 	}
 
 	public function commit()
 	{
-		return $this->dbHandle->commit();
+		if ($this->transactionDepth <= 0) {
+			return false;
+		}
+
+		$this->transactionDepth--;
+
+		if ($this->transactionDepth === 0) {
+			return $this->dbHandle->commit();
+		}
+
+		$this->dbHandle->exec('RELEASE SAVEPOINT nest_'.$this->transactionDepth);
+		return true;
 	}
 
 	public function rollBack()
 	{
-		return $this->dbHandle->rollBack();
+		if ($this->transactionDepth <= 0) {
+			return false;
+		}
+
+		$this->transactionDepth--;
+
+		if ($this->transactionDepth === 0) {
+			return $this->dbHandle->rollBack();
+		}
+
+		// ROLLBACK TO keeps the savepoint; release it so depth stays consistent.
+		$this->dbHandle->exec('ROLLBACK TO SAVEPOINT nest_'.$this->transactionDepth);
+		$this->dbHandle->exec('RELEASE SAVEPOINT nest_'.$this->transactionDepth);
+		return true;
 	}
 
 	public function inTransaction()
 	{
-		return $this->dbHandle->inTransaction();
+		return $this->transactionDepth > 0 || $this->dbHandle->inTransaction();
+	}
+
+	public function getTransactionDepth()
+	{
+		return $this->transactionDepth;
+	}
+
+	/**
+	 * Abort the entire request transaction (all savepoints). Used when a request
+	 * dies inside a nested atomic section so partial writes are not committed.
+	 */
+	public function rollBackAll()
+	{
+		if ($this->transactionDepth <= 0 && !$this->dbHandle->inTransaction()) {
+			return false;
+		}
+
+		$this->transactionDepth = 0;
+
+		if ($this->dbHandle->inTransaction()) {
+			return $this->dbHandle->rollBack();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Row-lock a planet for the rest of the current transaction.
+	 * Prevents concurrent SavePlanetToDB absolute writes from clobbering
+	 * RestoreFleet / StoreGoodsToPlanet relative deposits (and vice versa).
+	 */
+	public function lockPlanet($planetId)
+	{
+		$planetId = (int) $planetId;
+		if ($planetId <= 0) {
+			return;
+		}
+
+		if ($this->transactionDepth <= 0) {
+			throw new Exception('lockPlanet() requires an active transaction');
+		}
+
+		$this->selectSingle('SELECT id FROM %%PLANETS%% WHERE id = :planetId FOR UPDATE;', array(
+			':planetId' => $planetId,
+		));
 	}
 
 	public function lastInsertId()

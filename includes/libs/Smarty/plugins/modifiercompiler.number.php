@@ -19,6 +19,10 @@
 
 function smarty_modifiercompiler_number($params, $compiler)
 {
+	if (isset($params[1])) {
+		return 'pretty_number(' . $params[0] . ', ' . $params[1] . ')';
+	}
+
 	return 'pretty_number(' . $params[0] . ')';
 }
 

@@ -253,7 +253,7 @@ class UniverseSeeder
                     // Créer lune
                     if ($moonsCreatedCount < $pConfig['moons_count']) {
                         try {
-                            $moonId = PlayerUtil::createMoon(1, $pInfo['galaxy'], $pInfo['system'], $pInfo['planet'], $userId, 20, 8944, 'Lune de ' . $pConfig['name']);
+                            $moonId = PlayerUtil::createMoon(1, $pInfo['galaxy'], $pInfo['system'], $pInfo['planet'], $userId, 20, 8944, mb_substr('Lune de ' . $pConfig['name'], 0, 20));
                             if ($moonId !== false) {
                                 $moonsCreatedCount++;
                                 $moonElements = [
