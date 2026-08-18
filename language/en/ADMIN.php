@@ -1080,8 +1080,8 @@ $LNG['mod_module'] = 'Modules';
 $LNG['mod_info'] = 'Modules in the Game';
 $LNG['mod_active'] = 'Active';
 $LNG['mod_deactive'] = 'Inactive';
-$LNG['mod_change_active'] = 'Activated';
-$LNG['mod_change_deactive'] = 'Deactivated';
+$LNG['mod_change_active'] = 'Activate';
+$LNG['mod_change_deactive'] = 'Deactivate';
 
 
 // Noticias

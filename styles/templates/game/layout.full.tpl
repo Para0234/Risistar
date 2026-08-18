@@ -4,7 +4,7 @@
 {$LNG.admin_access_1} <a href="javascript:;" id="drop-admin">{$LNG.admin_access_link}</a>{$LNG.admin_access_2}
 </div>
 {/if}
-{include file="main.navigation.tpl"}
+{include file="main.navigation.tpl" nocache}
 {include file="main.topnav.tpl"}
 <div class="container-fluid" id="content" >{block name="content"}{/block}</div>
 {foreach $cronjobs as $cronjob}<img src="cronjob.php?cronjobID={$cronjob}" alt="">{/foreach}
