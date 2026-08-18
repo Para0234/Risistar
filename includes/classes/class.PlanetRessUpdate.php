@@ -857,7 +857,12 @@ class ResourceUpdate
 		u.b_tech_queue		= :b_tech_queue
 		'.implode("\n", $buildQueries).'
 		WHERE p.id = :planetId AND u.id = :userId;';
-		Database::get()->update($sql, $params);
+
+		$db = Database::get();
+		if ($db->getTransactionDepth() > 0) {
+			$db->lockPlanet($PLANET['id']);
+		}
+		$db->update($sql, $params);
 		$this->Builded	= array();
 		return array($USER, $PLANET);
 	}

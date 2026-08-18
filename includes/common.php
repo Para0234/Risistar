@@ -124,6 +124,26 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 	require 'includes/vars.php';
 	require 'includes/classes/class.BuildFunctions.php';
 	require 'includes/classes/class.PlanetRessUpdate.php';
+
+	// Request-scoped DB transaction for INGAME: keeps planet row locks
+	// (SELECT … FOR UPDATE / lockPlanet) until save()/shutdown commit.
+	// Motivating case: without this, a concurrent RestoreFleet relative deposit
+	// can be wiped by SavePlanetToDB's absolute resource write.
+	if (MODE === 'INGAME') {
+		$db = Database::get();
+		$db->beginTransaction();
+		register_shutdown_function(function() {
+			$db = Database::get();
+			$depth = $db->getTransactionDepth();
+			if ($depth > 1) {
+				// Nested atomic section did not finish — drop the whole request.
+				$db->rollBackAll();
+			} elseif ($depth === 1) {
+				// Page with disableEcoSystem (or early exit) still must release locks.
+				$db->commit();
+			}
+		});
+	}
 	
 	if(!AJAX_REQUEST && MODE === 'INGAME' && isModuleAvailable(MODULE_FLEET_EVENTS)) {
 		require('includes/FleetHandler.php');
@@ -173,14 +193,14 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 
 		$session->selectActivePlanet();
 
-		$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId;";
+		$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId FOR UPDATE;";
 		$PLANET	= $db->selectSingle($sql, array(
 			':planetId'	=> $session->planetId,
 		));
 
 		if(empty($PLANET))
 		{
-			$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId;";
+			$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId FOR UPDATE;";
 			$PLANET	= $db->selectSingle($sql, array(
 				':planetId'	=> $USER['id_planet'],
 			));

@@ -81,6 +81,7 @@ class MissionFunctions
 		global $resource;
 
 		$fleetData		= FleetFunctions::unserialize($this->_fleet['fleet_array']);
+		$planetId		= $onStart == true ? $this->_fleet['fleet_start_id'] : $this->_fleet['fleet_end_id'];
 
 		$updateQuery	= array();
 
@@ -89,7 +90,7 @@ class MissionFunctions
 			':crystal'		=> $this->_fleet['fleet_resource_crystal'],
 			':deuterium'	=> $this->_fleet['fleet_resource_deuterium'],
 			':darkmatter'	=> $this->_fleet['fleet_resource_darkmatter'],
-			':planetId'		=> $onStart == true ? $this->_fleet['fleet_start_id'] : $this->_fleet['fleet_end_id']
+			':planetId'		=> $planetId
 		);
 
 		foreach ($fleetData as $shipId => $shipAmount)
@@ -97,6 +98,11 @@ class MissionFunctions
 			$updateQuery[]	= "p.`".$resource[$shipId]."` = p.`".$resource[$shipId]."` + :".$resource[$shipId];
 			$param[':'.$resource[$shipId]]	= $shipAmount;
 		}
+
+		$db = Database::get();
+		// Hold the destination row until request commit so a concurrent
+		// SavePlanetToDB cannot overwrite this relative deposit with stale absolutes.
+		$db->lockPlanet($planetId);
 
 		$sql	= 'UPDATE %%PLANETS%% as p, %%USERS%% as u SET
 		'.implode(', ', $updateQuery).',
@@ -106,13 +112,17 @@ class MissionFunctions
 		u.`darkmatter` = u.`darkmatter` + :darkmatter
 		WHERE p.`id` = :planetId AND u.id = p.id_owner;';
 
-		Database::get()->update($sql, $param);
+		$db->update($sql, $param);
 
 		$this->KillFleet();
 	}
 	
 	function StoreGoodsToPlanet($onStart = false)
 	{
+		$planetId = ($onStart == true ? $this->_fleet['fleet_start_id'] : $this->_fleet['fleet_end_id']);
+		$db = Database::get();
+		$db->lockPlanet($planetId);
+
 		$sql  = 'UPDATE %%PLANETS%% as p, %%USERS%% as u SET
 		`metal`			= `metal` + :metal,
 		`crystal`		= `crystal` + :crystal,
@@ -120,12 +130,12 @@ class MissionFunctions
 		`darkmatter`	= `darkmatter` + :darkmatter
 		WHERE p.`id` = :planetId AND u.id = p.id_owner;';
 
-		Database::get()->update($sql, array(
+		$db->update($sql, array(
 			':metal'		=> $this->_fleet['fleet_resource_metal'],
 			':crystal'		=> $this->_fleet['fleet_resource_crystal'],
 			':deuterium'	=> $this->_fleet['fleet_resource_deuterium'],
 			':darkmatter'	=> $this->_fleet['fleet_resource_darkmatter'],
-		 	':planetId'		=> ($onStart == true ? $this->_fleet['fleet_start_id'] : $this->_fleet['fleet_end_id'])
+		 	':planetId'		=> $planetId
 		));
 
 		$this->UpdateFleet('fleet_resource_metal', '0');

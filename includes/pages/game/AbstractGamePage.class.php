@@ -249,26 +249,35 @@ abstract class AbstractGamePage
 		$this->display('error.default.tpl');
 	}
 
-	// register_shutdown_function() callback. An open transaction here means the request
-	// died between beginTransaction() and commit(): the pending writes are about to be
-	// rolled back by the connection close, so the in-memory economy no longer matches
-	// the database and must not be persisted.
+	// Outer request TX opened in common.php. Nested beginTransaction()
+	// (fleet/research/officer) uses savepoints. If shutdown still sees
+	// depth > 1, the nested section never closed — roll back the whole
+	// request and skip SavePlanetToDB (memory would not match DB).
 	protected function saveOnShutdown() {
-		if(Database::get()->inTransaction()) {
+		$db = Database::get();
+		if ($db->getTransactionDepth() > 1) {
+			$db->rollBackAll();
 			return;
 		}
 		$this->save();
 	}
 
-	// Guarded by $saved so the economy is persisted exactly once per request
-	// (SavePlanetToDB() applies relative build increments and must not run twice).
+	// Guarded by $saved so SavePlanetToDB runs once per request: Builded
+	// increments are relative (col = col + N) and would double-apply; resources
+	// are absolute SETs from memory.
+	// When already saved (e.g. mid-request flush inside a nested transaction), still
+	// commit the outer request transaction once we are back at depth 1.
 	protected function save() {
-		if($this->saved) {
-			return;
-		}
-		if(isset($this->ecoObj)) {
+		if(!$this->saved) {
 			$this->saved	= true;
-			$this->ecoObj->SavePlanetToDB();
+			if(isset($this->ecoObj)) {
+				$this->ecoObj->SavePlanetToDB();
+			}
+		}
+
+		$db = Database::get();
+		if ($db->getTransactionDepth() === 1) {
+			$db->commit();
 		}
 	}
 
