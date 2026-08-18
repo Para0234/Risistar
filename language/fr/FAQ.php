@@ -15,18 +15,18 @@ $LNG['questions'][1][1]['body']		= <<<BODY
 <p>Afin de produire un maximum de ressources, il est nécessaire d'avoir un niveau d'énergie positif. Pour cela, vous pouvez utiliser le bâtiment de base en terme de production énergétique, la Centrale Solaire.</p>
 <h3>Mine de métal:</h3>
 <p>Le métal est l'un des trois éléments qui seront disponibles dans le jeu. Le métal est utilisé pour presque tout ce que vous pouvez construire ou de rechercher. Par conséquent, une bonne expansion de cette mine est conseillé.</p>
-<h3>Mine de Crystal</h3>
-<p>Le Crystal est une ressources importante pour les bâtiments, les vaisseaux et la recherche. Sa production est moins élevée que le métal, ce qui le rend plus cher. En progressant dans le jeu, vous vous apercevrez que le cristal est une ressource tout aussi nécessaire que le métal.</p>
+<h3>Mine de Cristal</h3>
+<p>Le Cristal est une ressource importante pour les bâtiments, les vaisseaux et la recherche. Sa production est moins élevée que le métal, ce qui le rend plus cher. En progressant dans le jeu, vous vous apercevrez que le cristal est une ressource tout aussi nécessaire que le métal.</p>
 <h3>Synthétiseur de deutérium</h3>
-<p> Le deutérium est la ressource la plus précieuse, si l'on retire la matière noire. Son taux d'extraction est bien plus bas que les deux autres ressources primaires,le rendant plus précieux. Cette ressource peut être utilisée pour construire certains bâtiments plus avancés, pour les recherches, et enfin, en tant que carburant pour vaisseaux.Les joueurs agressifs ont besoin de grandes quantités de cette ressource, à cause de ça.</p>
+<p> Le deutérium est la ressource la plus précieuse, si l'on retire la matière noire. Son taux d'extraction est bien plus bas que les deux autres ressources primaires, le rendant plus précieux. Cette ressource peut être utilisée pour construire certains bâtiments plus avancés, pour les recherches, et enfin, en tant que carburant pour vaisseaux. Les joueurs agressifs ont besoin de grandes quantités de cette ressource, à cause de ça.</p>
 BODY;
 $LNG['questions'][1][2]['title']	= 'Etape 2 : Recherches';
 $LNG['questions'][1][2]['body']		= <<<BODY
 <p>Au tout début de votre partie, vous aurez peu de bâtiments disponibles. En effet, les bâtiments se débloquent au fur et à mesure, certains nécessitant la présence d'autres bâtiments, d'autres nécessitant des recherches. Pour plus de détails, rendez vous dans l'onglet "Technologie" à gauche de l'écran.</p> 
 <h3>Le Laboratoire de recherches</h3>
-<p>Il s'agit ddu bâtiment utilisé pour avoir accès aux recherches. Ces recherches ont énormément d'usages. Certaines permettent de débloquer des bâtiments ou des vaisseaux (comme par exemple la technologie laser, qui est l'une des conditions pour pouvoir débloquer le croiseur), d'autres peuvent vous permettre d'obtenir des bonus de production (pour les recherches d'optimisation des ressources), ou des bonus en combat (les technologies armes, blindage et boucliers permettant d'améliorer les capacités de combat de vos flottes, là où les propulsaurs augmentent leur vitesse). Les recherches sont don à ne surtout jamais négliger.</p>
+<p>Il s'agit du bâtiment utilisé pour avoir accès aux recherches. Ces recherches ont énormément d'usages. Certaines permettent de débloquer des bâtiments ou des vaisseaux (comme par exemple la technologie laser, qui est l'une des conditions pour pouvoir débloquer le croiseur), d'autres peuvent vous permettre d'obtenir des bonus de production (pour les recherches d'optimisation des ressources), ou des bonus en combat (les technologies armes, blindage et boucliers permettant d'améliorer les capacités de combat de vos flottes, là où les propulseurs augmentent leur vitesse). Les recherches sont donc à ne surtout jamais négliger.</p>
 <h3>Accélérer les recherches</h3>
-<p>Le niveau de votre laboratoire va modifier la vitesse de vos recherches. Plus le niveau est élevé, plus vos recherches seront courtes. Cependant, une fois arrivé à haut niveau, l'amélioration de vitesse proposée par un vaisseau ne suffira plus. Il faudra donc se tourner vers le Réseau de Recherche Intergalactique, qui vous permet de cumuler les niveaux d'un certain nombre de vo laboratoires, rendant les recerches beaucoup plus rapides.</p>
+<p>Le niveau de votre laboratoire va modifier la vitesse de vos recherches. Plus le niveau est élevé, plus vos recherches seront courtes. Cependant, une fois arrivé à haut niveau, l'amélioration de vitesse proposée par un bâtiment ne suffira plus. Il faudra donc se tourner vers le Réseau de Recherche Intergalactique, qui vous permet de cumuler les niveaux d'un certain nombre de vos laboratoires, rendant les recherches beaucoup plus rapides.</p>
 BODY;
 $LNG['questions'][1][3]['title']	= 'Etape 3 : Vaisseaux';
 $LNG['questions'][1][3]['body']		= <<<BODY
@@ -36,13 +36,13 @@ $LNG['questions'][1][3]['body']		= <<<BODY
 <h3>Les vaisseaux</h3>
 <p>Le fait d'avoir un chantier spatial ne veut pas dire que vous pouvez créer n'importe quels vaisseaux. En effet, certains vaisseaux nécessitent des recherches précises. Pour plus de détails sur les conditions pour obtenir un vaisseau, rendez vous dans l'onglet "Technologie" à gauche de l'écran.</p>
 <h3>Accélérer les temps de construction</h3>
-<p>Certains appareils peuvent prendre énormément de temps à être créés. Il existe donc 2 méthodes pour augmenter ce temps. Améliorer votre chantier spatial permettra d'accélérer les temps de construction, et le bâtiment Usine de Nanites, pourra diviser par deux le emps de construction de vos vaisseaux par niveau (et de vos bâtiments)</p>
+<p>Certains appareils peuvent prendre énormément de temps à être créés. Il existe donc 2 méthodes pour augmenter ce temps. Améliorer votre chantier spatial permettra d'accélérer les temps de construction, et le bâtiment Usine de Nanites, pourra diviser par deux le temps de construction de vos vaisseaux par niveau (et de vos bâtiments)</p>
 BODY;
 $LNG['questions'][1][4]['title']	= 'Etape 4 : Les bases d\'un empire prospère, et conquête de l\'univers';
 $LNG['questions'][1][4]['body']		= <<<BODY
-<p>Cette partie du tutoriel est dédié à la défense de vos planètes, mais aussi les premiers déploiment avec votre propre flotte de vaisseaux.</p>
+<p>Cette partie du tutoriel est dédiée à la défense de vos planètes, mais aussi les premiers déploiements avec votre propre flotte de vaisseaux.</p>
 <h3>Recherche et Galaxie</h3>
-<p>Ces outils sont utilisé pour trouver d'autres joueurs. Vous trouverez des informations détaillées sur d'autres planètes, et vous pourrez également envoyer un peu de votre flotte directement à partir de la galaxie. Mais faites attention! Voir différents systèmes solaires coûte 10 deutérium!. En outre, vous pouvez récupérer des informations sur les planètes et les lunes depuis la galaxie, contacter d'autres joueurs, ou encore espionner une autre planète. pour le dernier, vous aurez besoin de sondes d'espionnage.
+<p>Ces outils sont utilisés pour trouver d'autres joueurs. Vous trouverez des informations détaillées sur d'autres planètes, et vous pourrez également envoyer un peu de votre flotte directement à partir de la galaxie. Mais faites attention! Voir différents systèmes solaires coûte 10 deutérium! En outre, vous pouvez récupérer des informations sur les planètes et les lunes depuis la galaxie, contacter d'autres joueurs, ou encore espionner une autre planète. Pour le dernier point, vous aurez besoin de sondes d'espionnage.
 <div class="btn-group">
   <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>Voulez-vous vous diriger vers</a>
   <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
@@ -53,7 +53,7 @@ $LNG['questions'][1][4]['body']		= <<<BODY
 </div>
 </p>
 <h3>L'envoi de flotte de combat</h3>
-<p>Les flottes peuvent etre utilisé a différentes fin. Les missions proposée sont "Attaquer", "Coloniser", "Transferer", "Detruire", "Stationner" mais encore "Recycler". Chaque vaisseaux ayant des spécification données, ils ne peuvent pas tous exécutées toutes les missions. Par exemple seul le Recycleur et le Recycleur Ultime peuvent "Recycler", c'est a dire récupérer les ressources a l'état de débrit en orbite autour d'une planete lorsqu'un combat a eu lieu. Dans tout les cas des coordonnées de destionnation doivent etre renseignées. Tel que [1:12:5]. Comme dit précedement les flottes peuvent etre envoyé soit par le menu "Galaxie" soit par le menu "Flotte". L'envoie de flotte a un coup en Deuterieum. La vitesse peut y etre défini ainsi que les matiéres devant etre transporté si la mission s'y porte.
+<p>Les flottes peuvent être utilisées à différentes fins. Les missions proposées sont "Attaquer", "Coloniser", "Transférer", "Détruire", "Stationner" mais encore "Recycler". Chaque vaisseau ayant des spécifications données, ils ne peuvent pas tous exécuter toutes les missions. Par exemple, seuls le Recycleur et le Recycleur Ultime peuvent "Recycler", c'est-à-dire récupérer les ressources à l'état de débris en orbite autour d'une planète lorsqu'un combat a eu lieu. Dans tous les cas, des coordonnées de destination doivent être renseignées, telles que [1:12:5]. Comme dit précédemment, les flottes peuvent être envoyées soit par le menu "Galaxie", soit par le menu "Flotte". L'envoi de flotte a un coût en Deutérium. La vitesse peut y être définie ainsi que les matières devant être transportées si la mission s'y prête.
 <div class="btn-group">
   <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i>Voulez-vous vous diriger vers</a>
   <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
