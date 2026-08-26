@@ -573,7 +573,7 @@ $LNG['longDescription'] = array(
 34 => 'Le Dépôt de Faction vous permet d\'accueillir les flottes de vos alliés. prenez cependant en compte le fait que le niveau de ce bâtiment n\'influe en rien vos capacités d\'accueil, donc inutile pour vous de l\'améliorer.',
 41 => 'Une lune n\'a pas d\'atmosphère. Une base lunaire doit donc être construite avant le développement des autres bâtiments.',
 42 => 'La phalange de capteurs est l\'oeil de toute armée digne de ce nom. Elle vous permet de localiser toute flotte allant ou venant d\'une planète, vous permettant ainsi d\'organiser des interceptions surprises qui feront très plaisir à vos amis, et beaucoup moins à vos ennemis. Plus la phalange a un niveau élevé, plus sa portée est grande.',
-43 => 'Les portes de sauts sont des émetteurs géants qui sont en mesure d\'envoyer de grandes flottes, sans perte de temps, d\'une lune à une autre à travers l\univers.',
+43 => 'Les portes de sauts sont des émetteurs géants qui sont en mesure d\'envoyer de grandes flottes, sans perte de temps, d\'une lune à une autre à travers l\'univers.',
 44 => 'Silos de missiles utilisés pour le stockage des différents missiles d\'attaque et de défense.',
 
 106 => 'Cette technologie vous permet d\'espionner les planètes et les lunes pour obtenir des informations.',

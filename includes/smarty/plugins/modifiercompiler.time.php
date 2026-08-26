@@ -6,20 +6,20 @@
  */
 
 /**
- * 2Moons json modifier plugin
+ * 2Moons time modifier plugin
  *
  * Type:     modifier<br>
- * Name:     json<br>
- * Purpose:  convert variable to json object
+ * Name:     time<br>
+ * Purpose:  convert string to lowercase
  *
  * @author Jan Kröpke
  * @param array $params parameters
  * @return string with compiled code
  */
 
-function smarty_modifiercompiler_json($params, $compiler)
+function smarty_modifiercompiler_time($params, $compiler)
 {
-	return 'json_encode(' . $params[0] . ')';
+	return 'pretty_time(' . $params[0] . ')';
 }
 
 ?>
