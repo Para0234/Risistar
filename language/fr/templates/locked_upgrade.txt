@@ -1,0 +1,8 @@
+<h2>Mise à jour de la base de données requise</h2>
+<p>La base de données nécessite une mise à jour.</p>
+<p>Pour activer l’outil de mise à jour, le fichier ENABLE_INSTALL_TOOL doit être créé.</p>
+<ul>
+    <li>Dans le dossier includes/, créez un fichier nommé ENABLE_INSTALL_TOOL. Le nom est sensible à la casse. Le fichier peut être vide.</li>
+</ul>
+<p>Pour des raisons de sécurité, renommez ou supprimez ce fichier une fois l’opération terminée.</p>
+<p>Mesure supplémentaire : s’il a plus d’une heure, 2Moons le supprime automatiquement.</p>
