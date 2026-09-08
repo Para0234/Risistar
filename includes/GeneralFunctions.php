@@ -185,7 +185,8 @@ function message($mes, $dest = "", $time = "3", $topnav = false)
 function CalculateMaxPlanetFields($planet)
 {
 	global $resource, $USER;
-	$moonbasefields = FIELDS_BY_MOONBASIS_LEVEL + floor($USER['class_ability_lunar']/4);
+	$lunarMinerLevel = (int) ($USER['class_ability_lunar'] ?? 0);
+	$moonbasefields = FIELDS_BY_MOONBASIS_LEVEL + $lunarMinerLevel;
 	return $planet['field_max'] + ($planet[$resource[33]] * FIELDS_BY_TERRAFORMER) + ($planet[$resource[41]] * $moonbasefields);
 }
 
