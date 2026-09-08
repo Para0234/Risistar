@@ -262,6 +262,21 @@ class statbuilder
 		return array('count' => $FleetCounts, 'points' => ($FleetPoints / Config::get()->stat_settings));
 	}
 	
+	private function prepareStatpointsBuildTable(): void
+	{
+		$db = Database::get();
+		$db->nativeQuery('DROP TABLE IF EXISTS %%STATPOINTS_BUILD%%;');
+		$db->nativeQuery('CREATE TABLE %%STATPOINTS_BUILD%% LIKE %%STATPOINTS%%;');
+	}
+
+	private function publishStatpointsBuildTable(): void
+	{
+		$db = Database::get();
+		$db->nativeQuery('DROP TABLE IF EXISTS %%STATPOINTS_PREV%%;');
+		$db->nativeQuery('RENAME TABLE %%STATPOINTS%% TO %%STATPOINTS_PREV%%, %%STATPOINTS_BUILD%% TO %%STATPOINTS%%;');
+		$db->nativeQuery('DROP TABLE %%STATPOINTS_PREV%%;');
+	}
+
 	private function SetNewRanks()
 	{
 		foreach($this->Unis as $uni)
@@ -270,7 +285,7 @@ class statbuilder
 			{
 				Database::get()->nativeQuery('SELECT @i := 0;');
 
-				$sql = 'UPDATE %%STATPOINTS%% SET '.$type.'_rank = (SELECT @i := @i + 1)
+				$sql = 'UPDATE %%STATPOINTS_BUILD%% SET '.$type.'_rank = (SELECT @i := @i + 1)
 				WHERE universe = :uni AND stat_type = :type
 				ORDER BY '.$type.'_points DESC, id_owner ASC;';
 
@@ -295,11 +310,11 @@ class statbuilder
 		$AllyPoints	= array();
 		$UserPoints	= array();
 		$TotalData	= $this->GetUsersInfosFromDB();
-		$FinalSQL	= 'TRUNCATE TABLE %%STATPOINTS%%;';
+		$this->prepareStatpointsBuildTable();
 
-		$tableHeader = "INSERT INTO  %%STATPOINTS%% (id_owner, id_ally, stat_type, universe, tech_old_rank, tech_points, tech_count, build_old_rank, build_points, build_count, defs_old_rank, defs_points, defs_count, fleet_old_rank, fleet_points, fleet_count, total_old_rank, total_points, total_count) VALUES ";
+		$tableHeader = "INSERT INTO  %%STATPOINTS_BUILD%% (id_owner, id_ally, stat_type, universe, tech_old_rank, tech_points, tech_count, build_old_rank, build_points, build_count, defs_old_rank, defs_points, defs_count, fleet_old_rank, fleet_points, fleet_count, total_old_rank, total_points, total_count) VALUES ";
 
-		$FinalSQL	.= $tableHeader;
+		$FinalSQL	= $tableHeader;
 
 		foreach($TotalData['Planets'] as $PlanetData)
 		{		
@@ -422,7 +437,7 @@ class statbuilder
 
 		if(count($AllyPoints) != 0)
 		{
-			$AllySQL = "INSERT INTO %%STATPOINTS%% (id_owner, id_ally, stat_type, universe, tech_old_rank, tech_points, tech_count, build_old_rank, build_points, build_count, defs_old_rank, defs_points, defs_count, fleet_old_rank, fleet_points, fleet_count, total_old_rank, total_points, total_count) VALUES ";
+			$AllySQL = "INSERT INTO %%STATPOINTS_BUILD%% (id_owner, id_ally, stat_type, universe, tech_old_rank, tech_points, tech_count, build_old_rank, build_points, build_count, defs_old_rank, defs_points, defs_count, fleet_old_rank, fleet_points, fleet_count, total_old_rank, total_points, total_count) VALUES ";
 			foreach($TotalData['Alliance'] as $AllianceData)
 			{
 				$AllySQL  .= "(".
@@ -450,6 +465,7 @@ class statbuilder
 		}
 
 		$this->SetNewRanks();
+		$this->publishStatpointsBuildTable();
 
 		$this->CheckUniverseAccounts($UniData);		
 		$this->writeRecordData();

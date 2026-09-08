@@ -82,6 +82,11 @@ class PlayerUtil
 			|| $config->max_planets < $position);
 	}
 	
+	static public function nextStatRank(mixed $maxRank): int
+	{
+		return ((int) $maxRank) + 1;
+	}
+
 	static public function createPlayer($universe, $userName, $userPassword, $userMail, $userLanguage = NULL, $galaxy = NULL, $system = NULL, $position = NULL, $name = NULL, $authlevel = 0, $userIpAddress = NULL)
 	{
 		$config	= Config::get($universe);
@@ -397,19 +402,22 @@ class PlayerUtil
 		
 		$sql = "INSERT INTO %%STATPOINTS%% SET
 				id_owner	= :userId,
+				id_ally		= :allyId,
 				universe	= :universe,
 				stat_type	= :type,
 				tech_rank	= :rank,
 				build_rank	= :rank,
 				defs_rank	= :rank,
 				fleet_rank	= :rank,
-				total_rank	= :rank;";
+				total_rank	= :rank,
+				total_points	= 0;";
 
 		$db->insert($sql, array(
 		   ':universe'	=> $universe,
 		   ':userId'	=> $userId,
+		   ':allyId'	=> $ally_id,
 		   ':type'		=> 1,
-		   ':rank'		=> $rank + 1,
+		   ':rank'		=> self::nextStatRank($rank),
 		));
 		
 		

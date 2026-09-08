@@ -47,4 +47,17 @@ class PlayerUtilTest extends UnitTestCase
         $this->assertEquals(60, strlen($hashed));
         $this->assertStringStartsWith('$2a$', $hashed);
     }
+
+    public function testNextStatRankWhenRankingTableIsEmpty(): void
+    {
+        $this->assertSame(1, PlayerUtil::nextStatRank(null));
+        $this->assertSame(1, PlayerUtil::nextStatRank(false));
+        $this->assertSame(1, PlayerUtil::nextStatRank(0));
+    }
+
+    public function testNextStatRankFollowsCurrentMax(): void
+    {
+        $this->assertSame(2, PlayerUtil::nextStatRank(1));
+        $this->assertSame(13, PlayerUtil::nextStatRank('12'));
+    }
 }
