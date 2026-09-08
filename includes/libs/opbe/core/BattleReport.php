@@ -255,7 +255,7 @@ class BattleReport
 						$destroyedShip		= $db->selectSingle($sql, array(
 							':idShipType'	=> $idShipType
 						));
-						if($destroyedShip['nodebris'] == 0)
+						if (empty($destroyedShip) || empty($destroyedShip['nodebris']))
 						{
 							$metal += $lost[0];
 							$crystal += $lost[1];
