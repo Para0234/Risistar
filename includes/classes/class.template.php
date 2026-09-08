@@ -15,8 +15,6 @@
  * @link https://github.com/jkroepke/2Moons
  */
 
-require('includes/libs/Smarty/Smarty.class.php');
-		
 #[\AllowDynamicProperties]
 class template extends Smarty
 {
@@ -32,8 +30,6 @@ class template extends Smarty
 
 	private function smartySettings()
 	{
-		$this->php_handling = Smarty::PHP_REMOVE;
-
 		$this->setForceCompile(false);
 		$this->setMergeCompiledIncludes(true);
 		$this->setCompileCheck(true);#Set false for production!
@@ -42,6 +38,8 @@ class template extends Smarty
 		$this->setCompileDir(is_writable(CACHE_PATH) ? CACHE_PATH : $this->getTempPath());
 		$this->setCacheDir($this->getCompileDir().'templates');
 		$this->setTemplateDir('styles/templates/');
+		$this->addPluginsDir(ROOT_PATH . 'includes/smarty/plugins/');
+		$this->muteUndefinedOrNullWarnings();
 	}
 
 	private function getTempPath()

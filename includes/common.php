@@ -21,9 +21,11 @@ if (isset($_POST['GLOBALS']) || isset($_GET['GLOBALS'])) {
 
 $composerAutoloader = __DIR__.'/../vendor/autoload.php';
 
-if (file_exists($composerAutoloader)) {
-    require $composerAutoloader;
+if (!is_file($composerAutoloader)) {
+	throw new RuntimeException('Composer dependencies are missing. Run `composer install`.');
 }
+
+require $composerAutoloader;
 
 if (function_exists('mb_internal_encoding')) {
 	mb_internal_encoding("UTF-8");
