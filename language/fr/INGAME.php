@@ -1120,7 +1120,7 @@ $LNG['ti_msgtime']							= 'Message posté le';
 $LNG['rec_players']  						= 'Joueur';
 $LNG['rec_level']  							= 'Niveau';
 $LNG['rec_count']   						= 'Nombre';
-$LNG['rec_last_update_on']   				= 'Dernière mise à jour : %s';
+$LNG['rec_last_update_on']   				= 'Dernière mise à jour';
 
 //----------------------------------------------------------------------------//
 // BattleSimulator
