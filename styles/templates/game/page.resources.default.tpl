@@ -2,7 +2,8 @@
 {block name="content"}
 <form action="?page=resources" method="post">
 <input type="hidden" name="mode" value="send">
-<table style="width:760px;">
+<div class="table-scroll">
+<table class="resources-table" style="width:100%;max-width:760px;">
 <tbody>
 <tr>
 	<th colspan="5">{$header}</th>
@@ -71,5 +72,6 @@
 </tr>
 </tbody>
 </table>
+</div>
 </form>
 {/block}

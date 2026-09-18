@@ -1,6 +1,7 @@
 {block name="title" prepend}{$LNG.lm_fleet}{/block}
 {block name="content"}
-<table style="width:760px;">
+<div class="table-scroll">
+<table style="width:100%;max-width:760px;">
 	<tr>
 		<th colspan="9">
 			<div class="transparent" style="text-align:left;float:left;">{$LNG.fl_fleets} {$activeFleetSlots} / {$maxFleetSlots}</div>
@@ -72,6 +73,7 @@
 	<tr><td colspan="9">{$LNG.fl_no_more_slots}</td></tr>
 	{/if}
 </table>
+</div>
 {if !empty($acsData)}
 {include file="shared.fleetTable.acsTable.tpl"}
 {/if}

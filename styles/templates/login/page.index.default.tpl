@@ -69,5 +69,5 @@
 	</div>
 {/block}
 {block name="script" append}
-<script>{if $code}alert({$code|json});{/if}</script>
+<script>{if $code}RisistarDialog.alert({$code|json});{/if}</script>
 {/block}

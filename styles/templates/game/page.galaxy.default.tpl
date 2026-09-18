@@ -58,6 +58,7 @@
 	</table>
 	</form>
     {/if}
+	<div class="table-scroll">
 	<table class="table569">
     <tr>
 		<th colspan="8">{$LNG.gl_solar_system} {$galaxy}:{$system}</th>
@@ -189,6 +190,7 @@
 		<th colspan="8">{$LNG.cff_fleet_target}</th>
 	</tr>
 	</table>
+	</div>
 	<script type="text/javascript">
 		status_ok		= '{$LNG.gl_ajax_status_ok}';
 		status_fail		= '{$LNG.gl_ajax_status_fail}';

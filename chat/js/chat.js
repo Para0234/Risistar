@@ -1841,24 +1841,26 @@ var ajaxChat = {
 	},
 
 	deleteMessage: function(messageID) {
-		var messageNode = this.getMessageNode(messageID), originalClass, nextSibling;
+		var self = this, messageNode = this.getMessageNode(messageID), originalClass, nextSibling;
 		if(messageNode) {
 			originalClass = messageNode.className;
 			this.addClass(messageNode, 'deleteSelected');
-			if(confirm(this.lang['deleteMessageConfirm'])) {
-				nextSibling = messageNode.nextSibling;
-				try {
-					this.dom['chatList'].removeChild(messageNode);
-					if(nextSibling) {
-						this.updateChatListRowClasses(nextSibling);
+			RisistarDialog.confirm(this.lang['deleteMessageConfirm']).then(function(result) {
+				if(result.confirmed) {
+					nextSibling = messageNode.nextSibling;
+					try {
+						self.dom['chatList'].removeChild(messageNode);
+						if(nextSibling) {
+							self.updateChatListRowClasses(nextSibling);
+						}
+						self.updateChat('&delete='+messageID);
+					} catch(e) {
+						messageNode.className = originalClass;
 					}
-					this.updateChat('&delete='+messageID);
-				} catch(e) {
+				} else {
 					messageNode.className = originalClass;
 				}
-			} else {
-				messageNode.className = originalClass;
-			}
+			});
 		}
 	},
 
@@ -2036,11 +2038,13 @@ var ajaxChat = {
 	insertBBCode: function(bbCode) {
 		switch(bbCode) {
 			case 'url':
-				var url = prompt(this.lang['urlDialog'], 'http://');
-				if(url)
-					this.insert('[url=' + url + ']', '[/url]');
-				else
-					this.dom['inputField'].focus();
+				var self = this;
+				RisistarDialog.prompt(this.lang['urlDialog'], 'http://').then(function(url) {
+					if(url)
+						self.insert('[url=' + url + ']', '[/url]');
+					else
+						self.dom['inputField'].focus();
+				});
 				break;
 			default:
 				this.insert('[' + bbCode + ']', '[/' + bbCode + ']');
@@ -3016,7 +3020,7 @@ var ajaxChat = {
 		if (this.debug) {
 			console.log(msg, e);
 			if (this.debug === 2) {
-				alert(msg + e);
+				RisistarDialog.alert(msg + e);
 			}
 		}
 	}

@@ -23,14 +23,14 @@
 <script type="text/javascript">
 function check(){
 	if($('#text').val().length == 0) {
-		alert('{$LNG.mg_empty_text}');
+		RisistarDialog.alert('{$LNG.mg_empty_text|escape:'javascript'}');
 		return false;
 	} else {
 		$('submit').attr('disabled','disabled');
 		$.post('game.php?page=messages&mode=send&id={$id}&ajax=1', $('#message').serialize(), function(data) {
-			alert(data);
-			parent.$.fancybox.close();
-			return true;
+			RisistarDialog.alert(data).then(function() {
+				parent.$.fancybox.close();
+			});
 		}, 'json');
 	}
 }

@@ -1,6 +1,6 @@
 {block name="title" prepend}{$LNG.lm_messages}{/block}
 {block name="content"}
-<table style="width:760px;table-layout:fixed;">
+<table style="width:100%;max-width:760px;table-layout:fixed;">
 	<tr>
 		<th colspan="6">{$LNG.mg_overview}<span id="loading" style="display:none;"> ({$LNG.loading})</span></th>
 	</tr>
@@ -13,7 +13,7 @@
 		{if $CategoryRow@last || ($CategoryRow@iteration % 6) === 0}</tr>{/if}
 		{/foreach}
 </table>
-<table style="width:760px;table-layout:fixed;">
+<table style="width:100%;max-width:760px;table-layout:fixed;">
 	<tr>
 		<th>{$LNG.mg_game_operators}</th>
 	</tr>

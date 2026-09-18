@@ -1,7 +1,7 @@
 {block name="title" prepend}{$LNG.lm_trader}{/block}
 {block name="content"}
 {if $requiredDarkMatter}
-<table style="width:519px;">
+<table style="width:100%;max-width:519px;">
 <tr>
 	<th>{$LNG.fcm_info}</th>
 </tr>
@@ -12,7 +12,7 @@
 <br>
 <br>
 {/if}
-<table style="width:519px;">
+<table style="width:100%;max-width:519px;">
 <tr>
 	<th>{$LNG.tr_call_trader}</th>
 </tr>

@@ -140,7 +140,7 @@ function handleErr(errMessage, url, line)
 	error += "URL: " + url + "\n";
 	error += "Line: " + line + "\n\n";
 	error += "Click OK to continue viewing this page,\n";
-	alert(error);
+	RisistarDialog.alert(error);
 	if(typeof console == "object")
 		console.log(error);
  
@@ -153,10 +153,11 @@ var Dialog	= {
 	},
 	
 	alert: function(msg, callback){
-		alert(msg);
-		if(typeof callback === "function") {
-			callback();
-		}
+		return RisistarDialog.alert(msg).then(function() {
+			if(typeof callback === "function") {
+				callback();
+			}
+		});
 	},
 	
 	PM: function(ID, Subject, Message) {

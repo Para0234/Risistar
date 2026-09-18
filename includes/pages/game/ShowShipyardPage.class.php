@@ -142,6 +142,11 @@ class ShowShipyardPage extends AbstractGamePage
 		}
 
 
+		$mode		= HTTP::_GP('mode', 'fleet');
+		if ($mode !== 'defense') {
+			$mode	= 'fleet';
+		}
+
 		$buildTodo	= HTTP::_GP('fmenge', array());
 		$action		= HTTP::_GP('action', '');
 								
@@ -183,6 +188,11 @@ class ShowShipyardPage extends AbstractGamePage
 				$this->CancelAuftr();
 			}
 		}
+
+		if ($_SERVER['REQUEST_METHOD'] === 'POST')
+		{
+			$this->redirectTo('game.php?page=shipyard&mode='.$mode);
+		}
 		
 		if ($telemetryBefore !== $PLANET['b_hangar_id']) {
 			PlayerTelemetry::action('queue.shipyard');
@@ -214,8 +224,6 @@ class ShowShipyardPage extends AbstractGamePage
 			);
 		}
 		
-		
-		$mode		= HTTP::_GP('mode', 'fleet');
 		
 		if($mode == 'defense') {
 			$elementIDs	= array_merge($reslist['defense'], $reslist['missile']);

@@ -31,7 +31,7 @@ background:rgba(13, 16, 20, 0.95);
 	width:100%
 }
 </style>
-<div style="min-width:569px;width:569px; margin: auto;">
+<div style="width:100%;max-width:569px;margin:auto;">
 <div id="tabse">
 {foreach $TechTreeList as $elementID => $requireList}
 {if $elementID == 0}
