@@ -18,15 +18,15 @@
 			<span class="combat-round-label">{if $RoundInfo@last && !$RoundInfo@first}{$LNG.sys_attack_after}{else}{$LNG.sys_attack_round} {$RoundInfo@iteration}{/if}</span>
 			{if !$RoundInfo@last && isset($RoundInfo.info)}
 			<span class="combat-round-fire-mini">
-				<span class="is-att">{$RoundInfo.info[0]|number}</span>
-				<span class="is-def">{$RoundInfo.info[2]|number}</span>
+				<span class="is-att"><span class="combat-round-fire-label">{$LNG.sys_round_damage_att}</span> <span class="combat-round-fire-value">{$RoundInfo.info[0]|number}</span></span>
+				<span class="is-def"><span class="combat-round-fire-label">{$LNG.sys_round_damage_def}</span> <span class="combat-round-fire-value">{$RoundInfo.info[2]|number}</span></span>
 			</span>
 			{/if}
 		</summary>
 		<div class="combat-round-body">
 			{if !empty($RoundInfo.shipIds)}
 			<div class="combat-compare-scroll">
-				<table class="combat-compare{if ($RoundInfo.attacker|@count) == 1 && ($RoundInfo.defender|@count) == 1} is-duel{/if}">
+				<table class="combat-compare{if (($RoundInfo.attacker|@count) + ($RoundInfo.defender|@count)) > 4} is-crowded{elseif ($RoundInfo.attacker|@count) == 1 && ($RoundInfo.defender|@count) == 1} is-duel{/if}">
 					<colgroup>
 						<col class="combat-col-label is-start">
 						{foreach $RoundInfo.attacker as $Player}
@@ -45,14 +45,14 @@
 							<th class="combat-label-col is-end"></th>
 						</tr>
 						<tr>
-							<th class="combat-label-col is-start">{$LNG.sys_ship_type}</th>
+							<th class="combat-label-col is-start"><span class="combat-ship-label">{$LNG.sys_ship_type}</span></th>
 							{foreach $RoundInfo.attacker as $Player}
 							<th class="is-att">{include file="shared.mission.raport.player.tpl" Player=$Player Role="attacker"}</th>
 							{/foreach}
 							{foreach $RoundInfo.defender as $Player}
 							<th class="is-def">{include file="shared.mission.raport.player.tpl" Player=$Player Role="defender"}</th>
 							{/foreach}
-							<th class="combat-label-col is-end">{$LNG.sys_ship_type}</th>
+							<th class="combat-label-col is-end"><span class="combat-ship-label">{$LNG.sys_ship_type}</span></th>
 						</tr>
 					</thead>
 					<tbody>

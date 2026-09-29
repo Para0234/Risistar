@@ -4,16 +4,18 @@
 	<input type="hidden" name="token" value="{$token}">
 	<input type="hidden" name="fleet_group" value="0">
 	<input type="hidden" name="target_mission" value="{$mission}">
-	<table class="table519" style="table-layout: fixed;">
+	<table class="table519 fleet-target" style="table-layout: fixed;">
 		<tr style="height:20px;">
 			<th colspan="2">{$LNG.fl_send_fleet}</th>
 		</tr>
-		<tr style="height:20px;">
+		<tr class="fleet-dest" style="height:20px;">
 			<td style="width:50%">{$LNG.fl_destiny}</td>
-			<td>
-				<input type="text" id="galaxy" name="galaxy" size="3" maxlength="2" onkeyup="updateVars()" value="{$galaxy}">
-				<input type="text" id="system" name="system" size="3" maxlength="3" onkeyup="updateVars()" value="{$system}">
-				<input type="text" id="planet" name="planet" size="3" maxlength="2" onkeyup="updateVars()" value="{$planet}">
+			<td class="fleet-coords" data-coord-quick="fleet">
+				<input type="text" id="galaxy" name="galaxy" class="coord-part" size="3" maxlength="2" onkeyup="updateVars()" value="{$galaxy}">
+				<input type="text" id="system" name="system" class="coord-part" size="3" maxlength="3" onkeyup="updateVars()" value="{$system}">
+				<input type="text" id="planet" name="planet" class="coord-part" size="3" maxlength="2" onkeyup="updateVars()" value="{$planet}">
+				<input type="text" class="coord-quick is-hidden" placeholder="{$LNG.coord_quick_placeholder}" autocomplete="off" spellcheck="false" aria-label="{$LNG.coord_quick_title}">
+				<button type="button" class="coord-quick-toggle" title="{$LNG.coord_quick_title}" data-label="{$LNG.coord_quick}" data-label-back="{$LNG.coord_quick_back}">{$LNG.coord_quick}</button>
 				<select id="type" name="type" onchange="updateVars()">
 					{html_options options=$typeSelect selected=$type}
 				</select>
@@ -57,7 +59,7 @@
 		</tr>
 	</table>
 	{if isModuleAvailable($smarty.const.MODULE_SHORTCUTS)}
-	<table class="table519 shortcut" style="table-layout: fixed;">
+	<table class="table519 shortcut fleet-picks" style="table-layout: fixed;">
 		<tr style="height:20px;">
 			<th colspan="{$themeSettings.SHORTCUT_ROWS_ON_FLEET1}">{$LNG.fl_shortcut} (<a href="#" onclick="EditShortcuts();return false" class="shortcut-link-edit shortcut-link">{$LNG.fl_shortcut_edition}</a><a href="#" onclick="SaveShortcuts();return false" class="shortcut-edit">{$LNG.fl_shortcut_save}</a>)</th>
 		</tr>
@@ -114,7 +116,7 @@
 		</tr>		
 	</table>
 	{/if}
-	<table class="table519" style="table-layout: fixed;">
+	<table class="table519 fleet-picks fleet-colonies" style="table-layout: fixed;">
 		<tr style="height:20px;">
 			<th colspan="{$themeSettings.COLONY_ROWS_ON_FLEET1}">{$LNG.fl_my_planets}</th>
 		</tr>
@@ -135,7 +137,7 @@
 		{/foreach}	
 	</table>
 	{if $ACSList}
-	<table class="table519" style="table-layout: fixed;">
+	<table class="table519 fleet-picks fleet-acs" style="table-layout: fixed;">
 		<tr style="height:20px;">
 			<th colspan="{$themeSettings.COLONY_ROWS_ON_FLEET1}">{$LNG.fl_acs_title}</th>
 		</tr>
@@ -152,7 +154,7 @@
 		{/foreach}
 	</table>
 	{/if}
-	<table class="table519" style="table-layout: fixed;">
+	<table class="table519 fleet-go" style="table-layout: fixed;">
 		<tr style="height:20px;">
 			<td><input type="submit" value="{$LNG.fl_continue}"></td>
 		</tr>

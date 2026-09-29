@@ -1,14 +1,16 @@
 {block name="title" prepend}{$LNG.lm_fleet}{/block}
 {block name="content"}
-<div class="table-scroll">
-<table style="width:100%;max-width:760px;">
-	<tr>
+<div class="table-scroll fleet-scroll">
+<table class="fleet-list" style="width:100%;max-width:760px;">
+	<tr class="fleet-list-summary">
 		<th colspan="9">
-			<div class="transparent" style="text-align:left;float:left;">{$LNG.fl_fleets} {$activeFleetSlots} / {$maxFleetSlots}</div>
-			<div class="transparent" style="text-align:right;float:right;">{$activeExpedition} / {$maxExpedition} {$LNG.fl_expeditions}</div>
+			<div class="fleet-slots">
+				<span>{$LNG.fl_fleets} {$activeFleetSlots} / {$maxFleetSlots}</span>
+				<span>{$activeExpedition} / {$maxExpedition} {$LNG.fl_expeditions}</span>
+			</div>
 		</th>
 	</tr>
-	<tr>
+	<tr class="fleet-list-cols">
 		<td>{$LNG.fl_number}</td>
 		<td>{$LNG.fl_mission}</td>
 		<td>{$LNG.fl_ammount}</td>
@@ -20,26 +22,26 @@
 		<td>{$LNG.fl_order}</td>
 	</tr>
 	{foreach name=FlyingFleets item=FlyingFleetRow from=$FlyingFleetList}
-	<tr>
-	<td>{$smarty.foreach.FlyingFleets.iteration}</td>
-	<td>{$LNG["type_mission_{$FlyingFleetRow.mission}"]}
+	<tr class="fleet-row">
+	<td class="fleet-id">{$smarty.foreach.FlyingFleets.iteration}</td>
+	<td class="fleet-mission">{$LNG["type_mission_{$FlyingFleetRow.mission}"]}
 	{if $FlyingFleetRow.state == 1}
 		<br><a title="{$LNG.fl_returning}">{$LNG.fl_r}</a>
 	{else}
 		<br><a title="{$LNG.fl_onway}">{$LNG.fl_a}</a>
 	{/if}
 	</td>
-	<td><a class="tooltip_sticky" data-tooltip-content="<table width='100%'><tr><th colspan='2' style='text-align:center;'>{$LNG.fl_info_detail}</th></tr>{foreach $FlyingFleetRow.FleetList as $shipID => $shipCount}<tr><td class='transparent'>{$LNG.tech.{$shipID}}:</td><td class='transparent'>{$shipCount}</td></tr>{/foreach}</table>">{$FlyingFleetRow.amount}</a></td>
-	<td><a href="game.php?page=galaxy&amp;galaxy={$FlyingFleetRow.startGalaxy}&amp;system={$FlyingFleetRow.startSystem}">[{$FlyingFleetRow.startGalaxy}:{$FlyingFleetRow.startSystem}:{$FlyingFleetRow.startPlanet}]</a></td>
-	<td{if $FlyingFleetRow.state == 0} style="color:lime"{/if}>{$FlyingFleetRow.startTime}</td>
-	<td><a href="game.php?page=galaxy&amp;galaxy={$FlyingFleetRow.endGalaxy}&amp;system={$FlyingFleetRow.endSystem}">[{$FlyingFleetRow.endGalaxy}:{$FlyingFleetRow.endSystem}:{$FlyingFleetRow.endPlanet}]</a></td>
+	<td class="fleet-amount" data-label="{$LNG.fl_ammount}"><a class="tooltip_sticky" data-tooltip-content="<table width='100%'><tr><th colspan='2' style='text-align:center;'>{$LNG.fl_info_detail}</th></tr>{foreach $FlyingFleetRow.FleetList as $shipID => $shipCount}<tr><td class='transparent'>{$LNG.tech.{$shipID}}:</td><td class='transparent'>{$shipCount}</td></tr>{/foreach}</table>">{$FlyingFleetRow.amount}</a></td>
+	<td class="fleet-from" data-label="{$LNG.fl_beginning}"><a href="game.php?page=galaxy&amp;galaxy={$FlyingFleetRow.startGalaxy}&amp;system={$FlyingFleetRow.startSystem}">[{$FlyingFleetRow.startGalaxy}:{$FlyingFleetRow.startSystem}:{$FlyingFleetRow.startPlanet}]</a></td>
+	<td class="fleet-depart" data-label="{$LNG.fl_departure}"{if $FlyingFleetRow.state == 0} style="color:lime"{/if}>{$FlyingFleetRow.startTime}</td>
+	<td class="fleet-to" data-label="{$LNG.fl_destiny}"><a href="game.php?page=galaxy&amp;galaxy={$FlyingFleetRow.endGalaxy}&amp;system={$FlyingFleetRow.endSystem}">[{$FlyingFleetRow.endGalaxy}:{$FlyingFleetRow.endSystem}:{$FlyingFleetRow.endPlanet}]</a></td>
 	{if $FlyingFleetRow.mission == 4 && $FlyingFleetRow.state == 0}
-	<td>-</td>
+	<td class="fleet-arrive" data-label="{$LNG.fl_arrival}">-</td>
 	{else}
-	<td{if $FlyingFleetRow.state != 0} style="color:lime"{/if}>{$FlyingFleetRow.endTime}</td>
+	<td class="fleet-arrive" data-label="{$LNG.fl_arrival}"{if $FlyingFleetRow.state != 0} style="color:lime"{/if}>{$FlyingFleetRow.endTime}</td>
 	{/if}
-	<td id="fleettime_{$smarty.foreach.FlyingFleets.iteration}" class="fleets" data-fleet-end-time="{$FlyingFleetRow.returntime}" data-fleet-time="{$FlyingFleetRow.resttime}">{pretty_fly_time({$FlyingFleetRow.resttime})}</td>
-	<td>
+	<td id="fleettime_{$smarty.foreach.FlyingFleets.iteration}" class="fleets fleet-eta" data-label="{$LNG.fl_objective}" data-fleet-end-time="{$FlyingFleetRow.returntime}" data-fleet-time="{$FlyingFleetRow.resttime}">{pretty_fly_time({$FlyingFleetRow.resttime})}</td>
+	<td class="fleet-order" data-label="{$LNG.fl_order}">
 	{if !$isVacation && $FlyingFleetRow.state != 1}
 		<form action="game.php?page=fleetTable&amp;action=sendfleetback" method="post">
 		<input name="fleetID" value="{$FlyingFleetRow.id}" type="hidden">
@@ -57,16 +59,8 @@
 	</td>
 	</tr>
 	{foreachelse}
-	<tr>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
+	<tr class="fleet-empty">
+		<td colspan="9">-</td>
 	</tr>
 	{/foreach}
 	{if $maxFleetSlots == $activeFleetSlots}
@@ -83,30 +77,30 @@
 <input type="hidden" name="planet" value="{$targetPlanet}">
 <input type="hidden" name="type" value="{$targetType}">
 <input type="hidden" name="target_mission" value="{$targetMission}">
-<table class="table519">
-	<tr>
+<table class="table519 fleet-ships">
+	<tr class="fleet-ships-title">
 		<th colspan="4">{$LNG.fl_new_mission_title}</th>
 	</tr>
-	<tr style="height:20px;">
+	<tr class="fleet-ships-cols" style="height:20px;">
 		<td>{$LNG.fl_ship_type}</td>
 		<td>{$LNG.fl_ship_available}</td>
 		<td>-</td>
 		<td>-</td>
 	</tr>
 	{foreach $FleetsOnPlanet as $FleetRow}
-	<tr style="height:20px;">
-		<td>{if $FleetRow.speed != 0} <a title="{$LNG.fl_speed_title} {$FleetRow.speed}">{$LNG.tech.{$FleetRow.id}}</a>{else}{$LNG.tech.{$FleetRow.id}}{/if}</td>
-		<td id="ship{$FleetRow.id}_value">{$FleetRow.count|number}</td>
+	<tr class="fleet-ship">
+		<td class="fleet-ship-name">{if $FleetRow.speed != 0} <a title="{$LNG.fl_speed_title} {$FleetRow.speed}">{$LNG.tech.{$FleetRow.id}}</a>{else}{$LNG.tech.{$FleetRow.id}}{/if}</td>
+		<td class="fleet-ship-count" id="ship{$FleetRow.id}_value">{$FleetRow.count|number}</td>
 		{if $FleetRow.speed != 0}
-		<td><a href="javascript:maxShip('ship{$FleetRow.id}');">{$LNG.fl_max}</a></td>
-		<td><input name="ship{$FleetRow.id}" id="ship{$FleetRow.id}_input" size="10" value="0"></td>
+		<td class="fleet-ship-max"><a href="javascript:maxShip('ship{$FleetRow.id}');">{$LNG.fl_max}</a></td>
+		<td class="fleet-ship-qty"><span class="fleet-ship-qty-row"><input name="ship{$FleetRow.id}" id="ship{$FleetRow.id}_input" size="7" value="0" inputmode="numeric" autocomplete="off"><label class="fleet-ship-slider"><input type="range" class="fleet-ship-range" min="0" max="{$FleetRow.count}" step="1" value="0" style="--factor: 0%" aria-label="{$LNG.tech.{$FleetRow.id}|escape:'html'}"></label></span></td>
 		{else}
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
+		<td class="fleet-ship-max">&nbsp;</td>
+		<td class="fleet-ship-qty">&nbsp;</td>
 		{/if}
 	</tr>
 	{/foreach}
-	<tr style="height:20px;">
+	<tr class="fleet-ships-actions" style="height:20px;">
 	{if count($FleetsOnPlanet) == 0}
 	<td colspan="4">{$LNG.fl_no_ships}</td>
 	{else}
@@ -115,12 +109,12 @@
 	{/if}
 	</tr>
 	{if $maxFleetSlots != $activeFleetSlots}
-	<tr style="height:20px;"><td colspan="4"><input type="submit" value="{$LNG.fl_continue}"></td>
+	<tr class="fleet-ships-go" style="height:20px;"><td colspan="4"><input type="submit" value="{$LNG.fl_continue}"></td></tr>
 	{/if}
 </table>	
 </form>
 <br>
-<table style="min-width:519px;width:519px;">
+<table class="table519 fleet-bonus">
 	<tr><th colspan="3">{$LNG.fl_bonus}</th></tr>
 	<tr><th style="width:33%">{$LNG.fl_bonus_attack}</th><th style="width:33%">{$LNG.fl_bonus_defensive}</th><th style="width:33%">{$LNG.fl_bonus_shield}</th></tr>
 	<tr><td>+{$bonusAttack} %</td><td>+{$bonusDefensive} %</td><td>+{$bonusShield} %</td></tr>

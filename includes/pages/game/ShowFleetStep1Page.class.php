@@ -80,6 +80,7 @@ class ShowFleetStep1Page extends AbstractGamePage
 			$shortcutAmount	= 0;
 		}
 		
+		$this->tplObj->loadscript('coordQuick.js');
 		$this->tplObj->loadscript('flotten.js');
 		$this->tplObj->execscript('updateVars();FleetTime();window.setInterval("FleetTime()", 1000);');
 		$this->assign(array(

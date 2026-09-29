@@ -125,6 +125,16 @@ function OpenPopup(target_url, win_name, width, height) {
 	new_win.focus();
 }
 
+function OpenNotes() {
+	var width = 720;
+	var height = 300;
+	if (window.innerWidth <= 640) {
+		width = window.innerWidth;
+		height = window.innerHeight;
+	}
+	return OpenPopup('?page=notes', 'notes', width, height);
+}
+
 function DestroyMissiles() {
 	$.getJSON('?page=information&mode=destroyMissiles&'+$('.missile').serialize(), function(data) {
 		$('#missile_502').text(NumberGetHumanReadable(data[0]));
@@ -149,7 +159,11 @@ function handleErr(errMessage, url, line)
 
 var Dialog	= {	
 	info: function(ID){
-		return Dialog.open('game.php?page=information&id='+ID, 590, (ID > 600 && ID < 800) ? 210 : ((ID > 100 && ID < 200) ? 300 : 620));
+		var height = (ID > 600 && ID < 800) ? 210 : ((ID > 100 && ID < 200) ? 300 : 620);
+		if (window.innerWidth <= 640 && ID > 600 && ID < 800) {
+			height = 396;
+		}
+		return Dialog.open('game.php?page=information&id='+ID, 590, height);
 	},
 	
 	alert: function(msg, callback){
@@ -164,7 +178,14 @@ var Dialog	= {
 		if(typeof Subject !== 'string')
 			Subject	= '';
 
-		return Dialog.open('game.php?page=messages&mode=write&id='+ID+'&subject='+encodeURIComponent(Subject)+'&message='+encodeURIComponent(Subject), 650, 350);
+		var width = 650;
+		var height = 350;
+		if (window.innerWidth <= 640) {
+			width = Math.min(650, window.innerWidth - 16);
+			height = Math.min(480, Math.max(360, window.innerHeight - 48));
+		}
+
+		return Dialog.open('game.php?page=messages&mode=write&id='+ID+'&subject='+encodeURIComponent(Subject)+'&message='+encodeURIComponent(Subject), width, height);
 	},
 	
 	Playercard: function(ID) {
@@ -184,10 +205,12 @@ var Dialog	= {
 	},
 	
 	open: function(url, width, height) {
+		var maxW = Math.max(280, window.innerWidth - 16);
+		var maxH = Math.max(200, window.innerHeight - 16);
 		$.fancybox({
-			width: width,
+			width: Math.min(width, maxW),
 			padding: 0,
-			height: height,
+			height: Math.min(height, maxH),
 			type: 'iframe',
 			href: url
 		});

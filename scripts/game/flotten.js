@@ -80,6 +80,9 @@ function setTarget(galaxy, solarsystem, planet, type) {
 	document.getElementsByName("system")[0].value = solarsystem;
 	document.getElementsByName("planet")[0].value = planet;
 	document.getElementsByName("type")[0].value = type;
+	if (window.CoordQuick) {
+		window.CoordQuick.dismiss();
+	}
 }
 
 function FleetTime(){ 
@@ -148,10 +151,19 @@ function calculateTransportCapacity() {
 	return transportCapacity;
 }
 
+function syncShipField(input) {
+	if (!input) {
+		return;
+	}
+	input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 function maxShip(id) {
 	if (document.getElementsByName(id)[0]) {
 		var amount = document.getElementById(id + "_value").innerHTML;
-		document.getElementsByName(id)[0].value = amount.replace(/\./g, "");
+		var input = document.getElementsByName(id)[0];
+		input.value = amount.replace(/\./g, "");
+		syncShipField(input);
 	}
 }
 
@@ -165,7 +177,9 @@ function maxShips() {
 
 function noShip(id) {
 	if (document.getElementsByName(id)[0]) {
-		document.getElementsByName(id)[0].value = 0;
+		var input = document.getElementsByName(id)[0];
+		input.value = 0;
+		syncShipField(input);
 	}
 }
 
@@ -179,7 +193,9 @@ function noShips() {
 
 function setNumber(name, number) {
 	if (typeof document.getElementsByName("ship" + name)[0] != "undefined") {
-		document.getElementsByName("ship" + name)[0].value = number;
+		var input = document.getElementsByName("ship" + name)[0];
+		input.value = number;
+		syncShipField(input);
 	}
 }
 

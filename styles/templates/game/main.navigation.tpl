@@ -37,7 +37,7 @@
 
 		<li class="menucat3-head"></li>
 		{if isModuleAvailable($smarty.const.MODULE_MESSAGES)}<li><a class="nav-link nav-messages" href="game.php?page=messages" title="{$LNG.lm_messages}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_messages}</span>{nocache}{if $new_message > 0}<span id="newmes" class="nav-badge"><span id="newmesnum">{$new_message}</span></span>{/if}{/nocache}</a></li>{/if}
-		{if isModuleAvailable($smarty.const.MODULE_NOTICE)}<li><a class="nav-link nav-notes" href="javascript:OpenPopup('?page=notes', 'notes', 720, 300);" title="{$LNG.lm_notes}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_notes}</span></a></li>{/if}
+		{if isModuleAvailable($smarty.const.MODULE_NOTICE)}<li><a class="nav-link nav-notes" href="javascript:OpenNotes();" title="{$LNG.lm_notes}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_notes}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_BUDDYLIST)}<li><a class="nav-link nav-buddylist" href="game.php?page=buddyList" title="{$LNG.lm_buddylist}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_buddylist}</span></a></li>{/if}
 		<li><a class="nav-link nav-options" href="game.php?page=settings" title="{$LNG.lm_options}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_options}</span></a></li>
 		<li><a class="nav-link nav-logout" href="game.php?page=logout" title="{$LNG.lm_logout}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_logout}</span></a></li>
