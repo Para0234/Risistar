@@ -264,15 +264,17 @@ class ShowBuildingsPage extends AbstractGamePage
 		foreach($buildQueue as $BuildArray) {
 			if ($BuildArray[3] < TIMESTAMP)
 				continue;
-			
-			$quickinfo[$BuildArray[0]]	= $BuildArray[1];
+
+			$storedLevel	= (int) $BuildArray[1];
+			$buildMode		= $BuildArray[4];
+			$quickinfo[$BuildArray[0]]	= BuildFunctions::buildingLevelAfterQueueEntry($storedLevel, $buildMode);
 			
 			$scriptData[] = array(
 				'element'	=> $BuildArray[0], 
-				'level' 	=> $BuildArray[1], 
+				'level' 	=> BuildFunctions::displayedBuildingQueueLevel($storedLevel, $buildMode), 
 				'time' 		=> $BuildArray[2], 
 				'resttime' 	=> ($BuildArray[3] - TIMESTAMP), 
-				'destroy' 	=> ($BuildArray[4] == 'destroy'), 
+				'destroy' 	=> ($buildMode == 'destroy'), 
 				'endtime' 	=> _date('U', $BuildArray[3], $USER['timezone']),
 				'display' 	=> _date($LNG['php_tdformat'], $BuildArray[3], $USER['timezone']),
 			);

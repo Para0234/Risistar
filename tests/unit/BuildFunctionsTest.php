@@ -50,4 +50,16 @@ class BuildFunctionsTest extends UnitTestCase
         $this->assertEquals(0, $restPrice[902]);
         $this->assertEquals(50, $restPrice[903]);
     }
+
+    public function testDestroyQueueShowsTheLevelBeingDemolished(): void
+    {
+        $this->assertSame(10, BuildFunctions::displayedBuildingQueueLevel(11, 'destroy'));
+        $this->assertSame(9, BuildFunctions::buildingLevelAfterQueueEntry(11, 'destroy'));
+    }
+
+    public function testBuildQueueKeepsTheTargetLevel(): void
+    {
+        $this->assertSame(11, BuildFunctions::displayedBuildingQueueLevel(11, 'build'));
+        $this->assertSame(11, BuildFunctions::buildingLevelAfterQueueEntry(11, 'build'));
+    }
 }

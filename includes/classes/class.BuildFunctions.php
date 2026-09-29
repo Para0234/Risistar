@@ -44,6 +44,25 @@ class BuildFunctions
         return self::$bonusList;
     }
 
+    public static function displayedBuildingQueueLevel(int $storedLevel, string $buildMode): int
+    {
+        // The queue stores the price level (current + 1). A demolish of level 10 is stored as 11.
+        if ($buildMode === 'destroy') {
+            return $storedLevel - 1;
+        }
+
+        return $storedLevel;
+    }
+
+    public static function buildingLevelAfterQueueEntry(int $storedLevel, string $buildMode): int
+    {
+        if ($buildMode === 'destroy') {
+            return $storedLevel - 2;
+        }
+
+        return $storedLevel;
+    }
+
     public static function getRestPrice($USER, $PLANET, $Element, $elementPrice = NULL)
     {
         global $resource;
