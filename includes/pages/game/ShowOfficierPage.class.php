@@ -62,6 +62,7 @@ class ShowOfficierPage extends AbstractGamePage
 				':userId'	=> $USER['id']
 			));
 
+			PlayerTelemetry::action('account.officer');
 			$this->save();
 			$db->commit();
 		}
@@ -112,6 +113,7 @@ class ShowOfficierPage extends AbstractGamePage
 				':userId'	=> $USER['id']
 			));
 
+			PlayerTelemetry::action('account.officer');
 			$this->save();
 			$db->commit();
 		}

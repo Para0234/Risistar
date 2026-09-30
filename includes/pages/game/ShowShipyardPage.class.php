@@ -164,6 +164,7 @@ class ShowShipyardPage extends AbstractGamePage
 		else
 			$Count	= count($ElementQueue);
 			
+		$telemetryBefore = $PLANET['b_hangar_id'];
 		if($USER['urlaubs_modus'] == 0 && $NotBuilding == true)
 		{
 			if (!empty($buildTodo))
@@ -183,6 +184,9 @@ class ShowShipyardPage extends AbstractGamePage
 			}
 		}
 		
+		if ($telemetryBefore !== $PLANET['b_hangar_id']) {
+			PlayerTelemetry::action('queue.shipyard');
+		}
 		$elementInQueue	= array();
 		$ElementQueue 	= unserialize($PLANET['b_hangar_id']);
 		$buildList		= array();

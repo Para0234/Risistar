@@ -15,12 +15,18 @@
  * @link https://github.com/jkroepke/2Moons
  */
 
-define('DB_VERSION_REQUIRED', 7);
+define('DB_VERSION_REQUIRED', 8);
 define('DB_NAME'			, $database['databasename']);
 define('DB_PREFIX'			, $database['tableprefix']);
 
 // Data Tabells
 $dbTableNames	= array(
+	'TELEMETRY_DAILY' => DB_PREFIX.'telemetry_daily',
+	'TELEMETRY_EVENTS' => DB_PREFIX.'telemetry_events',
+	'TELEMETRY_NETWORK' => DB_PREFIX.'telemetry_network',
+	'TELEMETRY_PAIRS' => DB_PREFIX.'telemetry_pairs',
+	'TELEMETRY_WARNINGS' => DB_PREFIX.'telemetry_warnings',
+	'TELEMETRY_AUDIT' => DB_PREFIX.'telemetry_audit',
 	'AKS'				=> DB_PREFIX.'aks',
 	'ALLIANCE'			=> DB_PREFIX.'alliance',
 	'ALLIANCE_RANK'		=> DB_PREFIX.'alliance_ranks',

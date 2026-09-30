@@ -115,7 +115,7 @@ class Session
 		if(!self::existsActiveSession())
 		{
 			self::$obj	= new self;
-			register_shutdown_function(array(self::$obj, 'save'));
+			GameRequest::session(array(self::$obj, 'save'));
 
 			@session_start();
 		}
@@ -138,7 +138,7 @@ class Session
 			if(isset($_SESSION['obj']))
 			{
 				self::$obj	= unserialize($_SESSION['obj']);
-				register_shutdown_function(array(self::$obj, 'save'));
+				GameRequest::session(array(self::$obj, 'save'));
 			}
 			else
 			{

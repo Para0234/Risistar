@@ -705,5 +705,8 @@ class FleetFunctions
 			':timestamp'				=> TIMESTAMP,
 			':universe'	   				=> Universe::current(),
 		));
+		if (class_exists('PlayerTelemetry', false)) {
+			PlayerTelemetry::action('fleet.send');
+		}
 	}
 }
