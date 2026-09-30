@@ -225,6 +225,13 @@ class ShowResearchPage extends AbstractGamePage
 
 	private function AddBuildingToQueue($elementId, $AddMode = true)
 	{
+		// Research has no demolish path. Completion always grants a level, and cancel
+		// refunds the full price, so a destroy order would pay half and refund all.
+		if(!$AddMode)
+		{
+			return false;
+		}
+
 		global $PLANET, $USER, $resource, $reslist, $pricelist;
 
 		if(!in_array($elementId, $reslist['tech'])
@@ -368,9 +375,6 @@ class ShowResearchPage extends AbstractGamePage
 				break;
 				case 'insert':
 					$this->AddBuildingToQueue($elementId, true);
-				break;
-				case 'destroy':
-					$this->AddBuildingToQueue($elementId, false);
 				break;
 			}
 			
