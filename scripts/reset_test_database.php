@@ -44,14 +44,15 @@ $testDbHandle = new PDO(
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
+require_once ROOT_PATH . 'scripts/split_sql_statements.php';
+
 echo "==> Importing schema...\n";
-foreach (explode(";\n", $sql) as $query) {
-    $query = trim($query);
-    if ($query === '' || strncmp($query, '--', 2) === 0) {
-        continue;
-    }
+$statementCount = 0;
+foreach (splitSqlStatements($sql) as $query) {
     $testDbHandle->exec($query);
+    $statementCount++;
 }
+echo "    {$statementCount} statements executed.\n";
 
 echo "==> Seeding test users and planets...\n";
 define('SEED_TEST_DB_INCLUDED', true);

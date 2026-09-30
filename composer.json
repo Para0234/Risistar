@@ -19,6 +19,8 @@
     },
     "autoload-dev": {
         "psr-4": {
+            "Risistar\\Tests\\Unit\\": "tests/unit/",
+            "Risistar\\Tests\\Integration\\": "tests/integration/",
             "Risistar\\Tests\\": "tests/"
         }
     }
