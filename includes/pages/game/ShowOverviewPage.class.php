@@ -93,7 +93,9 @@ class ShowOverviewPage extends AbstractGamePage
 
 			if (!empty($CPLANET['b_building']) && $CPLANET['b_building'] > TIMESTAMP) {
 				$Queue				= unserialize($CPLANET['b_building_id']);
-				$BuildPlanet		= $LNG['tech'][$Queue[0][0]]." (".$Queue[0][1].")<br><span style=\"color:#7F7F7F;\">(".pretty_time($Queue[0][3] - TIMESTAMP).")</span>";
+				$queueMode			= isset($Queue[0][4]) ? $Queue[0][4] : 'build';
+				$queueLevel			= BuildFunctions::displayedBuildingQueueLevel((int) $Queue[0][1], $queueMode);
+				$BuildPlanet		= $LNG['tech'][$Queue[0][0]]." (".$queueLevel.")<br><span style=\"color:#7F7F7F;\">(".pretty_time($Queue[0][3] - TIMESTAMP).")</span>";
 			} else {
 				$BuildPlanet     = $LNG['ov_free'];
 			}
@@ -115,9 +117,10 @@ class ShowOverviewPage extends AbstractGamePage
 			
 		if ($PLANET['b_building'] - TIMESTAMP > 0) {
 			$Queue			= unserialize($PLANET['b_building_id']);
+			$queueMode		= isset($Queue[0][4]) ? $Queue[0][4] : 'build';
 			$buildInfo['buildings']	= array(
 				'id'		=> $Queue[0][0],
-				'level'		=> $Queue[0][1],
+				'level'		=> BuildFunctions::displayedBuildingQueueLevel((int) $Queue[0][1], $queueMode),
 				'timeleft'	=> $PLANET['b_building'] - TIMESTAMP,
 				'time'		=> $PLANET['b_building'],
 				'starttime'	=> pretty_time($PLANET['b_building'] - TIMESTAMP),
