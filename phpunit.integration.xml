@@ -7,6 +7,8 @@
     <testsuites>
         <testsuite name="Integration">
             <directory>tests/integration</directory>
+            <file>tests/CronjobTest.php</file>
+            <file>tests/FleetDepositRaceIntegrationTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
