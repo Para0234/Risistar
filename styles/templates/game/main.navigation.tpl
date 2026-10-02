@@ -1,10 +1,12 @@
 <div class="nav-backdrop"></div>
 <div id="leftmenu">
-	<button type="button" id="navToggle" class="nav-toggle" aria-controls="menu" aria-expanded="true" title="{$LNG.nav_collapse|default:'Réduire le menu'}">
-		<span class="nav-toggle-icon" aria-hidden="true"></span>
-	</button>
 	<ul id="menu">
-		<li class="menu-head"><a href="game.php?page=changelog">{$LNG.lm_changelog}</a></li>
+		<li class="menu-head">
+			<a href="game.php?page=changelog">{$LNG.lm_changelog}</a>
+			<button type="button" id="navToggle" class="nav-toggle" aria-controls="menu" aria-expanded="true" aria-label="{$LNG.nav_collapse|default:'Réduire le menu'}" title="{$LNG.nav_collapse|default:'Réduire le menu'}">
+				<span class="nav-toggle-icon" aria-hidden="true"></span>
+			</button>
+		</li>
 		<li class="menucat1-head"></li>
 		<li><a class="nav-link nav-overview" href="game.php?page=overview" title="{$LNG.lm_overview}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_overview}</span></a></li>
 		{if isModuleAvailable($smarty.const.MODULE_IMPERIUM)}<li><a class="nav-link nav-imperium" href="game.php?page=imperium" title="{$LNG.lm_empire}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_empire}</span></a></li>{/if}
@@ -45,4 +47,14 @@
 		<li class="menu-footer"></li>
 	</ul>
 	<div id="disclamer"><a href="index.php?page=disclamer" target="_blank">{$LNG.lm_disclamer}</a></div>
+</div>
+<div id="favoriteDock" class="favorite-dock" aria-label="{$LNG.nav_favorites|default:'Favoris'}">
+	<button type="button" id="favoriteDockToggle" class="favorite-dock-toggle" aria-controls="favoriteDockPanel" aria-expanded="false" title="{$LNG.nav_favorites_open|default:'Afficher les favoris'}">
+		<span class="favorite-dock-star" aria-hidden="true"></span>
+		<span class="favorite-dock-chevron" aria-hidden="true"></span>
+	</button>
+	<div id="favoriteDockPanel" class="favorite-dock-panel">
+		<div id="favoriteDockEmpty" class="favorite-dock-empty">{$LNG.nav_favorites_empty|default:'Ajoutez des pages avec l’étoile du menu.'}</div>
+		<nav id="favoriteDockLinks" class="favorite-dock-links" aria-label="{$LNG.nav_favorites|default:'Favoris'}"></nav>
+	</div>
 </div>

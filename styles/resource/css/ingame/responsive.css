@@ -38,34 +38,78 @@ body.full #page {
 	display: none;
 }
 
-.nav-toggle {
-	position: absolute;
-	top: 6px;
-	right: 6px;
-	z-index: 4;
-	width: 26px;
-	height: 26px;
-	padding: 0;
-	margin: 0;
-	border: 1px solid #1c1f23;
-	border-radius: 3px;
-	background: rgba(13, 16, 20, 0.92);
-	color: #ddd;
-	line-height: 24px;
-	font-size: 14px;
-	cursor: pointer;
+#menu .menu-head {
+	position: relative;
 }
 
-html.nav-collapsed .nav-toggle {
-	right: 13px;
+.nav-toggle {
+	display: none;
+	position: absolute;
+	z-index: 4;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	margin: 0;
+	border: 1px solid #34505f;
+	border-left: 0;
+	border-radius: 0 5px 5px 0;
+	background: linear-gradient(180deg, #263640, #121a20);
+	color: #d6e0e5;
+	cursor: pointer;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus {
+	border-color: #47758a;
+	background: linear-gradient(180deg, #304955, #17252c);
+	color: #fff;
+}
+
+.nav-toggle:focus-visible {
+	outline: 1px solid #7ad7ea;
+	outline-offset: -3px;
+}
+
+.nav-toggle-icon {
+	position: relative;
+	display: block;
+	box-sizing: border-box;
+	width: 16px;
+	height: 12px;
+	border-top: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
 }
 
 .nav-toggle-icon::before {
-	content: "\00AB";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: currentColor;
+	content: "";
+	transform: translateY(-50%);
 }
 
-html.nav-collapsed .nav-toggle-icon::before {
-	content: "\00BB";
+@media (max-width: 640px) {
+	#menu .menu-head {
+		background-position: 40px -22px;
+	}
+
+	.nav-toggle {
+		display: flex;
+		top: 19px;
+		left: 0;
+	}
+
+	html.nav-collapsed .nav-toggle {
+		top: 19px;
+		left: 0;
+	}
 }
 
 /* --- Nav links + icons --- */
@@ -185,7 +229,7 @@ html.nav-collapsed .menu-footer {
 }
 
 html.nav-collapsed .menu-head {
-	height: 40px;
+	height: 78px;
 	background-image: none !important;
 }
 
@@ -199,6 +243,216 @@ html.nav-collapsed #leftmenu {
 
 html.nav-collapsed #disclamer {
 	display: none;
+}
+
+/* --- Navigation favorites --- */
+
+#menu .nav-favorite-item {
+	position: relative;
+}
+
+#menu .nav-favorite-item > a.nav-link {
+	padding-right: 38px;
+}
+
+.nav-favorite-toggle {
+	position: absolute;
+	top: 50%;
+	right: 6px;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	transform: translateY(-50%);
+	border: 0;
+	background: transparent;
+	color: #71808a;
+	cursor: pointer;
+}
+
+.nav-favorite-toggle > span,
+.favorite-dock-star {
+	display: block;
+	width: 15px;
+	height: 15px;
+	background: currentColor;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m12 2.7 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 17.27l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m12 2.7 2.85 5.78 6.38.93-4.62 4.5 1.09 6.36L12 17.27l-5.7 3 1.09-6.36-4.62-4.5 6.38-.93z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.nav-favorite-toggle:hover,
+.nav-favorite-toggle:focus,
+.nav-favorite-toggle.is-favorite {
+	color: #efc32f;
+}
+
+.nav-favorite-toggle:focus-visible {
+	outline: 1px solid #7ad7ea;
+	outline-offset: -2px;
+}
+
+html.nav-collapsed .nav-favorite-toggle {
+	display: none;
+}
+
+html.nav-collapsed #menu .nav-favorite-item > a.nav-link {
+	padding-right: 0;
+}
+
+.favorite-dock {
+	position: fixed;
+	right: 0;
+	bottom: max(8px, env(safe-area-inset-bottom));
+	z-index: 45;
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: flex-end;
+	box-sizing: border-box;
+	width: min(400px, calc(100vw - var(--nav-offset) - 8px));
+	pointer-events: none;
+}
+
+.favorite-dock-toggle {
+	display: flex;
+	flex: 0 0 44px;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	box-sizing: border-box;
+	width: 44px;
+	height: 44px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #34505f;
+	border-right: 0;
+	border-radius: 5px 0 0 5px;
+	background: linear-gradient(180deg, #263640, #121a20);
+	color: #d6e0e5;
+	cursor: pointer;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	pointer-events: auto;
+}
+
+.favorite-dock-toggle:hover,
+.favorite-dock-toggle:focus {
+	color: #fff;
+	border-color: #47758a;
+	background: linear-gradient(180deg, #304955, #17252c);
+}
+
+.favorite-dock-star {
+	flex: 0 0 12px;
+	width: 12px;
+	height: 12px;
+	color: #efc32f;
+}
+
+.favorite-dock-chevron {
+	width: 5px;
+	height: 5px;
+	transform: rotate(135deg);
+	border-right: 1px solid currentColor;
+	border-bottom: 1px solid currentColor;
+	transition: transform 180ms ease-out;
+}
+
+.favorite-dock.is-open .favorite-dock-chevron {
+	transform: rotate(-45deg);
+}
+
+.favorite-dock-panel {
+	flex: 1 1 auto;
+	min-width: 0;
+	box-sizing: border-box;
+	min-height: 39px;
+	padding: 4px 7px;
+	border: 1px solid #090d10;
+	border-right: 0;
+	border-radius: 4px 0 0 4px;
+	background: linear-gradient(180deg, rgba(24, 31, 36, 0.98), rgba(9, 13, 16, 0.98));
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+	transform: translateX(calc(100% + 44px));
+	transition: transform 180ms ease-out;
+	filter: drop-shadow(-4px 3px 8px rgba(0, 0, 0, 0.48));
+	pointer-events: auto;
+}
+
+.favorite-dock.is-open .favorite-dock-panel {
+	transform: translateX(0);
+}
+
+.favorite-dock-empty {
+	padding: 8px 5px;
+	color: #aeb8be;
+	text-align: center;
+}
+
+.favorite-dock-links {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	align-items: stretch;
+	gap: 4px;
+}
+
+.favorite-dock-links:empty {
+	display: none;
+}
+
+.favorite-dock-link {
+	display: flex;
+	flex: 0 0 29px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	min-width: 0;
+	height: 29px;
+	padding: 3px;
+	border: 1px solid #2f3b43;
+	border-radius: 3px;
+	background: linear-gradient(180deg, #202a31, #12181d);
+	color: #cbd6dc;
+	text-align: center;
+}
+
+.favorite-dock-link:hover,
+.favorite-dock-link:focus,
+.favorite-dock-link.is-active {
+	border-color: #47758a;
+	background: linear-gradient(180deg, #2a3b45, #17232a);
+	color: #fff;
+}
+
+.favorite-dock-link.is-active {
+	box-shadow: inset 0 -1px 0 #38b1cc;
+}
+
+.favorite-dock-link .nav-icon {
+	flex-basis: 21px;
+	width: 21px;
+	height: 21px;
+}
+
+@media (min-width: 641px) {
+	.favorite-dock,
+	.nav-favorite-toggle {
+		display: none;
+	}
+
+	#menu .nav-favorite-item > a.nav-link {
+		padding-right: 10px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.favorite-dock-panel,
+	.favorite-dock-chevron {
+		transition: none;
+	}
 }
 
 
@@ -571,7 +825,7 @@ body#resources .empire-wrap,
 }
 
 .empire-page {
-	--spy-label-col: 140px;
+	--spy-label-col: 220px;
 	display: flex;
 	flex-direction: column;
 	flex: 1 1 auto;
@@ -645,7 +899,8 @@ html.compact-numbers .num-full {
 	overflow: visible;
 }
 
-.empire-settings-toggle {
+.empire-settings-toggle,
+.spy-tool-toggle {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -661,18 +916,77 @@ html.compact-numbers .num-full {
 
 .empire-settings-toggle:hover,
 .empire-settings-toggle:focus,
-.empire-settings-toggle[aria-expanded="true"] {
+.empire-settings-toggle[aria-expanded="true"],
+.spy-tool-toggle:hover,
+.spy-tool-toggle:focus,
+.spy-tool-toggle[aria-expanded="true"] {
 	color: #fff;
 	background: transparent;
 }
 
-.empire-settings-icon {
+.spy-header-tools {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+}
+
+/* Tools share the rows above Purge, in normal table flow. */
+body#spyReports .spy-planet-head .spy-header-tools,
+body#spyReports .spy-planet-sticky .spy-header-tools {
+	flex-direction: row;
+}
+
+body#spyReports .spy-coord-head > th:first-child {
+	position: relative;
+	left: auto;
+	z-index: 3;
+	width: auto;
+	min-width: 0;
+	max-width: none;
+	box-shadow: 0 1px 0 #0d1014;
+	overflow: visible;
+	text-overflow: clip;
+	white-space: normal;
+}
+
+body#spyReports .spy-planet-sticky .spy-header-tools button {
+	height: 32px;
+}
+
+.spy-tool-toggle.is-on {
+	color: #7ad7ea;
+}
+
+.spy-tool-toggle.is-on:hover,
+.spy-tool-toggle.is-on:focus,
+.spy-tool-toggle.is-on[aria-expanded="true"] {
+	color: #d8f7ff;
+}
+
+.empire-settings-icon,
+.spy-search-icon,
+.spy-sort-icon {
 	display: block;
 	width: 20px;
 	height: 20px;
 	background: currentColor;
+}
+
+.empire-settings-icon {
 	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 7h4M12 7h8'/%3E%3Ccircle cx='10' cy='7' r='2'/%3E%3Cpath d='M4 12h9M17 12h3'/%3E%3Ccircle cx='15' cy='12' r='2'/%3E%3Cpath d='M4 17h2M10 17h10'/%3E%3Ccircle cx='8' cy='17' r='2'/%3E%3C/svg%3E") center / contain no-repeat;
 	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 7h4M12 7h8'/%3E%3Ccircle cx='10' cy='7' r='2'/%3E%3Cpath d='M4 12h9M17 12h3'/%3E%3Ccircle cx='15' cy='12' r='2'/%3E%3Cpath d='M4 17h2M10 17h10'/%3E%3Ccircle cx='8' cy='17' r='2'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.spy-search-icon {
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M16.2 16.2L20.5 20.5'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M16.2 16.2L20.5 20.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.spy-sort-icon {
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 5v14'/%3E%3Cpath d='M4 8l3-3 3 3'/%3E%3Cpath d='M17 19V5'/%3E%3Cpath d='M14 16l3 3 3-3'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 5v14'/%3E%3Cpath d='M4 8l3-3 3 3'/%3E%3Cpath d='M17 19V5'/%3E%3Cpath d='M14 16l3 3 3-3'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 .empire-settings-menu {
@@ -693,6 +1007,59 @@ html.compact-numbers .num-full {
 
 .empire-settings-menu[hidden] {
 	display: none !important;
+}
+
+.empire-settings-menu:has(> .empire-settings-bar) {
+	display: flex;
+	flex-direction: column;
+	padding-top: 0;
+	padding-right: 0;
+	padding-left: 0;
+	overflow: hidden;
+}
+
+.empire-settings-bar {
+	display: flex;
+	flex: 0 0 auto;
+	justify-content: flex-end;
+	padding: 6px 8px 0;
+}
+
+.empire-settings-close {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #3d5563;
+	border-radius: 3px;
+	background: #18242c;
+	color: #cfe6ee;
+	cursor: pointer;
+}
+
+.empire-settings-close::before {
+	content: "\00d7";
+	display: block;
+	font: 22px/1 Arial, sans-serif;
+}
+
+.empire-settings-close:hover,
+.empire-settings-close:focus {
+	border-color: #47758a;
+	background: #243844;
+	color: #fff;
+}
+
+.empire-settings-body {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
 }
 
 .empire-settings-menu label {
@@ -1331,6 +1698,38 @@ body#spyReports .empire-table {
 	width: max-content;
 }
 
+/* Long planet names must not stretch every column. A wider number can still grow it. */
+body#spyReports .spy-planet-head th.empire-planet-name {
+	max-width: 160px;
+	overflow: hidden;
+}
+
+.spy-planet-title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.spy-planet-label,
+body#spyReports .spy-planet-head .spy-col-user {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.spy-moon-icon {
+	flex: 0 0 13px;
+	width: 13px;
+	height: 13px;
+	background: #e7eef6;
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z'/%3E%3C/svg%3E") center / contain no-repeat;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
 .empire-page .empire-table thead tr.empire-colhead > :first-child,
 .empire-page .empire-table tbody td:first-child {
 	width: var(--spy-label-col);
@@ -1370,20 +1769,26 @@ body#spyReports .empire-table {
 
 .spy-label-text.is-overflowing,
 .resources-level.is-overflowing,
-.combat-ship-label.is-overflowing {
+.combat-ship-label.is-overflowing,
+.spy-planet-label.is-overflowing,
+.spy-col-user.is-overflowing {
 	text-overflow: clip;
 }
 
 .spy-label-text.is-overflowing .spy-label-scroll,
 .resources-level.is-overflowing .spy-label-scroll,
-.combat-ship-label.is-overflowing .spy-label-scroll {
+.combat-ship-label.is-overflowing .spy-label-scroll,
+.spy-planet-label.is-overflowing .spy-label-scroll,
+.spy-col-user.is-overflowing .spy-label-scroll {
 	animation: spy-label-marquee var(--marquee-duration, 4s) ease-in-out var(--marquee-delay, 0s) infinite alternate;
 }
 
 .spy-label-cell:hover .is-overflowing .spy-label-scroll,
 .spy-label-cell:focus-within .is-overflowing .spy-label-scroll,
 .combat-label-col:hover .is-overflowing .spy-label-scroll,
-.combat-label-col:focus-within .is-overflowing .spy-label-scroll {
+.combat-label-col:focus-within .is-overflowing .spy-label-scroll,
+.empire-planet-name:hover .is-overflowing .spy-label-scroll,
+.spy-col-user:hover .spy-label-scroll {
 	animation-play-state: paused;
 }
 
@@ -1399,15 +1804,23 @@ body#spyReports .empire-table {
 @media (prefers-reduced-motion: reduce) {
 	.spy-label-text.is-overflowing .spy-label-scroll,
 	.resources-level.is-overflowing .spy-label-scroll,
-	.combat-ship-label.is-overflowing .spy-label-scroll {
+	.combat-ship-label.is-overflowing .spy-label-scroll,
+	.spy-planet-label.is-overflowing .spy-label-scroll,
+	.spy-col-user.is-overflowing .spy-label-scroll {
 		animation: none;
 	}
 
 	.spy-label-text.is-overflowing,
 	.resources-level.is-overflowing,
-	.combat-ship-label.is-overflowing {
+	.combat-ship-label.is-overflowing,
+	.spy-planet-label.is-overflowing,
+	.spy-col-user.is-overflowing {
 		text-overflow: ellipsis;
 	}
+}
+
+body#imperium .empire-planet-name .spy-planet-label {
+	display: block;
 }
 
 .spy-col-resizer {
@@ -1466,7 +1879,7 @@ html.spy-resize-hover * {
 	user-select: none !important;
 }
 
-.spy-settings-menu > label {
+.spy-settings-menu .empire-settings-body > label {
 	white-space: normal;
 	align-items: flex-start;
 }
@@ -1476,9 +1889,6 @@ html.spy-resize-hover * {
 	min-width: 260px;
 	max-width: min(320px, calc(100vw - 16px));
 	max-height: calc(100dvh - 16px);
-	overflow: auto;
-	overscroll-behavior: contain;
-	-webkit-overflow-scrolling: touch;
 	padding-bottom: max(6px, env(safe-area-inset-bottom, 0px));
 }
 
@@ -1495,6 +1905,16 @@ html.spy-resize-hover * {
 	margin: 6px 0 0;
 	padding: 8px 12px 10px;
 	border-top: 1px solid #3d5563;
+}
+
+.spy-tool-menu .spy-filters {
+	margin-top: 0;
+	border-top: 0;
+}
+
+.spy-empty-tools {
+	align-self: flex-start;
+	margin-bottom: 12px;
 }
 
 .spy-settings-menu .spy-filters label {
@@ -1529,6 +1949,10 @@ html.spy-resize-hover * {
 .spy-filter-row {
 	display: flex;
 	gap: 8px;
+}
+
+.spy-sort-form .spy-filter-row:not(.spy-filter-actions) {
+	align-items: flex-end;
 }
 
 .spy-filter-row > label {
@@ -1826,14 +2250,14 @@ html.spy-resize-hover * {
 }
 
 @media (orientation: landscape) and (max-height: 520px) {
-	.spy-settings-menu.is-sheet {
+	.spy-settings-menu.is-sheet:has(.spy-filters) .empire-settings-body {
 		display: grid;
 		grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
 		align-items: start;
 		column-gap: 8px;
 	}
 
-	.spy-settings-menu.is-sheet > label {
+	.spy-settings-menu.is-sheet .empire-settings-body > label {
 		grid-column: 1;
 	}
 
@@ -2526,9 +2950,10 @@ body#raport #content {
 }
 
 .combat-report {
-	--spy-label-col: 168px;
+	--spy-label-col: 220px;
 	box-sizing: border-box;
 	width: max-content;
+	min-width: min(66vw, 100%);
 	max-width: 100%;
 	margin: 0 auto;
 	padding: 0 0 16px;
@@ -2675,7 +3100,7 @@ body#raport #content {
 }
 
 .combat-compare-scroll {
-	width: max-content;
+	width: 100%;
 	max-width: 100%;
 	overflow-x: auto;
 	-webkit-overflow-scrolling: touch;
@@ -2683,6 +3108,7 @@ body#raport #content {
 
 .combat-compare {
 	width: max-content;
+	min-width: 100%;
 	max-width: none;
 	margin: 0;
 	table-layout: auto;
@@ -2878,13 +3304,6 @@ body#raport #content {
 	text-align: right;
 	font-weight: 700;
 	min-width: 4.5em;
-}
-
-.combat-compare.is-duel td.is-att,
-.combat-compare.is-duel td.is-def,
-.combat-compare.is-duel thead th.is-att,
-.combat-compare.is-duel thead th.is-def {
-	min-width: 12em;
 }
 
 .combat-compare.is-duel td.is-att,
@@ -3141,7 +3560,79 @@ body#raport #content {
 	}
 }
 
+@media (max-width: 899px) {
+	.combat-report {
+		width: 100%;
+		min-width: 0;
+	}
+
+	.combat-col-label.is-end,
+	.combat-label-col.is-end {
+		display: none !important;
+		visibility: collapse;
+		width: 0 !important;
+		min-width: 0 !important;
+		max-width: 0 !important;
+		padding: 0 !important;
+		border: 0 !important;
+		overflow: hidden;
+	}
+
+	.combat-label-col.is-start.is-defense .combat-ship {
+		display: flex;
+	}
+}
+
+@media (max-width: 1199px) {
+	.combat-player-tech {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: 2px;
+	}
+}
+
 @media (max-width: 640px) {
+	html.nav-expanded .favorite-dock {
+		z-index: 20;
+	}
+
+	body#imperium .empire-page,
+	body#spyReports .empire-page {
+		--spy-label-col: 100px;
+	}
+
+	body#spyReports .spy-planet-head .spy-header-tools {
+		flex-direction: column;
+	}
+
+	body#spyReports .spy-planet-sticky .spy-header-tools {
+		flex-direction: row;
+		gap: 0;
+	}
+
+	body#spyReports .spy-planet-sticky .spy-header-tools button {
+		width: 28px;
+		height: 28px;
+	}
+
+	body#spyReports .empire-table > thead > tr > th:not(:first-child),
+	body#spyReports .empire-table > tbody > tr > td:not(:first-child):not(.empire-qty),
+	body#imperium .empire-table > thead > tr > th:not(:first-child),
+	body#imperium .empire-table > tbody > tr > td:not(:first-child):not(.empire-qty) {
+		box-sizing: border-box;
+		width: 100px;
+		max-width: 100px;
+		overflow: hidden;
+	}
+
+	body#imperium .empire-planet-name .spy-planet-label {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
 	body.full,
 	body.full input,
 	body.full button,
@@ -3471,7 +3962,7 @@ body#raport #content {
 	}
 
 	.combat-report {
-		--spy-label-col: 120px;
+		--spy-label-col: 100px;
 		padding-bottom: 72px;
 	}
 
@@ -3513,18 +4004,6 @@ body#raport #content {
 		gap: 2px 12px;
 	}
 
-	.combat-col-label.is-end,
-	.combat-label-col.is-end {
-		display: none !important;
-		visibility: collapse;
-		width: 0 !important;
-		min-width: 0 !important;
-		max-width: 0 !important;
-		padding: 0 !important;
-		border: 0 !important;
-		overflow: hidden;
-	}
-
 	.combat-compare,
 	.combat-compare.is-crowded {
 		width: max-content;
@@ -3536,10 +4015,6 @@ body#raport #content {
 	.combat-label-col.is-start {
 		position: sticky;
 		left: 0;
-	}
-
-	.combat-label-col.is-start.is-defense .combat-ship {
-		display: flex;
 	}
 
 	.combat-compare td.is-att,

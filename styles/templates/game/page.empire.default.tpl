@@ -8,7 +8,7 @@
 	<span class="spy-label-text">{$text}</span>
 </td>
 {/function}
-<div class="empire-page" data-label-resize="{$LNG.spy_label_width}">
+<div class="empire-page">
 <div class="empire-wrap">
 <table class="empire-table">
 	<thead>
@@ -30,7 +30,7 @@
 			<th>{$LNG.lv_name}</th>
 			<th>{$LNG.lv_total}</th>
 			{foreach $planetList.name as $name}
-				<th class="empire-planet-name">{$name}</th>
+				<th class="empire-planet-name" title="{$name}"><span class="spy-planet-label">{$name}</span></th>
 			{/foreach}
 		</tr>
 	</thead>
@@ -148,11 +148,13 @@
 </table>
 </div>
 <div id="empireSettingsMenu" class="empire-settings-menu" hidden>
+	<div class="empire-settings-bar">
+		<button type="button" class="empire-settings-close" aria-label="{$LNG.spy_filter_close}"></button>
+	</div>
+	<div class="empire-settings-body">
 	<label><input type="checkbox" id="empireOptZeros"> {$LNG.zero_show|default:'Afficher les lignes à 0'}</label>
 	<label><input type="checkbox" id="empireOptCompact"> {$LNG.compact_option|default:'Nombres compactés'}</label>
-	<label class="spy-opt-width">{$LNG.spy_label_width}
-		<input type="range" id="spyOptColWidth" min="56" max="220" step="1">
-	</label>
+	</div>
 </div>
 </div>
 {/block}

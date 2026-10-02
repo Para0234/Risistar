@@ -4,6 +4,19 @@
 <div class="empire-wrap" data-extra="{$extraParam|escape:'html'}" data-query="{$queryBase|escape:'html'}">
 {if $columns|@count == 0}
 <div class="spy-empty-state">
+	<div class="spy-empty-tools">
+		<div class="spy-header-tools">
+			<button type="button" class="empire-settings-toggle" id="empireSettingsToggle" aria-expanded="false" aria-haspopup="true" aria-controls="empireSettingsMenu" title="{$LNG.empire_settings|default:'Options d\'affichage'}">
+				<span class="empire-settings-icon" aria-hidden="true"></span>
+			</button>
+			<button type="button" class="spy-tool-toggle spy-search-toggle{if $searchActive} is-on{/if}" aria-expanded="false" aria-haspopup="true" aria-controls="spySearchMenu" title="{$LNG.spy_search}" aria-label="{$LNG.spy_search}">
+				<span class="spy-search-icon" aria-hidden="true"></span>
+			</button>
+			<button type="button" class="spy-tool-toggle spy-sort-toggle{if $sortActive} is-on{/if}" aria-expanded="false" aria-haspopup="true" aria-controls="spySortMenu" title="{$LNG.spy_filter_sort}" aria-label="{$LNG.spy_filter_sort}">
+				<span class="spy-sort-icon" aria-hidden="true"></span>
+			</button>
+		</div>
+	</div>
 	<div class="spy-empty-transmission">
 		<div class="spy-empty-visual">
 			<img class="spy-empty-image" src="styles/resource/images/spy-reports-empty.png" alt="">
@@ -21,21 +34,31 @@
 			<th colspan="{$colspan}"><span class="empire-sticky-title">{$LNG.spy_title}</span></th>
 		</tr>
 		<tr class="empire-colhead spy-planet-head">
-			<th class="empire-settings-cell">
-				<button type="button" class="empire-settings-toggle" id="empireSettingsToggle" aria-expanded="false" aria-haspopup="true" aria-controls="empireSettingsMenu" title="{$LNG.empire_settings|default:'Options d\'affichage'}">
-					<span class="empire-settings-icon" aria-hidden="true"></span>
-				</button>
+			<th class="empire-settings-cell" rowspan="2">
+				<div class="spy-header-tools">
+					<button type="button" class="empire-settings-toggle" id="empireSettingsToggle" aria-expanded="false" aria-haspopup="true" aria-controls="empireSettingsMenu" title="{$LNG.empire_settings|default:'Options d\'affichage'}">
+						<span class="empire-settings-icon" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="spy-tool-toggle spy-search-toggle{if $searchActive} is-on{/if}" aria-expanded="false" aria-haspopup="true" aria-controls="spySearchMenu" title="{$LNG.spy_search}" aria-label="{$LNG.spy_search}">
+						<span class="spy-search-icon" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="spy-tool-toggle spy-sort-toggle{if $sortActive} is-on{/if}" aria-expanded="false" aria-haspopup="true" aria-controls="spySortMenu" title="{$LNG.spy_filter_sort}" aria-label="{$LNG.spy_filter_sort}">
+						<span class="spy-sort-icon" aria-hidden="true"></span>
+					</button>
+				</div>
 			</th>
 			{foreach $columns as $column}
-			<th class="empire-planet-name{if $column.is_new} spy-col-new{/if}" data-report-id="{$column.report_id}">
-				{$column.name}{if $column.planet_type == 3} ({$LNG.fcm_moon}){/if}
+			<th class="empire-planet-name{if $column.is_new} spy-col-new{/if}" data-report-id="{$column.report_id}" title="{$column.name}{if $column.planet_type == 3} ({$LNG.fcm_moon}){/if}">
+				<span class="spy-planet-title">
+					{if $column.planet_type == 3}<span class="spy-moon-icon" role="img" aria-label="{$LNG.fcm_moon}"></span>{/if}
+					<span class="spy-planet-label">{$column.name}</span>
+				</span>
 				{if $column.username}<div class="spy-col-user">{$column.username}</div>{/if}
 			</th>
 			{/foreach}
 		</tr>
 		{if $columns|@count > 0}
-		<tr class="empire-colhead">
-			<th title="{$LNG.lv_coords}">{$LNG.lv_coords}</th>
+		<tr class="empire-colhead spy-coord-head">
 			{foreach $columns as $column}
 			<th{if $column.is_new} class="spy-col-new"{/if}>
 				<a href="game.php?page=galaxy&amp;galaxy={$column.galaxy}&amp;system={$column.system}">[{$column.galaxy}:{$column.system}:{$column.planet}]</a>
@@ -122,7 +145,7 @@
 			</td>
 			{foreach $row.values as $amount}
 				{if $amount === null}
-				<td class="spy-unscanned{if $columns[$amount@index].is_new} spy-col-new{/if}">—</td>
+				<td class="spy-unscanned{if $columns[$amount@index].is_new} spy-col-new{/if}"></td>
 				{else}
 				{empire_qty n=$amount class="{if $columns[$amount@index].is_new} spy-col-new{/if}"}
 				{/if}

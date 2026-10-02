@@ -1,6 +1,6 @@
 {block name="title" prepend}{$pageTitle}{/block}
 {block name="content"}
-<div class="combat-report" data-label-resize="{$LNG.spy_label_width}">
+<div class="combat-report">
 {if !empty($Info)}
 	<div class="combat-report-vs">
 		<div class="combat-report-vs-side{if $Raport.result == 'a'} is-win{elseif $Raport.result == 'r'} is-lose{/if}">{$Info[0]}</div>

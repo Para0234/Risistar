@@ -56,6 +56,10 @@
 	var LayoutLNG = {
 		navExpand: {$LNG.nav_expand|default:'Afficher le menu'|json},
 		navCollapse: {$LNG.nav_collapse|default:'Réduire le menu'|json},
+		favoriteAdd: {$LNG.nav_favorite_add|default:'Ajouter aux favoris'|json},
+		favoriteRemove: {$LNG.nav_favorite_remove|default:'Retirer des favoris'|json},
+		favoritesOpen: {$LNG.nav_favorites_open|default:'Afficher les favoris'|json},
+		favoritesClose: {$LNG.nav_favorites_close|default:'Masquer les favoris'|json},
 		zeroShow: {$LNG.zero_show|default:'Afficher les lignes à 0'|json},
 		zeroHide: {$LNG.zero_hide|default:'Masquer les lignes à 0'|json}
 	};

@@ -215,11 +215,18 @@ class ShowSpyReportsPage extends AbstractGamePage
 
 		$isBattleSim = ENABLE_SIMULATOR_LINK == true && isModuleAvailable(MODULE_SIMULATOR);
 
+		$sortDefault = $filters['sort'] === 'coords' ? 'asc' : 'desc';
 		$this->assign(array(
 			'colspan'		=> count($columns) + 1,
 			'columns'		=> $columns,
 			'sections'		=> $sections,
 			'filters'		=> $filters,
+			'searchActive'	=> (int) $filters['galaxy'] > 0
+				|| (int) $filters['planet_type'] > 0
+				|| $filters['from_value'] !== ''
+				|| $filters['to_value'] !== ''
+				|| $filters['player'] !== '',
+			'sortActive'	=> $filters['sort'] !== 'time' || $filters['order'] !== $sortDefault,
 			'extraParam'	=> implode(',', $extraIds),
 			'queryBase'		=> $this->filterQuery($filters, array()),
 			'isBattleSim'	=> $isBattleSim,
@@ -258,12 +265,20 @@ class ShowSpyReportsPage extends AbstractGamePage
 		$sort = $filters['sort'];
 		$direction = $filters['order'] === 'asc' ? 1 : -1;
 		$origin = $this->currentOrigin();
-		usort($reports, static function (array $a, array $b) use ($sort, $direction, $origin) {
+		$metalValue = array();
+		if ($sort === 'resources') {
+			foreach ($reports as $report) {
+				$metalValue[(int) $report['report_id']] = SpyReportStore::reportMetalEquivalent((string) $report['payload']);
+			}
+		}
+		usort($reports, static function (array $a, array $b) use ($sort, $direction, $origin, $metalValue) {
 			if ($sort === 'coords') {
 				$cmp = (self::reportDistance($origin, $a) <=> self::reportDistance($origin, $b))
 					?: ((int) $a['planet_type'] <=> (int) $b['planet_type']);
-			} elseif ($sort === 'name') {
-				$cmp = strcasecmp((string) $a['planet_name'], (string) $b['planet_name']);
+			} elseif ($sort === 'resources') {
+				$cmp = ($metalValue[(int) $a['report_id']] <=> $metalValue[(int) $b['report_id']])
+					?: ((int) $a['report_time'] <=> (int) $b['report_time'])
+					?: ((int) $a['report_id'] <=> (int) $b['report_id']);
 			} else {
 				$cmp = ((int) $a['report_time'] <=> (int) $b['report_time'])
 					?: ((int) $a['report_id'] <=> (int) $b['report_id']);
@@ -282,7 +297,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 		$from = HTTP::_GP('from', '', true);
 		$to = HTTP::_GP('to', '', true);
 		$sort = HTTP::_GP('sort', 'time');
-		if ($sort !== 'coords' && $sort !== 'name') {
+		if ($sort !== 'coords' && $sort !== 'resources') {
 			$sort = 'time';
 		}
 		$defaultOrder = $sort === 'coords' ? 'asc' : 'desc';

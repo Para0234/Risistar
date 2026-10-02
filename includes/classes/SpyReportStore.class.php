@@ -91,6 +91,29 @@ class SpyReportStore
 		return $payload;
 	}
 
+	/**
+	 * Metal value of a resource stock at the merchant rate 4:2:1
+	 * (1 crystal = 2 metal, 1 deuterium = 4 metal). Energy is ignored.
+	 *
+	 * @param array<int|string, int|float> $resources
+	 */
+	public static function metalEquivalent(array $resources): float
+	{
+		$metal = isset($resources[901]) ? (float) $resources[901] : 0.0;
+		$crystal = isset($resources[902]) ? (float) $resources[902] : 0.0;
+		$deuterium = isset($resources[903]) ? (float) $resources[903] : 0.0;
+		return $metal + ($crystal * 2) + ($deuterium * 4);
+	}
+
+	public static function reportMetalEquivalent(string $payload): float
+	{
+		$decoded = self::decodePayload($payload);
+		if (!isset($decoded[900]) || !is_array($decoded[900])) {
+			return 0.0;
+		}
+		return self::metalEquivalent($decoded[900]);
+	}
+
 	public static function countUnviewed(int $ownerId): int
 	{
 		$sql = 'SELECT COUNT(*) as state FROM %%SPY_REPORTS%% WHERE owner_id = :ownerId AND viewed = 0;';
@@ -310,8 +333,6 @@ class SpyReportStore
 		switch ($sort) {
 			case 'coords':
 				return 'r.galaxy ' . $direction . ', r.system ' . $direction . ', r.planet ' . $direction . ', r.planet_type ' . $direction;
-			case 'name':
-				return 'r.planet_name ' . $direction . ', r.report_time DESC';
 			default:
 				return 'r.report_time ' . $direction . ', r.report_id ' . $direction;
 		}
