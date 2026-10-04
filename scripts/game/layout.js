@@ -122,100 +122,104 @@
 		}
 
 		$(document).on('click', '.nav-backdrop', function () {
-			if (window.matchMedia('(max-width: 640px)').matches) {
+			if (window.matchMedia(MOBILE_NAV_QUERY).matches) {
 				applyNavState(true, true);
 			}
 		});
 
+		$('#menu').on('click', 'a.nav-link[href]', function () {
+			if (!window.matchMedia(MOBILE_NAV_QUERY).matches || isCollapsed()) {
+				return;
+			}
+			applyNavState(true, true);
+		});
+
 		markActiveNav();
-		initDarkmatterMenu();
+		initNavGroups();
 	}
 
-	function initDarkmatterMenu() {
-		var group = document.querySelector('#menu .nav-group');
-		if (!group) {
-			return;
-		}
-
-		var toggle = group.querySelector('.nav-group-toggle');
-		var submenu = group.querySelector('.nav-submenu');
-		if (!toggle || !submenu) {
-			return;
-		}
-
-		var suppressHover = false;
-		var hoverTimer = null;
-		var HOVER_DELAY_MS = 200;
-
-		function canHover() {
-			return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-		}
-
-		function clearHoverTimer() {
-			if (hoverTimer) {
-				clearTimeout(hoverTimer);
-				hoverTimer = null;
-			}
-		}
-
-		function syncExpanded() {
-			var open = group.classList.contains('is-open') || group.classList.contains('is-hover');
-			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-		}
-
-		if (submenu.querySelector('a.is-active')) {
-			group.classList.add('is-open');
-			toggle.classList.add('is-active');
-		}
-		syncExpanded();
-
-		toggle.addEventListener('click', function (event) {
-			event.preventDefault();
-			if (document.documentElement.classList.contains('nav-collapsed')) {
-				applyNavState(false, true);
-				group.classList.add('is-open');
-				syncExpanded();
+	function initNavGroups() {
+		document.querySelectorAll('#menu .nav-group').forEach(function (group) {
+			var toggle = group.querySelector('.nav-group-toggle');
+			var submenu = group.querySelector('.nav-submenu');
+			if (!toggle || !submenu) {
 				return;
 			}
 
-			var nextOpen = !group.classList.contains('is-open');
-			group.classList.toggle('is-open', nextOpen);
-			if (!nextOpen) {
+			var suppressHover = false;
+			var hoverTimer = null;
+			var HOVER_DELAY_MS = 200;
+
+			function canHover() {
+				return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+			}
+
+			function clearHoverTimer() {
+				if (hoverTimer) {
+					clearTimeout(hoverTimer);
+					hoverTimer = null;
+				}
+			}
+
+			function syncExpanded() {
+				var open = group.classList.contains('is-open') || group.classList.contains('is-hover');
+				toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+			}
+
+			if (submenu.querySelector('a.is-active')) {
+				group.classList.add('is-open');
+				toggle.classList.add('is-active');
+			}
+			syncExpanded();
+
+			toggle.addEventListener('click', function (event) {
+				event.preventDefault();
+				if (document.documentElement.classList.contains('nav-collapsed')) {
+					applyNavState(false, true);
+					group.classList.add('is-open');
+					syncExpanded();
+					return;
+				}
+
+				var nextOpen = !group.classList.contains('is-open');
+				group.classList.toggle('is-open', nextOpen);
+				if (!nextOpen) {
+					clearHoverTimer();
+					group.classList.remove('is-hover');
+					suppressHover = group.matches(':hover');
+				}
+				syncExpanded();
+			});
+
+			group.addEventListener('mouseenter', function () {
+				if (suppressHover || !canHover() || document.documentElement.classList.contains('nav-collapsed')) {
+					return;
+				}
+				clearHoverTimer();
+				hoverTimer = setTimeout(function () {
+					hoverTimer = null;
+					group.classList.add('is-hover');
+					syncExpanded();
+				}, HOVER_DELAY_MS);
+			});
+
+			group.addEventListener('mouseleave', function () {
+				suppressHover = false;
 				clearHoverTimer();
 				group.classList.remove('is-hover');
-				suppressHover = group.matches(':hover');
-			}
-			syncExpanded();
-		});
-
-		group.addEventListener('mouseenter', function () {
-			if (suppressHover || !canHover() || document.documentElement.classList.contains('nav-collapsed')) {
-				return;
-			}
-			clearHoverTimer();
-			hoverTimer = setTimeout(function () {
-				hoverTimer = null;
-				group.classList.add('is-hover');
 				syncExpanded();
-			}, HOVER_DELAY_MS);
-		});
+			});
 
-		group.addEventListener('mouseleave', function () {
-			suppressHover = false;
-			clearHoverTimer();
-			group.classList.remove('is-hover');
-			syncExpanded();
-		});
-
-		document.addEventListener('click', function (event) {
-			if (group.contains(event.target)) {
-				return;
-			}
-			if (!group.classList.contains('is-open')) {
-				return;
-			}
-			group.classList.remove('is-open');
-			syncExpanded();
+			document.addEventListener('click', function (event) {
+				if (group.contains(event.target)) {
+					return;
+				}
+				if (!group.classList.contains('is-open')) {
+					return;
+				}
+				group.classList.remove('is-open');
+				syncExpanded();
+			});
 		});
 	}
 
@@ -1332,11 +1336,11 @@
 	}
 
 	function syncLabelMarquees() {
-		var page = document.querySelector('.empire-page, .combat-report');
+		var page = document.querySelector('.empire-page, .combat-report, .battlesim-page');
 		if (!page || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			return;
 		}
-		var nodes = page.querySelectorAll('.spy-label-text, .resources-level, .combat-ship-label, .spy-planet-label, .spy-col-user');
+		var nodes = page.querySelectorAll('.spy-label-text, .resources-level, .combat-ship-label, .spy-planet-label, .spy-col-user, .battlesim-name');
 		var mobileNames = window.matchMedia('(max-width: 640px)').matches;
 		var i;
 		var el;

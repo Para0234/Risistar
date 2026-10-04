@@ -39,22 +39,22 @@
 								<td><button type="button" class="reset">{$LNG.bs_reset}</button></td>
 							</tr>
 							<tr>
-								<td>{$LNG.tech.109}</td>
+								<td class="battlesim-label-cell"><span class="battlesim-name">{$LNG.tech.109}</span></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.0.109)}{$battleinput.{$smarty.section.content.index}.0.109}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][0][109]"></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.1.109)}{$battleinput.{$smarty.section.content.index}.1.109}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][1][109]"></td>
 							</tr>
 							<tr>
-								<td>{$LNG.tech.110}</td>
+								<td class="battlesim-label-cell"><span class="battlesim-name">{$LNG.tech.110}</span></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.0.110)}{$battleinput.{$smarty.section.content.index}.0.110}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][0][110]"></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.1.110)}{$battleinput.{$smarty.section.content.index}.1.110}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][1][110]"></td>
 							</tr>
 							<tr>
-								<td>{$LNG.tech.111}</td>
+								<td class="battlesim-label-cell"><span class="battlesim-name">{$LNG.tech.111}</span></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.0.111)}{$battleinput.{$smarty.section.content.index}.0.111}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][0][111]"></td>
 								<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.1.111)}{$battleinput.{$smarty.section.content.index}.1.111}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][1][111]"></td>
 							</tr>
 						</table>
-						<div class="battlesim-cols">
+						<div class="battlesim-cols{if $smarty.section.content.index > 0} battlesim-cols-single{/if}">
 							<table class="battlesim-grid">
 								<tr>
 									<th>{$LNG.bs_names}</th>
@@ -68,7 +68,7 @@
 								</tr>
 								{foreach $fleetList as $id}
 								<tr>
-									<td>{$LNG.tech.$id}</td>
+									<td class="battlesim-label-cell"><span class="battlesim-name">{$LNG.tech.$id}</span></td>
 									<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.0.$id)}{$battleinput.{$smarty.section.content.index}.0.$id}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][0][{$id}]"></td>
 									<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.1.$id)}{$battleinput.{$smarty.section.content.index}.1.$id}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][1][{$id}]"></td>
 								</tr>
@@ -77,7 +77,7 @@
 							{if $smarty.section.content.index == 0}
 							<table class="battlesim-grid">
 								<tr>
-									<th>{$LNG.bs_names}</th>
+									<th>{$LNG.bs_defense_names}</th>
 									<th>{$LNG.bs_atter}</th>
 									<th>{$LNG.bs_deffer}</th>
 								</tr>
@@ -88,7 +88,7 @@
 								</tr>
 								{foreach $defensiveList as $id}
 								<tr>
-									<td>{$LNG.tech.$id}</td>
+									<td class="battlesim-label-cell"><span class="battlesim-name">{$LNG.tech.$id}</span></td>
 									<td>-</td>
 									<td><input class="battlesim-qty" type="text" size="10" value="{if isset($battleinput.{$smarty.section.content.index}.1.$id)}{$battleinput.{$smarty.section.content.index}.1.$id}{else}0{/if}" name="battleinput[{$smarty.section.content.index}][1][{$id}]"></td>
 								</tr>
@@ -104,7 +104,7 @@
 	</table>
 	<div class="battlesim-actions" id="submit">
 		<input type="button" onClick="return check();" value="{$LNG.bs_send}">
-		<input type="reset" value="{$LNG.bs_cancel}">
+		<input type="button" class="reset-all" value="{$LNG.bs_cancel}">
 	</div>
 	<div class="battlesim-wait" id="wait">{$LNG.bs_wait}</div>
 </form>

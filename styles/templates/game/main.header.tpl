@@ -34,6 +34,24 @@
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/validationEngine.jquery.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="{$dpath}formate.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive.css?v={$REV}">
+	{assign var=responsivePage value=$smarty.get.page|default:'overview'}
+	{if $responsivePage == 'overview' || $responsivePage == 'buildings' || $responsivePage == 'research' || $responsivePage == 'shipyard' || $responsivePage == 'officier'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-build.css?v={$REV}">
+	{elseif $responsivePage == 'imperium' || $responsivePage == 'spyReports' || $responsivePage == 'resources'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-empire.css?v={$REV}">
+	{elseif $responsivePage == 'galaxy'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-galaxy.css?v={$REV}">
+	{elseif $responsivePage == 'fleetTable' || $responsivePage == 'fleetStep1' || $responsivePage == 'fleetStep2' || $responsivePage == 'fleetStep3'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-fleet.css?v={$REV}">
+	{elseif $responsivePage == 'battleSimulator' || $responsivePage == 'raport'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-combat.css?v={$REV}">
+	{elseif $responsivePage == 'messages' || $responsivePage == 'notes'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-messages.css?v={$REV}">
+	{elseif $responsivePage == 'achievements' || $responsivePage == 'statistics' || $responsivePage == 'battleHall'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-rankings.css?v={$REV}">
+	{elseif $responsivePage == 'alliance'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-alliance.css?v={$REV}">
+	{/if}
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/dialog.css?v={$REV}">
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 	<script type="text/javascript">

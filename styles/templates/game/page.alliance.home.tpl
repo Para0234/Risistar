@@ -1,6 +1,6 @@
 {block name="title" prepend}{$LNG.lm_alliance}{/block}
 {block name="content"}
-<table class="table519">
+<table class="table519 alliance-table">
 	<tr>
 		<th colspan="2">{$LNG.al_your_ally}</th>
 	</tr>
@@ -122,12 +122,12 @@
 	</tr>
 </table>
 {if !$isOwner}
-<table class="table519">
+<table class="table519 alliance-table alliance-sensitive-actions">
 	<tr>
-		<th>{$LNG.al_leave_alliance}</th>
+		<th>{$LNG.al_sensitive_actions}</th>
 	</tr>
 	<tr>
-		<td><a href="game.php?page=alliance&amp;mode=close" data-rs-confirm="{$LNG.al_leave_ally|escape:'html'}"><button>{$LNG.al_continue}</button></a></td>
+		<td><form action="game.php?page=alliance&amp;mode=close" method="post" data-rs-confirm="{$LNG.al_leave_ally|escape:'html'}"><button type="submit">{$LNG.al_leave_alliance}</button></form></td>
 	</tr>
 </table>
 {/if}

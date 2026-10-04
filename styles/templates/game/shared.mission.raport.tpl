@@ -147,6 +147,15 @@ $(function () {
 	if (window.matchMedia('(min-width: 641px)').matches) {
 		$('details.combat-round').prop('open', true);
 	}
+	$('.combat-report').on('click', '.combat-compare tbody tr', function () {
+		var $row = $(this);
+		var wasSelected = $row.hasClass('is-selected');
+
+		$('.combat-compare tbody tr.is-selected').removeClass('is-selected');
+		if (!wasSelected) {
+			$row.addClass('is-selected');
+		}
+	});
 	$('#combatReportClose').on('click', function () {
 		window.close();
 		window.setTimeout(function () {

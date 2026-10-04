@@ -3,7 +3,8 @@
 {$countRank = count($availableRanks)}
 <form action="game.php?page=alliance&amp;mode=admin&amp;action=permissionsSend" method="post">
 <input type="hidden" value="1" name="send">
-	<table style="width:100%;max-width:760px">
+	<div class="alliance-table-scroll" tabindex="0">
+	<table class="alliance-ranks-table">
 	<tr>
 			<th colspan="{$countRank + 2}">{$LNG.al_configura_ranks} <span style="float:right;"><button id="create_new_alliance_rank">+</button></span></th>
 	</tr>
@@ -43,11 +44,12 @@
 			<th colspan="{$countRank + 2}"><a href="game.php?page=alliance&amp;mode=admin">{$LNG.al_back}</a></th>
 	</tr>
 	</table>
+	</div>
 </form>
 
 <div id="new_alliance_rank" title="{$LNG.al_create_new_rank}" style="display:none;">
 	<form action="game.php?page=alliance&amp;mode=admin&amp;action=permissionsSend" method="post">
-		<table style="width:740px">
+		<table class="alliance-new-rank-table">
 	<tr>
 				<td><label for="rankName">{$LNG.al_rank_name}</label></td>
 				<td><input type="text" name="newrank[rankName]" size="20" maxlength="32" id="rankName" required></td>

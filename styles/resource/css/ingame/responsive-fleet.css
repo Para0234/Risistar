@@ -1,0 +1,883 @@
+/* Fleet list, ship selection, and fleet-send steps. */
+/* Quantity field plus the same track used for the energy factor. */
+.fleet-ship-qty-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	width: 100%;
+	min-width: 0;
+}
+
+.fleet-ship-qty-row > input[name^="ship"] {
+	flex: 0 0 4.6em;
+	width: 4.6em;
+	margin: 0;
+	box-sizing: border-box;
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+}
+
+.fleet-ship-slider {
+	display: flex;
+	align-items: center;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+}
+
+.fleet-ship-range {
+	--factor: 0%;
+	--fill: #38b1cc;
+	flex: 1 1 auto;
+	min-width: 0;
+	width: 100%;
+	height: 18px;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.fleet-ship-range:focus {
+	outline: none;
+}
+
+.fleet-ship-range:focus-visible {
+	outline: 1px solid #9fd4e8;
+	outline-offset: 2px;
+}
+
+.fleet-ship-range::-webkit-slider-runnable-track {
+	height: 6px;
+	border: 1px solid #31566a;
+	border-radius: 1px;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+	background-color: #0a1014;
+	background-image:
+		linear-gradient(to right, color-mix(in srgb, var(--fill) 72%, #0a1014) var(--factor), transparent var(--factor)),
+		repeating-linear-gradient(90deg, rgba(49, 86, 106, 0.45) 0 1px, transparent 1px 10%);
+}
+
+.fleet-ship-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 9px;
+	height: 16px;
+	margin-top: -6px;
+	border: 1px solid var(--fill);
+	border-radius: 1px;
+	background: linear-gradient(to bottom, #243844, #121820);
+	box-shadow: 0 0 7px color-mix(in srgb, var(--fill) 55%, transparent);
+}
+
+.fleet-ship-range:hover::-webkit-slider-thumb,
+.fleet-ship-range:focus-visible::-webkit-slider-thumb {
+	box-shadow: 0 0 10px color-mix(in srgb, var(--fill) 80%, transparent);
+}
+
+.fleet-ship-range::-moz-range-track {
+	height: 6px;
+	border: 1px solid #31566a;
+	border-radius: 1px;
+	background: #0a1014;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.fleet-ship-range::-moz-range-progress {
+	height: 6px;
+	border: 0;
+	border-radius: 1px;
+	background: color-mix(in srgb, var(--fill) 72%, #0a1014);
+}
+
+.fleet-ship-range::-moz-range-thumb {
+	width: 9px;
+	height: 16px;
+	border: 1px solid var(--fill);
+	border-radius: 1px;
+	background: linear-gradient(to bottom, #243844, #121820);
+	box-shadow: 0 0 7px color-mix(in srgb, var(--fill) 55%, transparent);
+}
+
+/* Destination step: ten speed steps, cold and slow on the left, warm and fast on the right. */
+.fleet-speed-slider {
+	--speed: 1;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.fleet-speed-range {
+	flex: 1 1 auto;
+	min-width: 0;
+	width: 100%;
+	height: 22px;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.fleet-speed-range:focus {
+	outline: none;
+}
+
+.fleet-speed-range:focus-visible {
+	outline: 1px solid #9fd4e8;
+	outline-offset: 2px;
+}
+
+.fleet-speed-range::-webkit-slider-runnable-track {
+	height: 8px;
+	border: 1px solid #31566a;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.55);
+	background-color: #121820;
+	background-image:
+		linear-gradient(to bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 46%, rgba(0, 0, 0, 0.28)),
+		repeating-linear-gradient(90deg, transparent 0, transparent calc(10% - 1px), rgba(4, 8, 12, 0.8) calc(10% - 1px), rgba(4, 8, 12, 0.8) 10%),
+		linear-gradient(to right,
+			#102838 0% 10%,
+			#143848 10% 20%,
+			#184858 20% 30%,
+			#1c5864 30% 40%,
+			#24686a 40% 50%,
+			#347468 50% 60%,
+			#4c7860 60% 70%,
+			#68745a 70% 80%,
+			#847050 80% 90%,
+			#a06838 90% 100%);
+}
+
+.fleet-speed-range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 10px;
+	height: 16px;
+	margin-top: -5px;
+	border: 1px solid color-mix(in srgb, #d4a24a calc(var(--speed) * 100%), #4aa8c4);
+	border-radius: 2px;
+	background: linear-gradient(to bottom, #243844, #121820);
+	box-shadow: 0 0 7px color-mix(in srgb, #d4a24a calc(var(--speed) * 55%), rgba(74, 168, 196, 0.5));
+}
+
+.fleet-speed-range:hover::-webkit-slider-thumb,
+.fleet-speed-range:focus-visible::-webkit-slider-thumb {
+	box-shadow: 0 0 10px color-mix(in srgb, #d4a24a calc(var(--speed) * 80%), rgba(74, 168, 196, 0.7));
+}
+
+.fleet-speed-range::-moz-range-track {
+	height: 8px;
+	border: 1px solid #31566a;
+	border-radius: 3px;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.55);
+	background-color: #121820;
+	background-image:
+		linear-gradient(to bottom, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 46%, rgba(0, 0, 0, 0.28)),
+		repeating-linear-gradient(90deg, transparent 0, transparent calc(10% - 1px), rgba(4, 8, 12, 0.8) calc(10% - 1px), rgba(4, 8, 12, 0.8) 10%),
+		linear-gradient(to right,
+			#102838 0% 10%,
+			#143848 10% 20%,
+			#184858 20% 30%,
+			#1c5864 30% 40%,
+			#24686a 40% 50%,
+			#347468 50% 60%,
+			#4c7860 60% 70%,
+			#68745a 70% 80%,
+			#847050 80% 90%,
+			#a06838 90% 100%);
+}
+
+.fleet-speed-range::-moz-range-progress {
+	background: transparent;
+}
+
+.fleet-speed-range::-moz-range-thumb {
+	width: 10px;
+	height: 16px;
+	border: 1px solid color-mix(in srgb, #d4a24a calc(var(--speed) * 100%), #4aa8c4);
+	border-radius: 2px;
+	background: linear-gradient(to bottom, #243844, #121820);
+	box-shadow: 0 0 7px color-mix(in srgb, #d4a24a calc(var(--speed) * 55%), rgba(74, 168, 196, 0.5));
+}
+
+.fleet-speed-value {
+	flex: 0 0 auto;
+	min-width: 3.6em;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	text-align: right;
+	color: color-mix(in srgb, #e4c48a calc(var(--speed) * 75%), #c5dce6);
+	text-shadow: 0 0 8px rgba(159, 212, 232, 0.22);
+}
+
+/* Slots line: fleets on the left, expeditions on the right. */
+.fleet-slots {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 8px 16px;
+	flex-wrap: wrap;
+}
+
+/* Phone: fleet movements as solid cards, ship picker as aligned rows. */
+@media (max-width: 640px) {
+	body#fleetTable .fleet-scroll {
+		overflow: visible;
+	}
+
+	body#fleetTable .table-scroll > table,
+	body#fleetTable .fleet-list,
+	body#fleetTable .fleet-list > tbody,
+	body#fleetTable .fleet-ships,
+	body#fleetTable .fleet-ships > tbody {
+		display: block;
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+
+	body#fleetTable .fleet-list > tbody > tr {
+		display: block;
+		width: 100%;
+		height: auto !important;
+	}
+
+	body#fleetTable .fleet-list > tbody > tr.fleet-list-cols {
+		display: none;
+	}
+
+	body#fleetTable .fleet-list-summary th,
+	body#fleetTable .fleet-empty td {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		height: auto;
+	}
+
+	body#fleetTable .fleet-empty td {
+		padding: 4px 8px;
+		background: rgba(13, 16, 20, 0.95);
+	}
+
+	body#fleetTable .fleet-list > tbody > tr.fleet-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 4px 8px;
+		margin-top: 4px;
+		padding: 6px 8px;
+		background: rgba(13, 16, 20, 0.95);
+		border: 1px solid #000;
+		box-sizing: border-box;
+	}
+
+	body#fleetTable .fleet-row > td {
+		display: block;
+		width: auto;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		height: auto !important;
+		text-align: left;
+		white-space: normal;
+	}
+
+	body#fleetTable .fleet-row > td[data-label]::before {
+		content: attr(data-label);
+		display: block;
+		margin-bottom: 2px;
+		color: #8b949e;
+		font-size: 10px;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	body#fleetTable .fleet-row > td.fleet-id {
+		display: none;
+	}
+
+	body#fleetTable .fleet-mission,
+	body#fleetTable .fleet-amount,
+	body#fleetTable .fleet-eta,
+	body#fleetTable .fleet-order {
+		grid-column: 1 / -1;
+	}
+
+	body#fleetTable .fleet-mission {
+		font-weight: 700;
+	}
+
+	body#fleetTable .fleet-mission br {
+		display: none;
+	}
+
+	body#fleetTable .fleet-mission a::before {
+		content: " ";
+	}
+
+	body#fleetTable .fleet-row > td.fleet-order {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+	}
+
+	body#fleetTable .fleet-row > td.fleet-order[data-label]::before {
+		flex: 1 0 100%;
+		margin-bottom: 2px;
+	}
+
+	body#fleetTable .fleet-order form {
+		flex: 1 1 120px;
+		margin: 0;
+	}
+
+	body#fleetTable .fleet-order input[type="submit"] {
+		width: 100%;
+		min-height: 28px;
+		margin: 0;
+		padding: 2px 8px;
+	}
+
+	body#fleetTable form[action="?page=fleetStep1"] {
+		display: block;
+		margin-top: 8px;
+	}
+
+	body#fleetTable .fleet-ships > tbody > tr.fleet-ships-cols {
+		display: none;
+	}
+
+	body#fleetTable .fleet-ships > tbody > tr.fleet-ships-title,
+	body#fleetTable .fleet-ships > tbody > tr.fleet-ships-go {
+		display: block;
+		width: 100%;
+		height: auto !important;
+	}
+
+	body#fleetTable .fleet-ships-title th,
+	body#fleetTable .fleet-ships-go td {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		height: auto;
+		padding: 4px 8px;
+	}
+
+	body#fleetTable .fleet-ships-go input {
+		display: block;
+		width: 100%;
+		min-height: 28px;
+		margin: 2px 0 0;
+		box-sizing: border-box;
+	}
+
+	body#fleetTable .fleet-ships > tbody > tr.fleet-ships-actions {
+		display: flex;
+		gap: 4px;
+		width: 100%;
+		height: auto !important;
+		margin-top: 4px;
+	}
+
+	body#fleetTable .fleet-ships-actions td {
+		flex: 1 1 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+
+	body#fleetTable .fleet-ships-actions a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 28px;
+		padding: 4px 6px;
+		border: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+		color: #ddd;
+		text-align: center;
+		text-decoration: none;
+		box-sizing: border-box;
+	}
+
+	body#fleetTable .fleet-ships > tbody > tr.fleet-ship {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		column-gap: 8px;
+		row-gap: 3px;
+		margin-top: 2px;
+		padding: 4px 8px;
+		background: rgba(13, 16, 20, 0.95);
+		border: 1px solid #000;
+		height: auto !important;
+		box-sizing: border-box;
+	}
+
+	body#fleetTable .fleet-ship:has(input)::after {
+		content: "";
+		flex-basis: 100%;
+		order: 3;
+		height: 0;
+	}
+
+	body#fleetTable .fleet-ship > td {
+		padding: 0;
+		border: 0;
+		background: transparent;
+		height: auto !important;
+		text-align: left;
+	}
+
+	body#fleetTable .fleet-ship-name {
+		order: 1;
+		flex: 1 1 0;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		font-weight: 700;
+	}
+
+	body#fleetTable .fleet-ship-count {
+		order: 2;
+		flex: 0 0 auto;
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	body#fleetTable .fleet-ship-max { order: 4; flex: 0 0 auto; }
+	body#fleetTable .fleet-ship-qty { order: 5; flex: 1 1 0; min-width: 0; }
+
+	body#fleetTable .fleet-ship-max:not(:has(a)),
+	body#fleetTable .fleet-ship-qty:not(:has(input)) {
+		display: none;
+	}
+
+	body#fleetTable .fleet-ship-max a,
+	body#fleetTable .fleet-ship-qty-row > input[name^="ship"] {
+		height: 24px;
+		min-height: 24px;
+		box-sizing: border-box;
+	}
+
+	body#fleetTable .fleet-ship-max a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 44px;
+		padding: 0 8px;
+		border: 1px solid #1c1f23;
+		border-radius: 2px;
+		background: #212428;
+		color: #ddd;
+		line-height: 1;
+		text-decoration: none;
+	}
+
+	body#fleetTable .fleet-ship-qty-row > input[name^="ship"] {
+		display: block;
+		flex: 0 0 4.2em;
+		width: 4.2em;
+		margin: 0;
+		padding: 0 4px;
+		line-height: 22px;
+	}
+
+	body#fleetTable .fleet-bonus {
+		margin-top: 4px;
+	}
+
+	body#fleetTable .fleet-bonus td,
+	body#fleetTable .fleet-bonus th {
+		padding: 4px;
+		white-space: normal;
+	}
+}
+
+/* Fleet send: coordinates, mission, confirmation.
+   Desktop stays the 519px tables. Below 1100px the mission step must
+   shrink with the page; on a phone the two columns stack. */
+
+body#fleetStep2 .fleet-col-title {
+	display: none;
+}
+
+@media (max-width: 1100px) {
+	body#fleetStep1 .fleet-target,
+	body#fleetStep1 .fleet-picks,
+	body#fleetStep1 .fleet-go,
+	body#fleetStep2 .fleet-send,
+	body#fleetStep3 .fleet-sent {
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+
+	body#fleetStep2 .fleet-mission-list,
+	body#fleetStep2 .fleet-res-list {
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+
+	body#fleetStep2 .fleet-res-list input[type="text"] {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+}
+
+@media (max-width: 640px) {
+	body#fleetStep1 .fleet-target,
+	body#fleetStep1 .fleet-target > tbody,
+	body#fleetStep1 .fleet-picks,
+	body#fleetStep1 .fleet-picks > tbody,
+	body#fleetStep1 .fleet-go,
+	body#fleetStep1 .fleet-go > tbody,
+	body#fleetStep3 .fleet-sent,
+	body#fleetStep3 .fleet-sent > tbody {
+		display: block;
+		width: 100% !important;
+	}
+
+	body#fleetStep1 .fleet-target > tbody > tr,
+	body#fleetStep3 .fleet-sent > tbody > tr {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+		height: auto !important;
+		margin-bottom: 2px;
+	}
+
+	body#fleetStep1 .fleet-target th[colspan],
+	body#fleetStep1 .fleet-target .fleet-dest,
+	body#fleetStep1 .fleet-target .fleet-speed,
+	body#fleetStep3 .fleet-sent th[colspan] {
+		grid-column: 1 / -1;
+	}
+
+	body#fleetStep1 .fleet-target .fleet-dest,
+	body#fleetStep1 .fleet-target .fleet-speed {
+		grid-template-columns: minmax(0, 1fr);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	body#fleetStep1 .fleet-dest > td:first-child,
+	body#fleetStep1 .fleet-speed > td:first-child {
+		text-align: left;
+		padding-bottom: 0;
+	}
+
+	body#fleetStep1 .fleet-target td,
+	body#fleetStep1 .fleet-target th,
+	body#fleetStep3 .fleet-sent td,
+	body#fleetStep3 .fleet-sent th {
+		height: auto !important;
+		width: auto !important;
+		white-space: normal;
+	}
+
+	body#fleetStep1 .fleet-target tr:not(.fleet-dest):not(.fleet-speed) > td:first-child,
+	body#fleetStep3 .fleet-sent td:first-child {
+		text-align: left;
+	}
+
+	body#fleetStep1 .fleet-target tr:not(.fleet-dest):not(.fleet-speed) > td:last-child,
+	body#fleetStep3 .fleet-sent td:last-child {
+		text-align: right;
+	}
+
+	body#fleetStep1 .fleet-target tr:not(.fleet-dest):not(.fleet-speed) > td:last-child {
+		white-space: nowrap;
+	}
+
+	body#fleetStep1 .fleet-coords {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px;
+		min-width: 0;
+		max-width: 100%;
+		text-align: left;
+	}
+
+	body#fleetStep1 .fleet-coords input[type="text"],
+	body#fleetStep1 .fleet-coords select,
+	body#fleetStep1 #speed {
+		min-height: 32px;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .fleet-coords input[type="text"] {
+		flex: 0 0 2.8em;
+		width: 2.8em;
+		min-width: 0;
+		padding-left: 0;
+		padding-right: 0;
+		text-align: center;
+	}
+
+	body#fleetStep1 .fleet-coords input.coord-quick[type="text"] {
+		flex: 1 1 8em;
+		width: 8em;
+		min-width: 7em;
+	}
+
+	body#fleetStep1 .fleet-coords select {
+		flex: 1 1 auto;
+		width: auto;
+		min-width: 0;
+	}
+
+	body#fleetStep1 .fleet-picks > tbody > tr:not(.shortcut-edit) {
+		display: block;
+		width: 100%;
+		height: auto !important;
+	}
+
+	body#fleetStep1 .fleet-picks > tbody > tr:not(.shortcut-edit) > td,
+	body#fleetStep1 .fleet-picks > tbody > tr:not(.shortcut-edit) > th,
+	body#fleetStep1 tr.shortcut-edit:not(.shortcut-new)[style*="table-row"],
+	body#fleetStep1 tr.shortcut-edit:not(.shortcut-new)[style*="block"] {
+		display: block !important;
+		width: 100% !important;
+		height: auto !important;
+	}
+
+	body#fleetStep1 tr.shortcut-edit > td {
+		display: block;
+		width: 100% !important;
+		height: auto !important;
+		box-sizing: border-box;
+		text-align: left;
+	}
+
+	body#fleetStep1 .fleet-picks th {
+		white-space: normal;
+	}
+
+	body#fleetStep1 .fleet-colonies > tbody > tr > td:not(:has(a)):not([colspan]),
+	body#fleetStep1 .fleet-acs > tbody > tr > td:not(:has(a)):not([colspan]),
+	body#fleetStep1 .shortcut-colum:not(.shortcut-isset) {
+		display: none;
+	}
+
+	body#fleetStep1 .fleet-picks td a {
+		display: flex;
+		align-items: center;
+		min-height: 34px;
+		padding: 4px 6px;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .shortcut-isset > .shortcut-edit[style*="block"] {
+		display: flex !important;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px;
+		padding: 4px 6px;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .shortcut-isset > .shortcut-edit[style*="block"] .shortcut-delete {
+		display: block !important;
+		position: static;
+		flex: 0 0 16px;
+		margin-left: auto;
+	}
+
+	body#fleetStep1 .shortcut-isset input[name*="[name]"] {
+		flex: 1 1 8em;
+		width: auto;
+		min-width: 0;
+		min-height: 32px;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .shortcut-isset input[name*="[galaxy]"],
+	body#fleetStep1 .shortcut-isset input[name*="[system]"],
+	body#fleetStep1 .shortcut-isset input[name*="[planet]"] {
+		flex: 0 0 2.6em;
+		width: 2.6em;
+		min-height: 32px;
+		margin: 0;
+		padding-left: 0;
+		text-align: center;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .shortcut-isset select.shortcut-input {
+		flex: 1 1 7em;
+		width: auto;
+		min-width: 0;
+		min-height: 32px;
+		margin: 0;
+	}
+
+	body#fleetStep1 .fleet-go {
+		margin-top: 8px;
+	}
+
+	body#fleetStep1 .fleet-go > tbody > tr,
+	body#fleetStep1 .fleet-go > tbody > tr > td {
+		display: block;
+		width: 100% !important;
+		height: auto !important;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep1 .fleet-go input,
+	body#fleetStep2 .fleet-go input {
+		display: block;
+		width: 100%;
+		min-height: 36px;
+		margin: 2px 0;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep2 .fleet-send,
+	body#fleetStep2 .fleet-send > tbody {
+		display: block;
+		width: 100% !important;
+	}
+
+	body#fleetStep2 .fleet-send > tbody > tr {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		height: auto !important;
+	}
+
+	body#fleetStep2 .fleet-send > tbody > tr > th,
+	body#fleetStep2 .fleet-send > tbody > tr > td {
+		flex: 1 1 100%;
+		width: 100% !important;
+		height: auto !important;
+		box-sizing: border-box;
+		text-align: left;
+	}
+
+	body#fleetStep2 .fleet-send > tbody > tr.fleet-send-heads {
+		display: none;
+	}
+
+	body#fleetStep2 .fleet-col-title {
+		display: block;
+		margin: 8px 0 2px;
+		padding: 4px 6px;
+		background-color: #212428;
+		background-image: url("../../../theme/gow/img/bkd_title.png");
+		border: 1px solid #000;
+		color: #fff;
+		font-weight: 700;
+		text-align: left;
+	}
+
+	body#fleetStep2 .fleet-mission-list,
+	body#fleetStep2 .fleet-mission-list > tbody,
+	body#fleetStep2 .fleet-mission-list tr,
+	body#fleetStep2 .fleet-mission-list td,
+	body#fleetStep2 .fleet-res-list,
+	body#fleetStep2 .fleet-res-list > tbody {
+		display: block;
+		width: 100% !important;
+		height: auto !important;
+		box-sizing: border-box;
+	}
+
+	body#fleetStep2 .fleet-mission-list td {
+		padding: 8px 6px;
+		text-align: left;
+		white-space: normal;
+	}
+
+	body#fleetStep2 .fleet-mission-list input[type="radio"] {
+		width: 18px !important;
+		height: 18px;
+		margin: 0 8px 0 0;
+		vertical-align: middle;
+	}
+
+	body#fleetStep2 .fleet-mission-list label {
+		vertical-align: middle;
+	}
+
+	body#fleetStep2 .fleet-mission-list br {
+		display: none;
+	}
+
+	body#fleetStep2 .fleet-mission-list div {
+		margin-top: 6px;
+		padding-left: 0 !important;
+		white-space: normal;
+	}
+
+	body#fleetStep2 .fleet-res-list > tbody > tr {
+		display: grid;
+		grid-template-columns: 7.2em auto minmax(0, 1fr);
+		align-items: center;
+		column-gap: 6px;
+		width: 100%;
+		height: auto !important;
+		margin-top: 4px;
+	}
+
+	body#fleetStep2 .fleet-res-list > tbody > tr:has(td[colspan="2"]) {
+		grid-template-columns: 7.2em minmax(0, 1fr);
+	}
+
+	body#fleetStep2 .fleet-res-list > tbody > tr:has(td[colspan="3"]) {
+		grid-template-columns: 1fr;
+	}
+
+	body#fleetStep2 .fleet-res-list td {
+		height: auto !important;
+		padding: 2px 0;
+		text-align: left;
+		white-space: normal;
+	}
+
+	body#fleetStep2 .fleet-res-list td:has(input),
+	body#fleetStep2 .fleet-res-list td[colspan] {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	body#fleetStep2 .fleet-res-list input[type="text"] {
+		display: block;
+		width: 100%;
+		min-height: 32px;
+		margin: 0;
+		text-align: right;
+	}
+
+	body#fleetStep2 .fleet-res-list a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 32px;
+		padding: 0 4px;
+	}
+
+	body#fleetStep2 .fleet-stay select {
+		min-height: 32px;
+		max-width: 100%;
+	}
+
+	body#fleetStep2 .fleet-go input {
+		margin-top: 8px;
+	}
+}
+

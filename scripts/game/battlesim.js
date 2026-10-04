@@ -52,4 +52,10 @@ $(function() {
 		});
 		return false;
 	});
+
+	$('#form').on('click', '.reset-all', function(e) {
+		e.preventDefault();
+		$(this).closest('form').find('.battlesim-qty').val(0);
+		return false;
+	});
 });

@@ -18,6 +18,7 @@
 class ShowBattleSimulatorPage extends AbstractGamePage
 {
 	public static $requireModule = MODULE_SIMULATOR;
+	private const ORBITAL_SHIP_IDS = array(212, 227, 228, 229, 230, 231);
 
 	function __construct() 
 	{
@@ -327,12 +328,16 @@ class ShowBattleSimulatorPage extends AbstractGamePage
 		}
 		
 		$this->tplObj->loadscript('battlesim.js');
+
+		$orbitalList = array_values(array_intersect($reslist['fleet'], self::ORBITAL_SHIP_IDS));
+		$fleetList = array_values(array_diff($reslist['fleet'], self::ORBITAL_SHIP_IDS));
+		$defensiveList = array_values(array_unique(array_merge($orbitalList, $reslist['defense'])));
 		
 		$this->assign(array(
 			'Slots'			=> $Slots,
 			'battleinput'	=> $BattleArray,
-			'fleetList'		=> $reslist['fleet'],
-			'defensiveList'	=> $reslist['defense'],
+			'fleetList'		=> $fleetList,
+			'defensiveList'	=> $defensiveList,
 		));
 		
 		$this->display('page.battleSimulator.default.tpl');   

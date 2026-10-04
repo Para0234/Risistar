@@ -33,7 +33,6 @@
 		</li>
 		{/if}
 		<li><a class="nav-link nav-achievements" href="game.php?page=achievements" title="{$LNG.lm_achievements}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_achievements}</span></a></li>
-		<li><a class="nav-link nav-faq" href="game.php?page=questions" title="{$LNG.lm_faq}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_faq}</span></a></li>
 		<li class="menucat2-head nav-section-title"><span>{$LNG.nav_section_universe}</span></li>
 		{if isModuleAvailable($smarty.const.MODULE_GALAXY)}<li><a class="nav-link nav-galaxy" href="game.php?page=galaxy" title="{$LNG.lm_galaxy}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_galaxy}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_ALLIANCE)}<li><a class="nav-link nav-alliance" href="game.php?page=alliance" title="{$LNG.lm_alliance}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_alliance}</span></a></li>{/if}
@@ -41,6 +40,7 @@
 		{if isModuleAvailable($smarty.const.MODULE_RECORDS)}<li><a class="nav-link nav-records" href="game.php?page=records" title="{$LNG.lm_records}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_records}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_BATTLEHALL)}<li><a class="nav-link nav-topkb" href="game.php?page=battleHall" title="{$LNG.lm_topkb}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_topkb}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_SEARCH)}<li><a class="nav-link nav-search" href="game.php?page=search" title="{$LNG.lm_search}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_search}</span></a></li>{/if}
+		{if isModuleAvailable($smarty.const.MODULE_BANLIST)}<li><a class="nav-link nav-banned" href="game.php?page=banList" title="{$LNG.lm_banned}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_banned}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_SIMULATOR)}<li><a class="nav-link nav-battlesim" href="game.php?page=battleSimulator" title="{$LNG.lm_battlesim}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_battlesim}</span></a></li>{/if}
 
 		<li class="menucat3-head nav-section-title"><span>{$LNG.nav_section_communication}</span></li>
@@ -48,10 +48,19 @@
 		{if isModuleAvailable($smarty.const.MODULE_BUDDYLIST)}<li><a class="nav-link nav-buddylist" href="game.php?page=buddyList" title="{$LNG.lm_buddylist}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_buddylist}</span></a></li>{/if}
 		{if !empty($hasBoard)}<li><a class="nav-link nav-forums" href="game.php?page=board" target="forum" title="{$LNG.lm_forums}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_forums}</span></a></li>{/if}
 		{if isModuleAvailable($smarty.const.MODULE_CHAT)}<li><a class="nav-link nav-chat" href="game.php?page=chat" title="{$LNG.lm_chat}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_chat}</span></a></li>{/if}
-		{if isModuleAvailable($smarty.const.MODULE_NOTICE)}<li><a class="nav-link nav-notes" href="javascript:OpenNotes();" title="{$LNG.lm_notes}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_notes}</span></a></li>{/if}
-		{if isModuleAvailable($smarty.const.MODULE_SUPPORT)}<li><a class="nav-link nav-support" href="game.php?page=ticket" title="{$LNG.lm_support}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_support}</span></a></li>{/if}
-		<li><a class="nav-link nav-rules" href="index.php?page=rules" target="rules" title="{$LNG.lm_rules}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_rules}</span></a></li>
-		{if isModuleAvailable($smarty.const.MODULE_BANLIST)}<li><a class="nav-link nav-banned" href="game.php?page=banList" title="{$LNG.lm_banned}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_banned}</span></a></li>{/if}
+		<li class="nav-group">
+			<button type="button" class="nav-group-toggle nav-help" aria-expanded="false" aria-controls="navHelpMenu" aria-haspopup="true" title="{$LNG.lm_help|default:'Aide'}">
+				<span class="nav-icon" aria-hidden="true"></span>
+				<span class="nav-label">{$LNG.lm_help|default:'Aide'}</span>
+				<span class="nav-group-chevron" aria-hidden="true"></span>
+			</button>
+			<ul class="nav-submenu" id="navHelpMenu">
+				<li><a class="nav-link nav-faq" href="game.php?page=questions" title="{$LNG.lm_faq}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_faq}</span></a></li>
+				<li><a class="nav-link nav-rules" href="index.php?page=rules" target="rules" title="{$LNG.lm_rules}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_rules}</span></a></li>
+				{if isModuleAvailable($smarty.const.MODULE_SUPPORT)}<li><a class="nav-link nav-support" href="game.php?page=ticket" title="{$LNG.lm_support}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_support}</span></a></li>{/if}
+				{if isModuleAvailable($smarty.const.MODULE_NOTICE)}<li><a class="nav-link nav-notes" href="javascript:OpenNotes();" title="{$LNG.lm_notes}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_notes}</span></a></li>{/if}
+			</ul>
+		</li>
 		<li><a class="nav-link nav-options" href="game.php?page=settings" title="{$LNG.lm_options}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_options}</span></a></li>
 		<li><a class="nav-link nav-logout" href="game.php?page=logout" title="{$LNG.lm_logout}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_logout}</span></a></li>
 		{if $authlevel > 0}<li><a class="nav-link nav-administration" href="./admin.php" style="color:lime" title="{$LNG.lm_administration}"><span class="nav-icon" aria-hidden="true"></span><span class="nav-label">{$LNG.lm_administration} ({$VERSION})</span></a></li>{/if}

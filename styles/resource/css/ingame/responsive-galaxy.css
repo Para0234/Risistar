@@ -1,0 +1,238 @@
+/* Galaxy page responsive layout. */
+/* --- Galaxy --- */
+
+.galaxy-page {
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+body#galaxy .galaxy-nav {
+	width: 324px;
+	max-width: 100%;
+	min-width: 0;
+}
+
+body#galaxy .galaxy-nav table {
+	width: 100%;
+}
+
+body#galaxy .galaxy-nav > tbody > tr > td {
+	width: 50%;
+	vertical-align: top;
+}
+
+body#galaxy .galaxy-nav-show {
+	background-color: transparent;
+	border: 0;
+}
+
+body#galaxy .galaxy-cols th,
+body#galaxy .galaxy-name,
+body#galaxy .galaxy-moon,
+body#galaxy .galaxy-debris,
+body#galaxy .galaxy-ally,
+body#galaxy .galaxy-actions {
+	white-space: nowrap;
+}
+
+body#galaxy .galaxy-missile {
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: 420px !important;
+}
+
+
+@media (max-width: 640px) {
+	body#galaxy #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	body#galaxy .galaxy-nav {
+		width: 100%;
+		max-width: 100%;
+		table-layout: fixed;
+		border-spacing: 4px 2px;
+		box-sizing: border-box;
+	}
+
+	body#galaxy .galaxy-nav input[type="button"],
+	body#galaxy .galaxy-nav input[type="submit"],
+	body#galaxy .galaxy-nav .coord-quick-toggle {
+		min-height: 36px;
+		min-width: 36px;
+	}
+
+	body#galaxy .galaxy-nav input[type="text"] {
+		width: 3.5em;
+		text-align: center;
+	}
+
+	body#galaxy .galaxy-nav input.coord-quick[type="text"] {
+		width: 8em;
+		min-height: 36px;
+	}
+
+	body#galaxy .galaxy-missile {
+		max-width: 100% !important;
+	}
+
+	body#galaxy .table-scroll {
+		overflow: visible;
+	}
+
+	body#galaxy .galaxy-table {
+		display: block;
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+
+	body#galaxy .galaxy-table > tbody {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	body#galaxy .galaxy-title {
+		display: block;
+	}
+
+	body#galaxy .galaxy-title th {
+		display: block;
+		text-align: center;
+	}
+
+	body#galaxy .galaxy-cols {
+		display: none;
+	}
+
+	body#galaxy .galaxy-row {
+		display: grid;
+		grid-template-columns: 22px 32px minmax(0, 1fr) auto auto auto auto;
+		grid-template-areas:
+			"pos planet name name moon debris actions"
+			"pos planet player ally moon debris actions";
+		align-items: center;
+		column-gap: 6px;
+		row-gap: 1px;
+		box-sizing: border-box;
+		padding: 6px 8px;
+		background: rgba(13, 16, 20, 0.88);
+		border: 1px solid #1c1f23;
+	}
+
+	body#galaxy .galaxy-row td {
+		padding: 0;
+		background: transparent;
+		border: 0;
+		white-space: nowrap;
+	}
+
+	body#galaxy .galaxy-pos { grid-area: pos; text-align: center; font-weight: 700; }
+	body#galaxy .galaxy-planet { grid-area: planet; }
+	body#galaxy .galaxy-row .galaxy-name {
+		grid-area: name;
+		min-width: 0;
+		white-space: normal;
+		line-height: 1.25;
+	}
+	body#galaxy .galaxy-moon { grid-area: moon; text-align: center; }
+	body#galaxy .galaxy-debris { grid-area: debris; text-align: center; }
+	body#galaxy .galaxy-moon:not(:has(img)),
+	body#galaxy .galaxy-debris:not(:has(img)) {
+		display: none;
+	}
+	body#galaxy .galaxy-row .galaxy-player {
+		grid-area: player;
+		min-width: 0;
+		white-space: normal;
+		line-height: 1.25;
+	}
+	body#galaxy .galaxy-ally { grid-area: ally; }
+	body#galaxy .galaxy-actions {
+		grid-area: actions;
+		display: flex;
+		justify-content: flex-end;
+		gap: 2px;
+		white-space: nowrap;
+	}
+
+	body#galaxy .galaxy-planet img,
+	body#galaxy .galaxy-moon img,
+	body#galaxy .galaxy-debris img {
+		display: block;
+		margin: 0 auto;
+	}
+
+	body#galaxy .galaxy-actions a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 28px;
+		min-height: 28px;
+	}
+
+	body#galaxy .galaxy-row.is-empty,
+	body#galaxy .galaxy-row.is-destroyed {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 28px;
+		padding: 4px 8px;
+	}
+
+	body#galaxy .galaxy-row.is-empty td:not(.galaxy-pos),
+	body#galaxy .galaxy-row.is-destroyed td:not(.galaxy-pos):not(.galaxy-name) {
+		display: none;
+	}
+
+	body#galaxy .galaxy-row.is-destroyed .galaxy-name {
+		white-space: normal;
+	}
+
+	body#galaxy .galaxy-foot,
+	body#galaxy .galaxy-status {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 4px 12px;
+		padding: 6px 8px;
+		background: rgba(13, 16, 20, 0.88);
+		border: 1px solid #1c1f23;
+	}
+
+	body#galaxy .galaxy-foot td,
+	body#galaxy .galaxy-foot th,
+	body#galaxy .galaxy-status td,
+	body#galaxy .galaxy-status th {
+		display: block;
+		width: auto;
+		flex: 1 1 auto;
+		padding: 0;
+		background: transparent;
+		border: 0;
+		white-space: normal;
+	}
+
+	body#galaxy .galaxy-foot .galaxy-pos {
+		flex: 0 0 auto;
+	}
+
+	body#galaxy #fleetstatusrow ~ tr {
+		display: block;
+		padding: 6px 8px;
+		background: rgba(13, 16, 20, 0.88);
+		border: 1px solid #1c1f23;
+	}
+
+	body#galaxy #fleetstatusrow ~ tr td {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+		white-space: normal;
+		word-break: break-word;
+	}
+
+}
