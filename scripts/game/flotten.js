@@ -1,5 +1,28 @@
 var acstime = 0;
 	
+function updateFleetSpeed(input)
+{
+	if (!input) {
+		return;
+	}
+	var step = parseInt(input.value, 10);
+	if (isNaN(step)) {
+		step = 10;
+	}
+	step = Math.min(10, Math.max(1, step));
+	var ratio = (step - 1) / 9;
+	if (input.parentElement) {
+		input.parentElement.style.setProperty('--speed', String(ratio));
+	}
+	var label = step * 10 + ' %';
+	input.setAttribute('aria-valuetext', label);
+	var speedLabel = document.getElementById('speed-label');
+	if (speedLabel) {
+		speedLabel.textContent = label;
+	}
+	updateVars();
+}
+
 function updateVars()
 {
 	document.getElementsByName("fleet_group")[0].value = 0;

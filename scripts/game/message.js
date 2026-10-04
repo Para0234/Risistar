@@ -42,9 +42,6 @@ Message	= {
 			$('#loading').hide();
 			$('#messagestable').remove();
 			$('#content table:eq(0)').after(data);
-			if (window.RisistarLayout && typeof window.RisistarLayout.enhanceSpyReports === 'function') {
-				window.RisistarLayout.enhanceSpyReports(document.getElementById('content'));
-			}
 		});
 	},
 

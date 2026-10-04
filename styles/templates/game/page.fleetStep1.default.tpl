@@ -21,12 +21,13 @@
 				</select>
 			</td>
 		</tr>
-		<tr style="height:20px;">
+		<tr class="fleet-speed" style="height:20px;">
 			<td>{$LNG.fl_fleet_speed}</td>
 			<td>
-				<select id="speed" name="speed" onChange="updateVars()">
-					{html_options options=$speedSelect}
-				</select> %
+				<div class="fleet-speed-slider">
+					<input type="range" id="speed" name="speed" class="fleet-speed-range" min="1" max="10" step="1" value="10" oninput="updateFleetSpeed(this)" aria-label="{$LNG.fl_fleet_speed|escape:'html'}" aria-valuetext="100 %">
+					<span id="speed-label" class="fleet-speed-value">100 %</span>
+				</div>
 			</td>
 		</tr>
 		<tr style="height:20px;">

@@ -10,7 +10,7 @@
 {/function}
 <div class="empire-page">
 <div class="empire-wrap">
-<table class="empire-table">
+<table class="empire-table" style="--empire-preferred-width: {$colspan*140 + 80}px">
 	<thead>
 		<tr>
 			<th colspan="{$colspan}"><span class="empire-sticky-title">{$LNG.lv_imperium_title}</span></th>

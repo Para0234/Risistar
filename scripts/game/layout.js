@@ -9,7 +9,6 @@
 	var MOBILE_NAV_QUERY = '(max-width: 640px)';
 	var SPY_LABEL_KEY = 'risistar.spyLabelWidth';
 	var EMPIRE_LABEL_KEY = 'risistar.empireLabelWidth';
-	var RESOURCES_LABEL_KEY = 'risistar.resourcesLabelWidth';
 	var COMBAT_LABEL_KEY = 'risistar.combatLabelWidth';
 	var EMPIRE_SECTIONS_KEY = 'risistar.empireCollapsed';
 	var SPY_SECTIONS_KEY = 'risistar.spyCollapsed';
@@ -129,6 +128,95 @@
 		});
 
 		markActiveNav();
+		initDarkmatterMenu();
+	}
+
+	function initDarkmatterMenu() {
+		var group = document.querySelector('#menu .nav-group');
+		if (!group) {
+			return;
+		}
+
+		var toggle = group.querySelector('.nav-group-toggle');
+		var submenu = group.querySelector('.nav-submenu');
+		if (!toggle || !submenu) {
+			return;
+		}
+
+		var suppressHover = false;
+		var hoverTimer = null;
+		var HOVER_DELAY_MS = 200;
+
+		function canHover() {
+			return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+		}
+
+		function clearHoverTimer() {
+			if (hoverTimer) {
+				clearTimeout(hoverTimer);
+				hoverTimer = null;
+			}
+		}
+
+		function syncExpanded() {
+			var open = group.classList.contains('is-open') || group.classList.contains('is-hover');
+			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+		}
+
+		if (submenu.querySelector('a.is-active')) {
+			group.classList.add('is-open');
+			toggle.classList.add('is-active');
+		}
+		syncExpanded();
+
+		toggle.addEventListener('click', function (event) {
+			event.preventDefault();
+			if (document.documentElement.classList.contains('nav-collapsed')) {
+				applyNavState(false, true);
+				group.classList.add('is-open');
+				syncExpanded();
+				return;
+			}
+
+			var nextOpen = !group.classList.contains('is-open');
+			group.classList.toggle('is-open', nextOpen);
+			if (!nextOpen) {
+				clearHoverTimer();
+				group.classList.remove('is-hover');
+				suppressHover = group.matches(':hover');
+			}
+			syncExpanded();
+		});
+
+		group.addEventListener('mouseenter', function () {
+			if (suppressHover || !canHover() || document.documentElement.classList.contains('nav-collapsed')) {
+				return;
+			}
+			clearHoverTimer();
+			hoverTimer = setTimeout(function () {
+				hoverTimer = null;
+				group.classList.add('is-hover');
+				syncExpanded();
+			}, HOVER_DELAY_MS);
+		});
+
+		group.addEventListener('mouseleave', function () {
+			suppressHover = false;
+			clearHoverTimer();
+			group.classList.remove('is-hover');
+			syncExpanded();
+		});
+
+		document.addEventListener('click', function (event) {
+			if (group.contains(event.target)) {
+				return;
+			}
+			if (!group.classList.contains('is-open')) {
+				return;
+			}
+			group.classList.remove('is-open');
+			syncExpanded();
+		});
 	}
 
 	function readFavorites() {
@@ -319,17 +407,6 @@
 		syncEmpireLayout();
 	}
 
-	function makeZeroButton(extraClass) {
-		var btn = document.createElement('button');
-		btn.type = 'button';
-		btn.className = extraClass ? 'zero-toggle ' + extraClass : 'zero-toggle';
-		btn.textContent = zeroButtonLabel(zerosShown());
-		btn.addEventListener('click', function () {
-			applyZeros(!zerosShown(), true);
-		});
-		return btn;
-	}
-
 	function compactShown() {
 		return document.documentElement.classList.contains('compact-numbers');
 	}
@@ -497,14 +574,11 @@
 		if (document.querySelector('.combat-report')) {
 			return mobile ? 120 : 168;
 		}
-		if (document.querySelector('.resources-page')) {
-			return mobile ? 110 : 200;
-		}
 		return mobile ? 88 : 148;
 	}
 
 	function labelResizeEnabled() {
-		return !!document.querySelector('.resources-page');
+		return false;
 	}
 
 	function labelPage() {
@@ -517,9 +591,6 @@
 		}
 		if (document.querySelector('.combat-report')) {
 			return COMBAT_LABEL_KEY;
-		}
-		if (document.querySelector('.resources-page')) {
-			return RESOURCES_LABEL_KEY;
 		}
 		return EMPIRE_LABEL_KEY;
 	}
@@ -1050,56 +1121,6 @@
 		}
 	}
 
-	function parseAmount(text) {
-		if (!text) {
-			return 0;
-		}
-		var cleaned = String(text).replace(/\s/g, '').replace(/\u00a0/g, '').replace(/\./g, '').replace(',', '.');
-		var n = parseFloat(cleaned);
-		return isNaN(n) ? 0 : n;
-	}
-
-	function enhanceSpyReports(root) {
-		$(root).find('.spyRaport').each(function () {
-			var $report = $(this);
-			if ($report.data('zerosReady')) {
-				return;
-			}
-			$report.data('zerosReady', true);
-
-			if (!$report.children('.zero-toggle').length) {
-				$report.prepend(makeZeroButton());
-			}
-
-			$report.find('.spyRaportContainer').each(function () {
-				var $container = $(this);
-				var $items = $container.children('.spyRaportItem');
-				if ($items.length) {
-					if ($items.length && $items.filter('.is-zero').length === $items.length) {
-						$container.addClass('is-zero');
-					}
-					return;
-				}
-
-				$container.find('.spyRaportContainerRow').each(function () {
-					var $cells = $(this).children('.spyRaportContainerCell');
-					var i;
-					for (i = 0; i + 1 < $cells.length; i += 2) {
-						if (parseAmount($cells.eq(i + 1).text()) === 0) {
-							$cells.eq(i).addClass('is-zero');
-							$cells.eq(i + 1).addClass('is-zero');
-						}
-					}
-				});
-
-				var $all = $container.find('.spyRaportContainerCell');
-				if ($all.length && $all.filter('.is-zero').length === $all.length) {
-					$container.addClass('is-zero');
-				}
-			});
-		});
-	}
-
 	function stickyHeaderRows() {
 		var spyHead = document.querySelector('.spy-planet-head');
 		if (spyHead) {
@@ -1117,6 +1138,53 @@
 			count += rows[i].children.length;
 		}
 		return count;
+	}
+
+	function syncEmpireTopScroll(wrap) {
+		if (!wrap || !wrap.closest) {
+			return;
+		}
+		var page = wrap.closest('.empire-page');
+		if (!page || (document.body.id !== 'imperium' && document.body.id !== 'spyReports')) {
+			return;
+		}
+		var bar = page.querySelector('.empire-scroll-top');
+		if (!bar) {
+			bar = document.createElement('div');
+			bar.className = 'empire-scroll-top';
+			bar.innerHTML = '<div class="empire-scroll-top-content"></div>';
+			page.insertBefore(bar, wrap);
+		}
+		bar._empireWrap = wrap;
+		if (!bar._empireScrollBound) {
+			bar._empireScrollBound = true;
+			bar.addEventListener('scroll', function () {
+				if (bar._empireWrap && bar._empireWrap.scrollLeft !== bar.scrollLeft) {
+					bar._empireWrap.scrollLeft = bar.scrollLeft;
+				}
+			});
+		}
+		if (!wrap._empireScrollBound) {
+			wrap._empireScrollBound = true;
+			wrap.addEventListener('scroll', function () {
+				var currentBar = page.querySelector('.empire-scroll-top');
+				if (currentBar && currentBar.scrollLeft !== wrap.scrollLeft) {
+					currentBar.scrollLeft = wrap.scrollLeft;
+				}
+			});
+		}
+
+		var content = bar.querySelector('.empire-scroll-top-content');
+		var table = wrap.querySelector('.empire-table');
+		var contentWidth = Math.max(
+			wrap.scrollWidth,
+			table ? Math.ceil(table.getBoundingClientRect().width) : 0
+		);
+		content.style.width = contentWidth + 'px';
+		bar.hidden = contentWidth <= wrap.clientWidth + 1;
+		if (!bar.hidden && bar.scrollLeft !== wrap.scrollLeft) {
+			bar.scrollLeft = wrap.scrollLeft;
+		}
 	}
 
 	function buildSpyPlanetSticky() {
@@ -1240,6 +1308,7 @@
 				placeLabelResizer(labelResizeY);
 			}
 			syncSpyNewWaves();
+			syncEmpireTopScroll(wrap);
 		}
 		syncLabelMarquees();
 		if (stickyHeaderRows().length) {
@@ -1465,9 +1534,14 @@
 		var hud = ensureFaderHud();
 		hud.textContent = factorLabel(level);
 		hud.hidden = false;
-		var x = Math.max(72, clientX - 12);
 		var y = Math.max(24, Math.min(window.innerHeight - 24, clientY));
-		hud.style.left = Math.round(x) + 'px';
+		var width = hud.offsetWidth || 72;
+		var left = clientX - 12 - width;
+		if (left < 8) {
+			left = clientX + 16;
+		}
+		hud.style.transform = 'translate(0, -50%)';
+		hud.style.left = Math.round(left) + 'px';
 		hud.style.top = Math.round(y) + 'px';
 	}
 
@@ -1546,10 +1620,10 @@
 		var vh = window.innerHeight;
 		var width = picker.offsetWidth || 72;
 		var height = picker.offsetHeight || 280;
-		var left = rect.left - width - 4;
-		if (left < pad) {
-			left = Math.min(vw - pad - width, rect.right + 4);
-		}
+		var spaceRight = vw - rect.right - pad;
+		var spaceLeft = rect.left - pad;
+		var left = (spaceRight >= width || spaceRight >= spaceLeft) ? rect.right + 4 : rect.left - width - 4;
+		left = Math.max(pad, Math.min(vw - pad - width, left));
 		var top = rect.top + (rect.height / 2) - (height / 2);
 		top = Math.max(pad, Math.min(vh - pad - height, top));
 		picker.style.left = Math.round(left) + 'px';
@@ -1894,11 +1968,9 @@
 		initBuildCards();
 		applyZeros(readStorage(ZERO_KEY) === '1', false);
 		applyCompact(readStorage(COMPACT_KEY) === '1', false);
-		enhanceSpyReports(document);
 	}
 
 	window.RisistarLayout = {
-		enhanceSpyReports: enhanceSpyReports,
 		refreshEmpire: refreshEmpire
 	};
 

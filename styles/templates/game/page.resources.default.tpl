@@ -9,7 +9,7 @@
 	{if $extra}<span class="resources-level">{$extra}</span>{/if}
 </td>
 {/function}
-<div class="empire-page resources-page" data-label-resize="{$LNG.spy_label_width}">
+<div class="empire-page resources-page">
 <form class="resources-form" action="?page=resources" method="post">
 <input type="hidden" name="mode" value="send">
 <div class="empire-wrap">
@@ -134,9 +134,6 @@
 </form>
 <div id="empireSettingsMenu" class="empire-settings-menu" hidden>
 	<label><input type="checkbox" id="empireOptCompact"> {$LNG.compact_option|default:'Nombres compactés'}</label>
-	<label class="spy-opt-width">{$LNG.spy_label_width}
-		<input type="range" id="spyOptColWidth" min="56" max="220" step="1">
-	</label>
 </div>
 </div>
 {/block}

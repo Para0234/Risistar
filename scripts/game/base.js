@@ -163,7 +163,9 @@ var Dialog	= {
 		if (window.innerWidth <= 640 && ID > 600 && ID < 800) {
 			height = 396;
 		}
-		return Dialog.open('game.php?page=information&id='+ID, 590, height);
+		return Dialog.open('game.php?page=information&id='+ID, 590, height, {
+			autoHeight: true
+		});
 	},
 	
 	alert: function(msg, callback){
@@ -204,18 +206,118 @@ var Dialog	= {
 	    return OpenPopup('game.php?page=chat&action=alliance', "alliance_chat", 960, 900);
 	},
 	
-	open: function(url, width, height) {
+	open: function(url, width, height, options) {
+		options = options || {};
 		var maxW = Math.max(280, window.innerWidth - 16);
 		var maxH = Math.max(200, window.innerHeight - 16);
-		$.fancybox({
+		var autoHeightTimer = null;
+		var fancyboxOptions = {
 			width: Math.min(width, maxW),
 			padding: 0,
 			height: Math.min(height, maxH),
 			type: 'iframe',
 			href: url
-		});
+		};
+
+		if (options.autoHeight) {
+			fancyboxOptions.transitionIn = 'none';
+			fancyboxOptions.onStart = function() {
+				$('#fancybox-wrap').css('visibility', 'hidden');
+			};
+			fancyboxOptions.onComplete = function() {
+				var frame = document.getElementById('fancybox-frame');
+				var reveal = function() {
+					if (Dialog.fitIframeHeight(frame)) {
+						window.clearTimeout(autoHeightTimer);
+						$(frame).off('load.rsInfoAutoHeight', reveal);
+						return true;
+					}
+					return false;
+				};
+
+				$('#fancybox-wrap').css('visibility', 'hidden');
+				$.fancybox.showActivity();
+				$(frame).on('load.rsInfoAutoHeight', reveal);
+				if (!reveal()) {
+					autoHeightTimer = window.setTimeout(function() {
+						if (!reveal()) {
+							$.fancybox.hideActivity();
+							$('#fancybox-wrap').css('visibility', 'visible');
+						}
+					}, 2000);
+				}
+			};
+			fancyboxOptions.onClosed = function() {
+				window.clearTimeout(autoHeightTimer);
+				$.fancybox.hideActivity();
+				$('#fancybox-wrap').css('visibility', 'visible');
+			};
+		}
+
+		$.fancybox(fancyboxOptions);
 		
 		return false;
+	},
+
+	fitIframeHeight: function(frame) {
+		var wrap = $('#fancybox-wrap');
+		var content = $('#fancybox-content');
+		var naturalHeight = Dialog.measureIframeHeight(frame);
+
+		if (naturalHeight <= 0) {
+			return false;
+		}
+
+		var currentHeight = content.height();
+		var chromeHeight = Math.max(0, wrap.outerHeight() - currentHeight);
+		var maxHeight = Math.max(280, Math.floor(window.innerHeight * 0.78) - chromeHeight);
+		var fittedHeight = Math.min(naturalHeight, maxHeight);
+		content.height(fittedHeight);
+		$(frame).height(fittedHeight);
+		$.fancybox.center(0);
+		$.fancybox.hideActivity();
+		wrap.css('visibility', 'visible');
+		return true;
+	},
+
+	measureIframeHeight: function(frame) {
+		try {
+			var doc = frame.contentDocument || frame.contentWindow.document;
+			var body = doc.body;
+			var content = doc.getElementById('content');
+			if (!body || body.id !== 'information' || !content) {
+				return 0;
+			}
+
+			var view = doc.defaultView;
+			var chrome = body.querySelector('.dialog-chrome');
+			var contentStyle = view.getComputedStyle(content);
+			var height = chrome ? chrome.offsetHeight : 0;
+			height += parseFloat(contentStyle.paddingTop) || 0;
+			height += parseFloat(contentStyle.paddingBottom) || 0;
+			height += parseFloat(contentStyle.borderTopWidth) || 0;
+			height += parseFloat(contentStyle.borderBottomWidth) || 0;
+			var i;
+
+			for (i = 0; i < content.children.length; i++) {
+				var child = content.children[i];
+				var childStyle = view.getComputedStyle(child);
+				var childHeight = child.offsetHeight;
+				if (child.classList.contains('info-level-scroll') && child.firstElementChild) {
+					childHeight = child.firstElementChild.offsetHeight;
+					if (child.scrollWidth > child.clientWidth) {
+						childHeight += child.offsetHeight - child.clientHeight;
+					}
+				}
+				height += childHeight;
+				height += parseFloat(childStyle.marginTop) || 0;
+				height += parseFloat(childStyle.marginBottom) || 0;
+			}
+
+			return Math.ceil(height);
+		} catch (error) {
+			return 0;
+		}
 	}
 }
 
