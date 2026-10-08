@@ -169,6 +169,14 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 	{
 		HTTP::redirectTo('index.php?code=3');
 	}
+
+	if (MODE === 'INGAME' && $USER['bana'] == 1 && $USER['banaday'] <= TIMESTAMP) {
+		$db->update('UPDATE %%USERS%% SET bana = 0, banaday = 0 WHERE id = :userId;', array(
+			':userId'	=> $USER['id'],
+		));
+		$USER['bana'] = 0;
+		$USER['banaday'] = 0;
+	}
 	
 	$LNG	= new Language($USER['lang']);
 	$LNG->includeData(array('L18N', 'INGAME', 'TECH', 'CUSTOM'));
@@ -194,7 +202,7 @@ if (MODE === 'INGAME' || MODE === 'ADMIN' || MODE === 'CRON')
 
 		$session->selectActivePlanet();
 
-		$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId FOR UPDATE;";
+		$sql	= "SELECT * FROM %%PLANETS%% WHERE id = :planetId AND destruyed = 0 FOR UPDATE;";
 		$PLANET	= $db->selectSingle($sql, array(
 			':planetId'	=> $session->planetId,
 		));
