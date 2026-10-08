@@ -154,6 +154,23 @@ class FlyingFleetHandler
 			/** @var $missionObj Mission */
 			$missionObj	= new $missionName($fleetRow);
 			
+			// Send the fleet home if its target planet was deleted (attacks check this themselves)
+			$sql	= 'SELECT id FROM %%PLANETS%% WHERE id = :planetId;';
+			if($fleetRow['fleet_mess'] == FLEET_OUTWARD
+				&& in_array($fleetRow['fleet_mission'], array(3, 4, 6, 9, 10))
+				&& !$db->selectSingle($sql, array(
+					':planetId'	=> $fleetRow['fleet_end_id']
+				))) {
+				// Missiles do not come back
+				if($fleetRow['fleet_mission'] == 10) {
+					$missionObj->KillFleet();
+				} else {
+					$missionObj->setState(FLEET_RETURN);
+					$missionObj->SaveFleet();
+				}
+				continue;
+			}
+			
 			switch($fleetRow['fleet_mess'])
 			{
 				case 0:
