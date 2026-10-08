@@ -110,11 +110,25 @@ class ShowFleetStep3Page extends AbstractGamePage
 
         if(!empty($fleetGroup))
 		{
+            // The request transaction (common.php) keeps this lock until the fleet is saved
+            $sql = "SELECT id FROM %%AKS%% WHERE id = :acsID FOR UPDATE;";
+            $db->selectSingle($sql, array(
+                ':acsID'        => $fleetGroup,
+            ));
+
             $sql = "SELECT ankunft FROM %%USERS_ACS%% INNER JOIN %%AKS%% ON id = acsID
-			WHERE acsID = :acsID AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
+			INNER JOIN %%PLANETS%% planet ON planet.id = target
+			WHERE acsID = :acsID AND userID = :userID AND planet.galaxy = :galaxy AND planet.`system` = :system
+			AND planet.planet = :planet AND planet.planet_type = :type
+			AND :maxFleets > (SELECT COUNT(*) FROM %%FLEETS%% WHERE fleet_group = :acsID);";
             $ACSTime = $db->selectSingle($sql, array(
                 ':acsID'        => $fleetGroup,
                 ':maxFleets'    => $config->max_fleets_per_acs,
+                ':userID'       => $USER['id'],
+                ':galaxy'       => $targetGalaxy,
+                ':system'       => $targetSystem,
+                ':planet'       => $targetPlanet,
+                ':type'         => $targetType,
             ), 'ankunft');
 
             if (empty($ACSTime)) {
