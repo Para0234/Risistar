@@ -27,7 +27,7 @@ class ShowFleetDealerPage extends AbstractGamePage
 	
 	public function send()
 	{
-		global $USER, $PLANET, $LNG, $pricelist, $resource;
+		global $USER, $PLANET, $LNG, $resource;
 		
 		$shipID			= HTTP::_GP('shipID', 0);
 		$Count			= max(0, round(HTTP::_GP('count', 0.0)));
@@ -36,10 +36,11 @@ class ShowFleetDealerPage extends AbstractGamePage
 		if(!empty($shipID) && !empty($Count) && in_array($shipID, $allowedShipIDs) && $PLANET[$resource[$shipID]] >= $Count)
 		{
 			$tradeCharge					= 1 - (Config::get()->trade_charge / 100);
-			$PLANET[$resource[901]]			+= $Count * $pricelist[$shipID]['cost'][901] * $tradeCharge;
-			$PLANET[$resource[902]]			+= $Count * $pricelist[$shipID]['cost'][902] * $tradeCharge;
-			$PLANET[$resource[903]]			+= $Count * $pricelist[$shipID]['cost'][903] * $tradeCharge;
-			$USER[$resource[921]]			+= $Count * $pricelist[$shipID]['cost'][921] * $tradeCharge;
+			$costResources					= BuildFunctions::getElementPrice($USER, $PLANET, $shipID, false, $Count) + array(901 => 0, 902 => 0, 903 => 0, 921 => 0);
+			$PLANET[$resource[901]]			+= $costResources[901] * $tradeCharge;
+			$PLANET[$resource[902]]			+= $costResources[902] * $tradeCharge;
+			$PLANET[$resource[903]]			+= $costResources[903] * $tradeCharge;
+			$USER[$resource[921]]			+= $costResources[921] * $tradeCharge;
 			
 			$PLANET[$resource[$shipID]]		-= $Count;
 
@@ -66,7 +67,7 @@ class ShowFleetDealerPage extends AbstractGamePage
 	
 	function show()
 	{
-		global $PLANET, $LNG, $pricelist, $resource, $reslist;
+		global $PLANET, $USER, $LNG, $resource, $reslist;
 		
 		$Cost		= array();
 		
@@ -75,7 +76,8 @@ class ShowFleetDealerPage extends AbstractGamePage
 		foreach($allowedShipIDs as $shipID)
 		{
 			if(in_array($shipID, $reslist['fleet']) || in_array($shipID, $reslist['defense'])) {
-				$Cost[$shipID]	= array($PLANET[$resource[$shipID]], $LNG['tech'][$shipID], $pricelist[$shipID]['cost']);
+				$costResources	= BuildFunctions::getElementPrice($USER, $PLANET, $shipID, false, 1) + array(901 => 0, 902 => 0, 903 => 0, 921 => 0);
+				$Cost[$shipID]	= array($PLANET[$resource[$shipID]], $LNG['tech'][$shipID], $costResources);
 			}
 		}
 		
