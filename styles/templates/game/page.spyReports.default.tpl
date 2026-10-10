@@ -93,6 +93,7 @@
 <script>
 var spyExtraParam = {$extraParam|json};
 var spyQueryBase = {$queryBase|json};
+var spyToken = {$spyToken|json};
 var spyDialogCancelLabel = {$LNG.spy_delete_cancel|json};
 var spyDialogDontAskLabel = {$LNG.spy_delete_dont_ask|json};
 {literal}
@@ -219,7 +220,7 @@ function openSpyDialog(opts) {
 		if (opts.skipPref && result.checked) {
 			spySetSkipDeleteConfirm(true);
 		}
-		spyFetch(opts.params);
+		spyFetch(opts.params, {post: true});
 	});
 }
 
@@ -502,10 +503,25 @@ function spyFetch(params, opts) {
 	}
 	function spyFallback() {
 		query.delete('ajax');
+		if (opts.post) {
+			var form = document.createElement('form');
+			form.method = 'post';
+			form.action = 'game.php?' + query.toString();
+			var token = document.createElement('input');
+			token.type = 'hidden';
+			token.name = 'token';
+			token.value = spyToken;
+			form.appendChild(token);
+			document.body.appendChild(form);
+			form.submit();
+			return;
+		}
 		location.assign('game.php?' + query.toString());
 	}
 	spyReloadXhr = $.ajax({
 		url: 'game.php?' + query.toString(),
+		type: opts.post ? 'POST' : 'GET',
+		data: opts.post ? {token: spyToken} : undefined,
 		dataType: 'html',
 		cache: false,
 		xhrFields: {withCredentials: true}
@@ -683,7 +699,7 @@ function spyFetch(params, opts) {
 			}
 			if (this.classList.contains('spy-delete')) {
 				if (spySkipDeleteConfirm()) {
-					spyFetch(url.searchParams);
+					spyFetch(url.searchParams, {post: true});
 					return;
 				}
 				openSpyDialog({

@@ -1556,10 +1556,20 @@ html.spy-resize-hover * {
 }
 
 .spy-col-user,
-.spy-col-time {
+.spy-col-time,
+.spy-col-counter {
 	font-size: 11px;
 	font-weight: 400;
 	opacity: 0.85;
+}
+
+.spy-col-counter {
+	white-space: nowrap;
+}
+
+.spy-col-counter.is-destroyed {
+	color: #ff6b6b;
+	opacity: 1;
 }
 
 .spy-col-time {

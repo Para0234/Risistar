@@ -35,8 +35,6 @@ class ShowMessagesPage extends AbstractGamePage
         $this->initTemplate();
         $this->setWindow('ajax');
 
-        (new SpyReportMigrator())->migrateOwner((int) $USER['id']);
-
         $MessageList	= array();
         $MessagesID		= array();
 
@@ -371,8 +369,6 @@ class ShowMessagesPage extends AbstractGamePage
 
         $category      	= HTTP::_GP('category', 0);
         $side			= HTTP::_GP('side', 1);
-
-        (new SpyReportMigrator())->migrateOwner((int) $USER['id']);
 
         $db = Database::get();
 

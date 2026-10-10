@@ -1,4 +1,4 @@
-CREATE TABLE %PREFIX%spy_reports (
+CREATE TABLE IF NOT EXISTS `%PREFIX%spy_reports` (
   `report_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `message_id` bigint(20) UNSIGNED DEFAULT NULL,
   `owner_id` int(11) UNSIGNED NOT NULL,
@@ -21,3 +21,6 @@ CREATE TABLE %PREFIX%spy_reports (
   KEY `owner_viewed` (`owner_id`, `viewed`),
   KEY `owner_target_time` (`owner_id`, `galaxy`, `system`, `planet`, `planet_type`, `report_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+INSERT INTO `%PREFIX%cronjobs` (name,isActive,min,hours,dom,month,dow,class,nextTime)
+SELECT 'Spy report import',1,'*','*','*','*','*','SpyReportImportCronjob',0 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `%PREFIX%cronjobs` WHERE class='SpyReportImportCronjob');

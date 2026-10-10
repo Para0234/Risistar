@@ -50,7 +50,7 @@ class SpyReportPurgeTest extends IntegrationTestCase
 		));
 
 		SpyReportStore::deleteOlderThan($this->ownerId, TIMESTAMP - 86400);
-		(new SpyReportMigrator())->migrateOwner($this->ownerId);
+		(new SpyReportMigrator())->migrateBatch($this->messageId - 1, 10);
 
 		$report = self::$db->selectSingle(
 			'SELECT report_id FROM %%SPY_REPORTS%% WHERE owner_id = :ownerId AND planet_name = :name;',

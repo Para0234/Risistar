@@ -66,6 +66,11 @@
 					<span class="spy-col-date">{$column.time_date}</span>
 					<span class="spy-col-clock">{$column.time_clock}</span>
 				</div>
+				{if $column.spy_destroyed}
+				<div class="spy-col-counter is-destroyed">{$LNG.spy_destroyed_short}</div>
+				{else}
+				<div class="spy-col-counter" title="{$LNG.spy_counter_hint}">{$column.counter_label}</div>
+				{/if}
 			</th>
 			{/foreach}
 		</tr>

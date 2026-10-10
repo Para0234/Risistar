@@ -9,50 +9,43 @@ class SpyReportMigrator
 		$this->parser = $parser ?? new SpyReportHtmlParser();
 	}
 
-	public function migrateOwner(int $ownerId, int $limit = 100): int
-	{
-		$sql = 'SELECT m.message_id, m.message_time, m.message_text, m.message_universe, u.lang
-			FROM %%MESSAGES%% m
-			INNER JOIN %%USERS%% u ON u.id = m.message_owner
-			LEFT JOIN %%SPY_REPORTS%% r ON r.message_id = m.message_id
-			WHERE m.message_owner = :ownerId
-				AND m.message_type = 0
-				AND m.message_deleted IS NULL
-				AND m.message_text LIKE :needle
-				AND r.report_id IS NULL
-			ORDER BY m.message_time ASC
-			LIMIT ' . (int) $limit . ';';
-
-		$rows = Database::get()->select($sql, array(
-			':ownerId'	=> $ownerId,
-			':needle'	=> '%spyRaport%',
-		));
-
-		return $this->migrateRows($rows, $ownerId);
-	}
-
-	public function migrateAll(int $limit = 100): int
+	/**
+	 * Import the next old inbox spy reports after $afterMessageId, in message order.
+	 * Callers continue from last_id, so a message that cannot be parsed is skipped
+	 * instead of being read again by every following batch.
+	 *
+	 * @return array{scanned:int,imported:int,last_id:int}
+	 */
+	public function migrateBatch(int $afterMessageId, int $limit = 100): array
 	{
 		$sql = 'SELECT m.message_id, m.message_owner, m.message_time, m.message_text, m.message_universe, u.lang
 			FROM %%MESSAGES%% m
 			INNER JOIN %%USERS%% u ON u.id = m.message_owner
 			LEFT JOIN %%SPY_REPORTS%% r ON r.message_id = m.message_id
-			WHERE m.message_type = 0
+			WHERE m.message_id > :afterId
+				AND m.message_type = 0
 				AND m.message_deleted IS NULL
 				AND m.message_text LIKE :needle
 				AND r.report_id IS NULL
-			ORDER BY m.message_time ASC
-			LIMIT ' . (int) $limit . ';';
+			ORDER BY m.message_id ASC
+			LIMIT ' . max(1, $limit) . ';';
 
 		$rows = Database::get()->select($sql, array(
-			':needle' => '%spyRaport%',
+			':afterId'	=> $afterMessageId,
+			':needle'	=> '%spyRaport%',
 		));
 
-		$count = 0;
+		$imported = 0;
+		$lastId = $afterMessageId;
 		foreach ($rows as $row) {
-			$count += $this->migrateRows(array($row), (int) $row['message_owner']);
+			$imported += $this->migrateRows(array($row), (int) $row['message_owner']);
+			$lastId = (int) $row['message_id'];
 		}
-		return $count;
+		return array(
+			'scanned'	=> count($rows),
+			'imported'	=> $imported,
+			'last_id'	=> $lastId,
+		);
 	}
 
 	/**

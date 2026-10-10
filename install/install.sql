@@ -912,7 +912,7 @@ CREATE TABLE `%PREFIX%system` (
 --
 
 INSERT INTO `%PREFIX%system` (`dbVersion`) VALUES
-(8);
+(9);
 
 -- --------------------------------------------------------
 

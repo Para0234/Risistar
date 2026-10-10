@@ -299,6 +299,8 @@ $LNG['spy_purge_old_line2']					= 'de plus de 24 h';
 $LNG['spy_purge_old_confirm']				= 'Supprimer les rapports d\'espionnage de plus de 24 h ?';
 $LNG['spy_purge_old_yes']					= 'Oui, supprimer ces rapports';
 $LNG['spy_destroyed_short']					= 'Sondes détruites';
+$LNG['spy_counter']							= 'Contre-esp. : %d %%';
+$LNG['spy_counter_hint']					= 'Probabilité de destruction des sondes (contre-espionnage)';
 
 //----------------------------------------------------------------------------//
 //FLEET - FLEET1 - FLEET2 - FLEET3 - FLEETACS - FLEETSHORTCUTS
@@ -982,6 +984,7 @@ $LNG['op_user_name_no_alphanumeric']		= 'Merci d\'entrer un nom d\'Utilisateur �
 $LNG['op_change_name_pro_week']				= 'Vous pouvez modifier votre nom d\'Utilisateur une fois par semaine';
 $LNG['op_change_name_exist']				= 'Le nom %s existe déjà';
 $LNG['op_active_build_messages']			= 'Actualités queue de construction';
+$LNG['op_active_spy_messages_mode']			= 'Rapports d\'espionnage résumés (sans les lignes à 0)';
 $LNG['op_dst_mode']							= 'Heure d\été ?';
 $LNG['op_dst_mode_sel'][0]					= 'Non';
 $LNG['op_dst_mode_sel'][1]					= 'Oui';

@@ -189,14 +189,15 @@ class ShowShipyardPage extends AbstractGamePage
 			}
 		}
 
+		if ($telemetryBefore !== $PLANET['b_hangar_id']) {
+			PlayerTelemetry::action('queue.shipyard');
+		}
+
 		if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		{
 			$this->redirectTo('game.php?page=shipyard&mode='.$mode);
 		}
 		
-		if ($telemetryBefore !== $PLANET['b_hangar_id']) {
-			PlayerTelemetry::action('queue.shipyard');
-		}
 		$elementInQueue	= array();
 		$ElementQueue 	= unserialize($PLANET['b_hangar_id']);
 		$buildList		= array();

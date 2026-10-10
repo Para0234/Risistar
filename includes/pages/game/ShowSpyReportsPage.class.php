@@ -18,7 +18,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 	{
 		$reportId = HTTP::_GP('id', 0);
 		$ownerId = $this->intelOwnerId();
-		if ($reportId > 0) {
+		if ($reportId > 0 && $this->isConfirmedPost()) {
 			SpyReportStore::deleteById($ownerId, $reportId);
 		}
 
@@ -38,7 +38,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 	{
 		global $USER;
 		$ownerId = $this->intelOwnerId();
-		if ($ownerId === (int) $USER['id']) {
+		if ($ownerId === (int) $USER['id'] && $this->isConfirmedPost()) {
 			SpyReportStore::deleteByOwner($ownerId);
 		}
 
@@ -54,7 +54,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 	{
 		global $USER;
 		$ownerId = $this->intelOwnerId();
-		if ($ownerId === (int) $USER['id']) {
+		if ($ownerId === (int) $USER['id'] && $this->isConfirmedPost()) {
 			SpyReportStore::deleteOlderThan($ownerId, TIMESTAMP - 86400);
 		}
 
@@ -76,7 +76,6 @@ class ShowSpyReportsPage extends AbstractGamePage
 		global $LNG, $USER, $reslist;
 
 		$ownerId = $this->intelOwnerId();
-		(new SpyReportMigrator())->migrateOwner($ownerId);
 		$latest = SpyReportStore::listLatestByTarget($ownerId, $filters);
 		$reports = $this->visibleReports($ownerId, $filters, $extraIds, $latest);
 		$newIds = SpyReportStore::unviewedIds($ownerId);
@@ -104,6 +103,8 @@ class ShowSpyReportsPage extends AbstractGamePage
 			);
 		}
 
+		// "Summarized spy reports" in the settings leaves out the rows that are 0 in every report.
+		$summarized = (int) ($USER['spyMessagesMode'] ?? 0) === 1;
 		$classMap = SpyReportStore::classElementMap($reslist);
 		$classOrder = array(900, 200, 400, 0, 100);
 		$payloads = array();
@@ -146,7 +147,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 						$values[] = 0;
 					}
 				}
-				if (!$anyPresent) {
+				if (!$anyPresent || ($summarized && $allZero)) {
 					continue;
 				}
 				$rows[] = array(
@@ -200,6 +201,8 @@ class ShowSpyReportsPage extends AbstractGamePage
 				'time'			=> _date($LNG['php_tdformat'], (int) $report['report_time'], $USER['timezone']),
 				'time_date'		=> _date($LNG['php_dateformat'], (int) $report['report_time'], $USER['timezone']),
 				'time_clock'	=> _date($LNG['php_timeformat'], (int) $report['report_time'], $USER['timezone']),
+				'spy_destroyed'	=> (int) $report['spy_destroyed'] === 1,
+				'counter_label'	=> sprintf($LNG['spy_counter'], (int) $report['target_chance']),
 				'attack_url'	=> 'game.php?page=fleetTable&galaxy=' . (int) $report['galaxy']
 					. '&system=' . (int) $report['system']
 					. '&planet=' . (int) $report['planet']
@@ -233,6 +236,7 @@ class ShowSpyReportsPage extends AbstractGamePage
 			'isOwnIntel'	=> $ownerId === (int) $USER['id'],
 			'showSnapshotRow'	=> $showSnapshotRow,
 			'newReportIds'	=> $newIds,
+			'spyToken'		=> self::deleteToken(),
 		));
 
 		if (AJAX_REQUEST) {
@@ -388,6 +392,28 @@ class ShowSpyReportsPage extends AbstractGamePage
 			$query .= ($query !== '' ? '&' : '') . 'extra=';
 		}
 		return 'game.php?page=spyReports' . ($query !== '' ? '&' . $query : '');
+	}
+
+	/**
+	 * Deleting changes the archive, so it needs a POST carrying the session token.
+	 * A link or an image on another site cannot send it.
+	 */
+	private function isConfirmedPost(): bool
+	{
+		$token = self::deleteToken();
+		return $_SERVER['REQUEST_METHOD'] === 'POST'
+			&& $token !== ''
+			&& is_string($_POST['token'] ?? null)
+			&& hash_equals($token, $_POST['token']);
+	}
+
+	/**
+	 * Bound to the session without showing the session id itself in the page.
+	 */
+	private static function deleteToken(): string
+	{
+		$sessionId = (string) session_id();
+		return $sessionId !== '' ? hash_hmac('sha256', 'spyReports.delete', $sessionId) : '';
 	}
 
 	private function intelOwnerId(): int

@@ -15,7 +15,7 @@ class SpyReportStore
 			report_time		= :reportTime,
 			viewed			= :viewed,
 			galaxy			= :galaxy,
-			system			= :system,
+			`system`		= :system,
 			planet			= :planet,
 			planet_type		= :planetType,
 			planet_id		= :planetId,
@@ -236,10 +236,10 @@ class SpyReportStore
 				SELECT sr.galaxy, sr.system, sr.planet, sr.planet_type, MAX(sr.report_id) AS report_id
 				FROM %%SPY_REPORTS%% sr
 				INNER JOIN (
-					SELECT galaxy, system, planet, planet_type, MAX(report_time) AS report_time
+					SELECT galaxy, `system`, planet, planet_type, MAX(report_time) AS report_time
 					FROM %%SPY_REPORTS%%
 					WHERE ' . $whereSql . '
-					GROUP BY galaxy, system, planet, planet_type
+					GROUP BY galaxy, `system`, planet, planet_type
 				) latest ON latest.galaxy = sr.galaxy
 					AND latest.system = sr.system
 					AND latest.planet = sr.planet
@@ -259,7 +259,7 @@ class SpyReportStore
 	public static function listHistory(int $ownerId, int $galaxy, int $system, int $planet, int $planetType): array
 	{
 		$sql = 'SELECT report_id, report_time FROM %%SPY_REPORTS%%
-			WHERE owner_id = :ownerId AND galaxy = :galaxy AND system = :system AND planet = :planet AND planet_type = :planetType
+			WHERE owner_id = :ownerId AND galaxy = :galaxy AND `system` = :system AND planet = :planet AND planet_type = :planetType
 			ORDER BY report_time DESC, report_id DESC;';
 		return Database::get()->select($sql, array(
 			':ownerId'		=> $ownerId,
