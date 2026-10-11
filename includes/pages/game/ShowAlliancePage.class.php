@@ -199,12 +199,13 @@ class ShowAlliancePage extends AbstractGamePage
 		$db	= Database::get();
 		$sql	= "SELECT a.ally_tag FROM %%ALLIANCE_REQUEST%% r INNER JOIN %%ALLIANCE%% a ON a.id = r.allianceId WHERE r.userId = :userId;";
 		$allianceResult = $db->selectSingle($sql, array(
-			':userId'	=> $USER['id_planet']
+			':userId'	=> $USER['id']
 		));
-		if(empty($allianceResult['ally_tag'])) { $allianceResult['ally_tag'] = 0; }
+		if(empty($allianceResult['ally_tag'])) { $allianceResult['ally_tag'] = $LNG['al_unknown_alliance']; }
 		
 		$this->assign(array(
 			'request_text'	=> sprintf($LNG['al_request_wait_message'], $allianceResult['ally_tag']),
+			'cancel_request_confirm' => sprintf($LNG['al_cancel_request_confirm'], $allianceResult['ally_tag']),
 		));
 
 		$this->display('page.alliance.applyWait.tpl');
@@ -264,7 +265,7 @@ class ShowAlliancePage extends AbstractGamePage
 	{
 		global $LNG, $USER;
 
-		if($this->hasApply) {
+		if($this->hasAlliance || $this->hasApply) {
 			$this->redirectToHome();
 		}
 
@@ -726,7 +727,11 @@ class ShowAlliancePage extends AbstractGamePage
 	{
 		global $LNG;
 
-		$action		= HTTP::_GP('action', 'overview');
+		if (!$this->hasAlliance || $this->hasApply) {
+			$this->redirectToHome();
+		}
+
+		$action		= HTTP::_GP('action', '') ?: 'overview';
 		$methodName	= 'admin'.ucwords($action);
 
 		if(!is_callable(array($this, $methodName))) {
@@ -739,6 +744,10 @@ class ShowAlliancePage extends AbstractGamePage
 	protected function adminOverview()
 	{
 		global $LNG;
+		if (!$this->rights['ADMIN']) {
+			$this->redirectToHome();
+		}
+
 		$send 		= HTTP::_GP('send', 0);
 		$textMode  	= HTTP::_GP('textMode', 'external');
 
@@ -954,10 +963,17 @@ class ShowAlliancePage extends AbstractGamePage
 		$postleader = HTTP::_GP('newleader', 0);
 		if (!empty($postleader))
 		{
-			$sql = "SELECT ally_rank_id FROM %%USERS%% WHERE id = :LeaderID;";
+			$sql = "SELECT u.ally_rank_id FROM %%USERS%% u INNER JOIN %%ALLIANCE_RANK%% r ON r.rankID = u.ally_rank_id AND r.allianceId = u.ally_id AND r.TRANSFER = 1 WHERE u.id = :LeaderID AND u.ally_id = :allianceId AND u.id != :allianceOwner;";
 			$Rank = $db->selectSingle($sql, array(
-				':LeaderID'	=> $postleader
+				':LeaderID'			=> $postleader,
+				':allianceId'		=> $this->allianceData['id'],
+				':allianceOwner'	=> $this->allianceData['ally_owner']
 			));
+
+			if (empty($Rank))
+			{
+				$this->redirectToHome();
+			}
 
 			$sql = "UPDATE %%USERS%% SET ally_rank_id = :AllyRank WHERE id = :UserID;";
 			$db->update($sql, array(
@@ -980,7 +996,7 @@ class ShowAlliancePage extends AbstractGamePage
 		}
 		else
 		{
-			$sql = "SELECT u.id, r.rankName, u.username FROM %%USERS%% u INNER JOIN %%ALLIANCE_RANK%% r ON r.rankID = u.ally_rank_id AND r.TRANSFER = 1 WHERE u.ally_id = :allianceId AND id != :allianceOwner;";
+			$sql = "SELECT u.id, r.rankName, u.username FROM %%USERS%% u INNER JOIN %%ALLIANCE_RANK%% r ON r.rankID = u.ally_rank_id AND r.allianceId = u.ally_id AND r.TRANSFER = 1 WHERE u.ally_id = :allianceId AND id != :allianceOwner;";
 			$transferUserResult = $db->select($sql, array(
 				':allianceOwner'    => $this->allianceData['ally_owner'],
 				':allianceId'       => $this->allianceData['id']
@@ -1081,17 +1097,19 @@ class ShowAlliancePage extends AbstractGamePage
 			p.`name`
 		FROM
 			%%ALLIANCE_REQUEST%% AS r
-		LEFT JOIN
-			%%USERS%% AS u ON r.userId = u.id
 		INNER JOIN
-			%%STATPOINTS%% AS stat
+			%%USERS%% AS u ON r.userId = u.id
+		LEFT JOIN
+			%%STATPOINTS%% AS stat ON stat.id_owner = u.id AND stat.stat_type = 1
 		LEFT JOIN
 			%%PLANETS%% AS p ON p.id = u.id_planet
 		WHERE
-			applyID = :applyID;';
+			r.applyID = :applyID
+			AND r.allianceId = :allianceId;';
 
 		$applyDetail = $db->selectSingle($sql, array(
-			':applyID'	=> $id
+			':applyID'		=> $id,
+			':allianceId'	=> $this->allianceData['id'],
 		));
 
 		if(empty($applyDetail)) {
@@ -1108,9 +1126,14 @@ class ShowAlliancePage extends AbstractGamePage
 		$applyDetail['kbcrystal']   = pretty_number($applyDetail['kbcrystal']);
 		$applyDetail['lostunits']   = pretty_number($applyDetail['lostunits']);
 		$applyDetail['desunits']    = pretty_number($applyDetail['desunits']);
+		foreach (array('tech', 'build', 'defs', 'fleet', 'total') as $statKey) {
+			$applyDetail[$statKey.'_points'] = pretty_number($applyDetail[$statKey.'_points'] ?? 0);
+			$applyDetail[$statKey.'_rank']   = pretty_number($applyDetail[$statKey.'_rank'] ?? 0);
+		}
 
 		$this->assign(array(
 			'applyDetail'	=> $applyDetail,
+			'request_from'  => sprintf($LNG['al_request_from'], $applyDetail['username']),
 			'apply_time'    => _date($LNG['php_tdformat'], $applyDetail['time'], $USER['timezone']),
 			'register_time' => _date($LNG['php_tdformat'], $applyDetail['register_time'], $USER['timezone']),
 			'onlinetime'    => _date($LNG['php_tdformat'], $applyDetail['onlinetime'], $USER['timezone']),
@@ -1132,10 +1155,19 @@ class ShowAlliancePage extends AbstractGamePage
 		$answer		= HTTP::_GP('answer', '');
 		$applyID	= HTTP::_GP('id', 0);
 
-		$sql = "SELECT userId FROM %%ALLIANCE_REQUEST%% WHERE applyID = :applyID;";
+		$sql = "SELECT userId FROM %%ALLIANCE_REQUEST%% WHERE applyID = :applyID AND allianceId = :allianceId;";
 		$userId = $db->selectSingle($sql, array(
-			':applyID'	=> $applyID
+			':applyID'	=> $applyID,
+			':allianceId'	=> $this->allianceData['id']
 		), 'userId');
+
+		if (empty($userId))
+		{
+			$this->printMessage($LNG['al_apply_not_exists'], array(array(
+				'label'	=> $LNG['sys_back'],
+				'url'	=> 'game.php?page=alliance&mode=admin&action=mangeApply'
+			)));
+		}
 
 		if ($answer == 'yes')
 		{
@@ -1453,7 +1485,7 @@ class ShowAlliancePage extends AbstractGamePage
         ), 'ally_id');
 
         # Check, if user is in alliance, see #205
-        if(empty($kickUserAllianceId) || $kickUserAllianceId != $this->allianceData['id']) {
+        if(empty($kickUserAllianceId) || $kickUserAllianceId != $this->allianceData['id'] || $id == $this->allianceData['ally_owner']) {
             $this->redirectToHome();
 		}
 

@@ -1,0 +1,536 @@
+/* Desktop: same thin bars everywhere. Touch keeps the native overlay bars. */
+:root {
+	--rs-dialog-border: #30383c;
+	--rs-dialog-accent: #31566a;
+	--rs-dialog-surface: linear-gradient(180deg, rgba(21, 26, 30, 0.98), rgba(7, 9, 11, 0.98));
+	--rs-dialog-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	html,
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+	}
+
+	html::-webkit-scrollbar,
+	*::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	html::-webkit-scrollbar-track,
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	html::-webkit-scrollbar-thumb,
+	*::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.38);
+		border-radius: 4px;
+	}
+
+	html::-webkit-scrollbar-button,
+	*::-webkit-scrollbar-button {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+
+	html::-webkit-scrollbar-corner,
+	*::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+}
+
+body.rs-dialog-open {
+	overflow: hidden;
+}
+
+.rs-dialog {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.rs-dialog-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgba(4, 8, 12, 0.68);
+}
+
+.rs-dialog-box {
+	position: relative;
+	z-index: 1;
+	box-sizing: border-box;
+	width: min(420px, calc(100vw - 32px));
+	max-height: calc(100vh - 32px);
+	overflow: auto;
+	padding: 18px 18px 14px;
+	border: 1px solid var(--rs-dialog-border);
+	border-left: 3px solid var(--rs-dialog-accent);
+	border-radius: 6px;
+	background: var(--rs-dialog-surface);
+	box-shadow: var(--rs-dialog-shadow);
+	color: #dde6ea;
+}
+
+.rs-dialog-title {
+	margin: 0 0 14px;
+	color: #dde6ea;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+	white-space: pre-wrap;
+}
+
+.rs-dialog-input {
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0 0 16px;
+	padding: 7px 9px;
+	border: 1px solid #3d5563;
+	border-radius: 3px;
+	outline: none;
+	background: #0d1116;
+	color: #f0f5f7;
+	font: inherit;
+	font-size: 13px;
+}
+
+.rs-dialog-input:focus {
+	border-color: #5c8799;
+	box-shadow: 0 0 0 1px rgba(105, 185, 211, 0.25);
+}
+
+.rs-dialog-opt {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 16px;
+	color: #dde6ea;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.3;
+	cursor: pointer;
+}
+
+.rs-dialog-opt input {
+	margin: 0;
+	accent-color: #38b1cc;
+}
+
+.rs-dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.rs-dialog-cancel,
+.rs-dialog-confirm {
+	margin: 0;
+	padding: 6px 12px;
+	border-radius: 3px;
+	font: inherit;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.3;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.rs-dialog-cancel {
+	border: 1px solid #3d5563;
+	background: #1a2830;
+	color: #ddd;
+}
+
+.rs-dialog-cancel:hover,
+.rs-dialog-cancel:focus {
+	background: #243844;
+	color: #fff;
+}
+
+.rs-dialog-confirm {
+	border: 1px solid #31566a;
+	background: #193642;
+	color: #d7f1f7;
+}
+
+.rs-dialog-confirm:hover,
+.rs-dialog-confirm:focus {
+	border-color: #47758a;
+	background: #234b5b;
+	color: #fff;
+}
+
+.rs-dialog-confirm.rs-dialog-danger {
+	border-color: #8a3333;
+	background: #5a1d1d;
+	color: #ffd6d6;
+}
+
+.rs-dialog-confirm.rs-dialog-danger:hover,
+.rs-dialog-confirm.rs-dialog-danger:focus {
+	background: #732525;
+	color: #fff;
+}
+
+/* Fancybox content windows */
+#fancybox-overlay {
+	background: #04080c !important;
+	opacity: 0.68 !important;
+}
+
+#fancybox-outer {
+	box-sizing: border-box;
+	border: 1px solid var(--rs-dialog-border);
+	border-left: 3px solid var(--rs-dialog-accent);
+	border-radius: 6px;
+	overflow: hidden;
+	background: var(--rs-dialog-surface);
+	box-shadow: var(--rs-dialog-shadow);
+}
+
+#fancybox-content,
+#fancybox-content iframe,
+#fancybox-frame {
+	border: 0 !important;
+	background: transparent;
+}
+
+html:has(body.popup),
+body.popup {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+body.popup {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	background: var(--rs-dialog-surface);
+}
+
+/* Scroll lives on #content. A scrollable body does not receive the mouse wheel
+   when the document itself cannot scroll. */
+body.popup #content {
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: 0;
+	overflow: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+}
+
+/* The description stays put. Level tables fill the space left in the dialog
+   and scroll on their own, so the horizontal bar stays in view. */
+body#information.popup #content {
+	display: flex;
+	flex-direction: column;
+	overflow-x: clip;
+}
+
+body#information.popup #content > table {
+	flex: 0 0 auto;
+	min-width: 0;
+	width: 100%;
+}
+
+body.popup .info-level-scroll {
+	box-sizing: border-box;
+	flex: 1 1 auto;
+	width: 100%;
+	min-height: 140px;
+	max-width: 100%;
+	overflow: auto;
+	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+}
+
+body.popup .info-level-scroll::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+body.popup .info-level-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+body.popup .info-level-scroll::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.38);
+	border-radius: 4px;
+}
+
+body.popup .info-level-scroll::-webkit-scrollbar-button {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+body.popup .info-level-table {
+	width: max-content;
+	min-width: 100%;
+	margin: 0;
+	border-spacing: 0;
+}
+
+body.popup .info-level-table th,
+body.popup .info-level-table td {
+	white-space: nowrap;
+}
+
+body.popup .info-level-table thead th {
+	position: sticky;
+	z-index: 3;
+	box-sizing: border-box;
+	height: 22px;
+	background-color: #18242c;
+	background-image: none;
+	box-shadow: inset 0 -1px 0 #0a1014;
+}
+
+body.popup .info-level-table thead tr:first-child th {
+	top: 0;
+}
+
+body.popup .info-level-table thead tr:nth-child(2) th {
+	top: 22px;
+}
+
+body.popup .info-level-col {
+	position: sticky;
+	left: 0;
+	z-index: 2;
+	background-color: #141a1e;
+	box-shadow: inset -2px 0 0 #31566a;
+}
+
+body.popup .info-level-table thead th.info-level-col {
+	z-index: 5;
+	left: 0;
+	background-color: #18242c;
+	background-image: none;
+	box-shadow: inset -2px 0 0 #31566a, inset 0 -1px 0 #0a1014;
+}
+
+body.popup #content::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+body.popup #content::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+body.popup #content::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.38);
+	border-radius: 4px;
+}
+
+body.popup #content::-webkit-scrollbar-button {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+body.popup td {
+	background-color: transparent;
+}
+
+/* Notes keep the page art as their backdrop. Opaque cells so light text stays readable. */
+body#notes.popup td {
+	background-color: rgba(13, 16, 20, 0.95);
+}
+
+/* Fancybox paints the close control over the iframe. The bar holds the page
+   title (ship, research, building) and leaves room for that control. */
+body.popup .dialog-chrome {
+	display: none;
+}
+
+body.popup.in-dialog .dialog-chrome {
+	display: flex;
+	align-items: center;
+	flex: 0 0 40px;
+	box-sizing: border-box;
+	min-width: 0;
+	height: 40px;
+	margin: 0;
+	padding: 0 44px 0 14px;
+	border-bottom: 1px solid var(--rs-dialog-border);
+	background: #18242c;
+	color: #fff;
+}
+
+body.popup.in-dialog .dialog-chrome-title {
+	margin: 0;
+	overflow: hidden;
+	color: inherit;
+	font: inherit;
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1.3;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+body.popup.in-dialog #content {
+	margin-top: 0;
+}
+
+#fancybox-close {
+	box-sizing: border-box;
+	top: 6px;
+	right: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border: 1px solid var(--rs-dialog-border);
+	border-radius: 3px;
+	background: #18242c !important;
+	color: #cfe6ee;
+	text-align: center;
+	text-decoration: none;
+}
+
+#fancybox-close::before {
+	content: "\00d7";
+	display: block;
+	font: 22px/1 Arial, sans-serif;
+}
+
+#fancybox-close:hover,
+#fancybox-close:focus {
+	border-color: #47758a;
+	background: #243844 !important;
+	color: #fff;
+}
+
+#fancybox-loading {
+	box-sizing: border-box;
+	width: 52px;
+	height: 52px;
+	margin-top: -26px;
+	margin-left: -26px;
+	overflow: hidden;
+	border: 1px solid var(--rs-dialog-border);
+	border-left: 3px solid var(--rs-dialog-accent);
+	border-radius: 6px;
+	background: var(--rs-dialog-surface);
+	box-shadow: var(--rs-dialog-shadow), inset 0 0 18px rgba(49, 86, 106, 0.12);
+}
+
+#fancybox-loading div {
+	top: 0 !important;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: none;
+}
+
+#fancybox-loading div::before {
+	content: "";
+	position: absolute;
+	top: 11px;
+	left: 11px;
+	box-sizing: border-box;
+	width: 26px;
+	height: 26px;
+	border: 3px solid rgba(105, 185, 211, 0.18);
+	border-top-color: #69b9d3;
+	border-right-color: #47758a;
+	border-radius: 50%;
+	box-shadow: 0 0 10px rgba(105, 185, 211, 0.16);
+	animation: rs-dialog-spin 0.8s linear infinite;
+}
+
+@keyframes rs-dialog-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#fancybox-loading div::before {
+		animation-duration: 1.6s;
+	}
+}
+
+/* The alliance rank editor still uses jQuery UI dialog. */
+.ui-dialog {
+	box-sizing: border-box;
+	max-width: calc(100vw - 32px);
+	padding: 0;
+	border: 1px solid var(--rs-dialog-border);
+	border-left: 3px solid var(--rs-dialog-accent);
+	border-radius: 6px;
+	background: var(--rs-dialog-surface);
+	box-shadow: var(--rs-dialog-shadow);
+	color: #dde6ea;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	box-sizing: border-box;
+	min-height: 40px;
+	padding: 6px 8px 6px 14px;
+	border: 0;
+	border-bottom: 1px solid var(--rs-dialog-border);
+	border-radius: 5px 5px 0 0;
+	background: #18242c;
+	color: #dde6ea;
+}
+
+.ui-dialog .ui-dialog-titlebar.ui-helper-clearfix::before,
+.ui-dialog .ui-dialog-titlebar.ui-helper-clearfix::after {
+	content: none;
+	display: none;
+}
+
+.ui-dialog .ui-dialog-title {
+	float: none;
+	flex: 1 1 auto;
+	width: auto;
+	min-width: 0;
+	margin: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+	background: transparent;
+	color: #dde6ea;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	position: relative;
+	top: auto;
+	right: auto;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 28px;
+	height: 28px;
+	margin: 0;
+	padding: 0;
+	border: 1px solid var(--rs-dialog-border);
+	border-radius: 3px;
+	background: var(--rs-dialog-surface);
+}
+
+.ui-widget-overlay {
+	background: #04080c;
+	opacity: 0.68;
+}

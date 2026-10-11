@@ -67,6 +67,9 @@ require 'includes/classes/class.FleetFunctions.php';
 require 'includes/classes/HTTP.class.php';
 require 'includes/classes/Language.class.php';
 require 'includes/classes/PlayerUtil.class.php';
+require 'includes/classes/SpyReportHtmlParser.class.php';
+require 'includes/classes/SpyReportStore.class.php';
+require 'includes/classes/SpyReportMigrator.class.php';
 require 'includes/classes/Session.class.php';
 
 require 'includes/classes/class.theme.php';

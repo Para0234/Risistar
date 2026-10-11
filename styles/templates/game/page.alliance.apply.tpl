@@ -1,7 +1,7 @@
 {block name="title" prepend}{$LNG.lm_alliance}{/block}
 {block name="content"}
 <form action="game.php?page=alliance&amp;mode=apply&amp;id={$allyid}" method="post">
-<table class="table569">
+<table class="table569 alliance-table alliance-form-table alliance-apply-table">
 	<tr>
 		<th colspan="2">{$al_write_request}</th>
 	</tr>

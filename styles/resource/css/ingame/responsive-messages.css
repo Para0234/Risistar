@@ -1,0 +1,656 @@
+/* Messages, inbox spy reports, and notes. */
+/* --- Spy reports (inbox HTML stays classic 4-cell rows) --- */
+
+.spyRaport {
+	position: relative;
+	max-width: 100%;
+	overflow-wrap: break-word;
+}
+
+.spyRaportContainerRow {
+	box-sizing: border-box;
+}
+
+.spyRaportContainerCell {
+	box-sizing: border-box;
+	padding: 1px 4px 1px 0;
+	word-wrap: break-word;
+}
+
+/* --- Messages --- */
+
+.messages-page {
+	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.messages-cats,
+.messages-ops,
+.messages-list,
+.full .messages-page > table,
+.full .messages-page form > table,
+.full form > .messages-list {
+	width: 100%;
+	max-width: 760px;
+	min-width: 0;
+	table-layout: auto;
+	box-sizing: border-box;
+}
+
+.messages-cats-cell {
+	padding: 0 !important;
+	background: transparent !important;
+}
+
+.messages-cats-grid {
+	display: grid;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	gap: 1px;
+}
+
+.messages-cat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	box-sizing: border-box;
+	min-height: 52px;
+	padding: 8px 6px;
+	border: 1px solid #000;
+	background: rgba(13, 16, 20, 0.95);
+	text-align: center;
+	text-decoration: none;
+	line-height: 1.25;
+}
+
+.messages-cat:hover,
+.messages-cat:focus {
+	text-decoration: none;
+	background: rgba(24, 36, 44, 0.95);
+	filter: brightness(1.08);
+}
+
+.messages-cat-name {
+	display: block;
+	min-width: 0;
+	max-width: 100%;
+	word-wrap: break-word;
+}
+
+.messages-cat-counts {
+	display: block;
+	font-variant-numeric: tabular-nums;
+}
+
+.messages-toolbar-inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+.messages-toolbar-inner select {
+	flex: 0 1 auto;
+	max-width: 100%;
+}
+
+.messages-toolbar-inner input {
+	flex: 0 0 auto;
+}
+
+.messages-pager td,
+.messages-pager a {
+	white-space: normal;
+}
+
+.messages-pager a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.6em;
+	min-height: 1.6em;
+}
+
+.messages-check {
+	width: 40px;
+	vertical-align: middle;
+}
+
+.messages-check-pad {
+	width: 40px;
+	padding: 0 !important;
+}
+
+.messages-reply {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 4px;
+	vertical-align: middle;
+}
+
+.messages-list .messages_body td {
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-wrap: break-word;
+	-webkit-overflow-scrolling: touch;
+}
+
+.messages-write-form,
+.messages-write {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.messages-write-field input,
+.messages-write-field textarea {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+}
+
+body#messages.popup #content {
+	margin: 8px;
+	padding: 8px;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+
+@media (max-width: 1100px) {
+	.messages-page,
+	.messages-cats,
+	.messages-ops,
+	#messagestable,
+	.stats-page,
+	.stats-table,
+	.hof-page,
+	.hof-table {
+		width: 100% !important;
+		min-width: 0 !important;
+		max-width: 100% !important;
+	}
+
+	.messages-cats-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 640px) {
+	body#messages #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	.messages-cats-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.messages-cats-grid > .messages-cat:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+
+	.messages-cat {
+		min-height: 56px;
+		padding: 10px 8px;
+	}
+
+	.messages-list,
+	.messages-list > tbody {
+		display: block;
+		width: 100%;
+	}
+
+	.messages-list > tbody > tr {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.messages-list > tbody > tr:not(.message_head) > td,
+	.messages-list > tbody > tr > th {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	.messages-list > tbody > tr.message_head > td {
+		min-width: 0;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	.messages-list .messages-cols {
+		display: none;
+	}
+
+	.messages-list tr.message_head {
+		display: grid;
+		grid-template-columns: 40px minmax(0, 1fr);
+		grid-template-areas:
+			"check subject"
+			"check from"
+			"check date";
+		align-items: start;
+		margin-top: 8px;
+		border: 1px solid #1c1f23;
+		border-bottom: 0;
+		background: rgba(13, 16, 20, 0.95);
+	}
+
+	.messages-list tr.message_head td {
+		border: 0;
+		background: transparent;
+		text-align: left;
+		padding: 3px 8px;
+		word-wrap: break-word;
+	}
+
+	.messages-list .messages-check {
+		grid-area: check;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: stretch;
+		width: auto;
+		padding: 0;
+	}
+
+	.messages-list .messages-check input[type="checkbox"] {
+		width: 20px;
+		height: 20px;
+		margin: 0;
+	}
+
+	.messages-list > tbody > tr.messages_body > .messages-check-pad {
+		display: none !important;
+	}
+
+	.messages-list .messages-subject {
+		grid-area: subject;
+		font-weight: 700;
+		padding-top: 8px;
+	}
+
+	.messages-list .messages-from {
+		grid-area: from;
+	}
+
+	.messages-list .messages-date {
+		grid-area: date;
+		padding-bottom: 6px;
+		opacity: 0.8;
+		font-size: 11px;
+	}
+
+	.messages-list.is-outbox tr.message_head {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"subject"
+			"from"
+			"date";
+	}
+
+	.messages-list.is-outbox .messages-check {
+		display: none;
+	}
+
+	.messages-list tr.messages_body {
+		border: 1px solid #1c1f23;
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(13, 16, 20, 0.95);
+	}
+
+	.messages-list tr.messages_body td {
+		padding: 8px;
+		border: 0;
+		background: transparent;
+		text-align: left;
+	}
+
+	.messages-list .messages-pager td {
+		text-align: center;
+		padding: 8px 6px;
+	}
+
+	.messages-list .messages-pager a {
+		min-width: 32px;
+		min-height: 32px;
+	}
+
+	.messages-toolbar-inner {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.messages-toolbar-inner select,
+	.messages-toolbar-inner input {
+		flex: 0 0 auto;
+		width: 100%;
+		height: 44px;
+		min-height: 44px;
+		max-height: 44px;
+		box-sizing: border-box;
+		font-size: 16px;
+	}
+
+	.messages-list .messages-toolbar-bottom {
+		position: sticky;
+		bottom: 0;
+		z-index: 6;
+		margin: 0;
+		background: rgba(13, 16, 20, 0.96);
+		border-top: 1px solid #1c1f23;
+	}
+
+	.messages-list .messages-toolbar-bottom td {
+		padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+		border: 0;
+		background: transparent;
+	}
+
+	.messages-reply {
+		min-width: 32px;
+		min-height: 32px;
+	}
+
+	.spyRaportContainerRow {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+		gap: 2px 8px;
+		clear: both;
+	}
+
+	.spyRaportContainerCell {
+		float: none;
+		width: auto;
+		max-width: 100%;
+	}
+
+	.spyRaportFooter {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		padding: 10px 4px 4px;
+	}
+
+	.spyRaportFooter br {
+		display: none;
+	}
+
+	#fancybox-wrap {
+		left: calc(var(--nav-offset, 0px) + 8px) !important;
+		max-width: calc(100vw - var(--nav-offset, 0px) - 16px) !important;
+		box-sizing: border-box;
+	}
+
+	#fancybox-content,
+	#fancybox-content iframe,
+	#fancybox-frame {
+		max-width: 100% !important;
+		box-sizing: border-box;
+	}
+
+	body#messages.popup,
+	body#messages.popup input,
+	body#messages.popup button,
+	body#messages.popup select,
+	body#messages.popup textarea,
+	body#messages.popup td,
+	body#messages.popup th {
+		font-size: 12px;
+	}
+
+	body#messages.popup .messages-write,
+	body#messages.popup .messages-write tbody,
+	body#messages.popup .messages-write tr {
+		display: block;
+		width: 100%;
+	}
+
+	body#messages.popup .messages-write td,
+	body#messages.popup .messages-write th {
+		display: block;
+		width: 100% !important;
+		box-sizing: border-box;
+		text-align: left;
+	}
+
+	body#messages.popup .messages-write-label {
+		padding-bottom: 2px;
+		border-bottom: 0;
+	}
+
+	body#messages.popup .messages-write-field input,
+	body#messages.popup .messages-write-field textarea {
+		min-height: 44px;
+		font-size: 16px;
+	}
+
+	body#messages.popup .messages-write-field textarea {
+		min-height: 10em;
+	}
+
+	body#messages.popup .messages-write-submit input {
+		width: 100%;
+		min-height: 44px;
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 480px) {
+	.spyRaportContainerRow {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+}
+
+
+/* --- Notes --- */
+
+body#notes {
+	min-width: 0;
+}
+
+body#notes #content,
+body#notes .notes-form,
+body#notes .notes-list,
+body#notes .notes-edit {
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+body#notes .notes-list,
+body#notes .notes-edit {
+	width: 100%;
+}
+
+body#notes .notes-edit {
+	table-layout: fixed;
+}
+
+body#notes .notes-edit .notes-label {
+	width: 34%;
+}
+
+body#notes .notes-subject,
+body#notes .notes-date,
+body#notes .notes-label {
+	overflow-wrap: anywhere;
+}
+
+body#notes .notes-priority-0 { color: lime; }
+body#notes .notes-priority-1 { color: yellow; }
+body#notes .notes-priority-2 { color: red; }
+
+body#notes .notes-meta-label {
+	display: none;
+}
+
+body#notes .notes-field input,
+body#notes .notes-field select,
+body#notes .notes-field textarea {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+}
+
+body#notes .notes-field textarea {
+	min-height: 10em;
+	resize: vertical;
+}
+
+@media (max-width: 640px) {
+	body#notes #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	body#notes,
+	body#notes input,
+	body#notes button,
+	body#notes select,
+	body#notes textarea,
+	body#notes td,
+	body#notes th {
+		font-size: 12px;
+	}
+
+	body#notes .notes-list,
+	body#notes .notes-list > tbody,
+	body#notes .notes-edit,
+	body#notes .notes-edit > tbody {
+		display: block;
+		width: 100%;
+	}
+
+	body#notes .notes-cols {
+		display: none;
+	}
+
+	body#notes .notes-title,
+	body#notes .notes-create,
+	body#notes .notes-actions,
+	body#notes .notes-empty,
+	body#notes .notes-edit tr {
+		display: block;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	body#notes .notes-title th,
+	body#notes .notes-create td,
+	body#notes .notes-actions td,
+	body#notes .notes-empty td,
+	body#notes .notes-edit td,
+	body#notes .notes-edit th {
+		display: block;
+		width: 100% !important;
+		box-sizing: border-box;
+		text-align: left;
+	}
+
+	body#notes .notes-row {
+		display: grid;
+		grid-template-columns: 44px minmax(0, 1fr) auto;
+		grid-template-areas:
+			"check subject subject"
+			"check date size";
+		align-items: center;
+		width: 100%;
+		margin-top: 8px;
+		border: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+	}
+
+	body#notes .notes-row td {
+		border: 0;
+		background-color: transparent;
+		text-align: left;
+		padding: 3px 8px;
+	}
+
+	body#notes .notes-check {
+		grid-area: check;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: stretch;
+		padding: 0;
+	}
+
+	body#notes .notes-check input[type="checkbox"] {
+		width: 20px;
+		height: 20px;
+		margin: 0;
+	}
+
+	body#notes .notes-subject {
+		grid-area: subject;
+		padding-top: 8px;
+		font-weight: 700;
+	}
+
+	body#notes .notes-date {
+		grid-area: date;
+		padding-bottom: 8px;
+		opacity: 0.85;
+		font-size: 11px;
+	}
+
+	body#notes .notes-size {
+		grid-area: size;
+		padding: 3px 8px 8px 0;
+		text-align: right;
+		white-space: nowrap;
+		opacity: 0.85;
+		font-size: 11px;
+	}
+
+	body#notes .notes-meta-label {
+		display: inline;
+		margin-right: 4px;
+	}
+
+	body#notes .notes-actions input {
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 44px;
+		margin-top: 6px;
+		font-size: 16px;
+	}
+
+	body#notes .notes-label {
+		padding-bottom: 2px;
+		border-bottom: 0;
+	}
+
+	body#notes .notes-field input,
+	body#notes .notes-field select,
+	body#notes .notes-field textarea {
+		min-height: 44px;
+		font-size: 16px;
+	}
+
+	body#notes .notes-field textarea {
+		min-height: 10em;
+	}
+
+	body#notes .notes-edit td.notes-buttons {
+		display: flex;
+		gap: 8px;
+	}
+
+	body#notes .notes-buttons input {
+		flex: 1 1 auto;
+		width: auto;
+		margin-top: 0;
+	}
+}

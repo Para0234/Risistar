@@ -1,17 +1,15 @@
-<nav class="navbar navbar-default navbar-inverse navbar-fixed-top " role="navigation" style="border-color: #333;">
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-				<span class="sr-only">Toggle navigation</span>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse" aria-expanded="false">
+				<span class="sr-only">Menu</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">{$gameName}</a>
+			<a class="navbar-brand" href="index.php">{$gameName}</a>
 		</div>
 
-		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="index.php">{$LNG.menu_index}</a></li>
@@ -23,21 +21,22 @@
 				<li><a href="index.php?page=disclamer">{$LNG.menu_disclamer}</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<a class="btn btn-danger btn-sm navbar-btn" href="index.php?page=register">Sign up</a>
-				<div class="btn-group ">
-					<button class="btn navbar-btn btn-sm">Choose lang</button>
-					<button class="btn dropdown-toggle navbar-btn btn-sm" data-toggle="dropdown">
-						<span class="caret"></span>
+				<li class="nav-signup">
+					<a class="btn btn-danger btn-sm navbar-btn" href="index.php?page=register">{$LNG.menu_register}</a>
+				</li>
+				{if count($languages) > 1}
+				<li class="dropdown nav-lang">
+					<button type="button" class="btn navbar-btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						Choose lang <span class="caret"></span>
 					</button>
-                    {if count($languages) > 1}
-						<ul class="dropdown-menu" style="min-width:30px;" id="language">
-                            {foreach $languages as $langKey => $langName}
-								<li><a href="?lang={$langKey}" rel="alternate" hreflang="{$langKey}" title="{$langName}"><span class="flags {$langKey}">{$langName}</span></a></li>
-                            {/foreach}
-						</ul>
-                    {/if}
-				</div>
+					<ul class="dropdown-menu dropdown-menu-right" id="language">
+						{foreach $languages as $langKey => $langName}
+							<li><a href="?lang={$langKey}" rel="alternate" hreflang="{$langKey}" title="{$langName}"><span class="flags {$langKey}">{$langName}</span></a></li>
+						{/foreach}
+					</ul>
+				</li>
+				{/if}
 			</ul>
-		</div><!-- /.navbar-collapse -->
+		</div>
 	</div>
 </nav>

@@ -44,7 +44,7 @@ function ShowNewsPage(){
 			'title'		=> $u['title'],
 			'date'		=> _date($LNG['php_tdformat'], $u['date'], $USER['timezone']),
 			'user'		=> $u['user'],
-			'confirm'	=> sprintf($LNG['nws_confirm'], $u['title']),
+			'confirm'	=> html_entity_decode(sprintf($LNG['nws_confirm'], $u['title']), ENT_QUOTES, 'UTF-8'),
 		);
 	}
 	

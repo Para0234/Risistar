@@ -2,8 +2,9 @@
 <script type="text/javascript">
 	function activeUser(validationID, validationKey) {
 		$.getJSON('index.php?page=vertify&mode=json&i='+validationID+'&k='+validationKey, function(data){
-			alert(data);
-			parent.frames['Hauptframe'].location.reload();
+			RisistarDialog.alert(data).then(function() {
+				parent.frames['Hauptframe'].location.reload();
+			});
 		});
 		return false;
 	}
@@ -29,7 +30,7 @@
 	<td>{$User.email}</td>
 	<td>{$User.ip}</td>
 	<td><a href="#" onclick="return activeUser({$User.id},'{$User.validationKey}');">{$LNG.ap_aktivieren}</a></td>
-	<td><a href="?page=active&amp;action=delete&id={$User.id}" onclick="return confirm('{$LNG.ap_sicher}{$User.username} {$LNG.ap_entfernen}');"><img border="0" src="./styles/resource/images/alliance/CLOSE.png" width="16" height="16"></a></td>
+	<td><a href="?page=active&amp;action=delete&id={$User.id}" data-rs-confirm="{$LNG.ap_sicher|cat:$User.username|cat:' '|cat:$LNG.ap_entfernen|escape:'html'}"><img border="0" src="./styles/resource/images/alliance/CLOSE.png" width="16" height="16"></a></td>
 </tr>
 {/foreach}	
 <tr><td colspan="8">{$LNG.ap_insgesamt} {count($Users)} {$LNG.ap_nicht_aktivierte}</td></tr>

@@ -689,6 +689,11 @@ class PlayerUtil
 			':userId'	=> $userId
 		));
 
+		$sql	= 'DELETE FROM %%SPY_REPORTS%% WHERE owner_id = :userId;';
+		$db->delete($sql, array(
+			':userId'	=> $userId
+		));
+
 		$sql	= 'DELETE FROM %%NOTES%% WHERE owner = :userId;';
 		$db->delete($sql, array(
 			':userId'	=> $userId

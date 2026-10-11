@@ -6,41 +6,56 @@ function add(){
 }
 
 function check(){
-	var kb = window.open('about:blank', 'kb', 'scrollbars=yes,statusbar=no,toolbar=no,location=no,directories=no,resizable=no,menubar=no,width='+screen.width+',height='+screen.height+', screenX=0, screenY=0, top=0, left=0');
-	$("#submit:visible").removeAttr('style').hide().fadeOut();
-	$("#wait:hidden").removeAttr('style').hide().fadeIn();
+	var usePopup = window.matchMedia('(min-width: 1101px)').matches;
+	var kb = null;
+	if (usePopup) {
+		kb = window.open('about:blank', 'kb', 'scrollbars=yes,statusbar=no,toolbar=no,location=no,directories=no,resizable=yes,menubar=no,width='+screen.width+',height='+screen.height+', screenX=0, screenY=0, top=0, left=0');
+	}
+	$("#submit").hide();
+	$("#wait").show();
 	$.post('game.php?page=battleSimulator&mode=send', $('#form').serialize(), function(data){
-		try{ 
+		var url;
+		try{
 			data	= $.parseJSON(data);
-			kb.focus();
-			kb.location.href = 'CombatReport.php?raport='+data;
+			url = 'CombatReport.php?raport='+data;
+			if (kb && !kb.closed) {
+				kb.focus();
+				kb.location.href = url;
+			} else {
+				window.location.href = url;
+			}
 		} catch(e) {
-			kb.window.close();
-			Dialog.alert(data);
+			if (kb && !kb.closed) {
+				kb.close();
+			}
+			RisistarDialog.alert(data);
 		}
 	});
-	
-	setTimeout(function(){$("#submit:hidden").removeAttr('style').hide().fadeIn();}, 10000);
-	setTimeout(function(){$("#wait:visible").removeAttr('style').hide().fadeOut();}, 10000);
+
+	window.setTimeout(function(){
+		$("#submit").show();
+		$("#wait").hide();
+	}, 10000);
 	return true;
 }
 
 $(function() {
 	$("#tabs").tabs();
 
-	var $tabs = $('#tabs').tabs({
-		tabTemplate: '<li><a href="#{href}">#{label}</a></li>',
-	});
-	
-	$('.reset').live('click', function(e) {
+	$('#form').on('click', '.reset', function(e) {
 		e.preventDefault();
-	
+
 		var index = $(this).parent().index();
-		
-		
-		$(this).parent().parent().nextAll().each(function() {
-			$(this).children('td:eq('+index+')').children().val(0);
+
+		$(this).closest('tr').nextAll('tr').each(function() {
+			$(this).children('td').eq(index).find('input').val(0);
 		});
+		return false;
+	});
+
+	$('#form').on('click', '.reset-all', function(e) {
+		e.preventDefault();
+		$(this).closest('form').find('.battlesim-qty').val(0);
 		return false;
 	});
 });
