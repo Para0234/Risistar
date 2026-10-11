@@ -1,5 +1,28 @@
 var acstime = 0;
 	
+function updateFleetSpeed(input)
+{
+	if (!input) {
+		return;
+	}
+	var step = parseInt(input.value, 10);
+	if (isNaN(step)) {
+		step = 10;
+	}
+	step = Math.min(10, Math.max(1, step));
+	var ratio = (step - 1) / 9;
+	if (input.parentElement) {
+		input.parentElement.style.setProperty('--speed', String(ratio));
+	}
+	var label = step * 10 + ' %';
+	input.setAttribute('aria-valuetext', label);
+	var speedLabel = document.getElementById('speed-label');
+	if (speedLabel) {
+		speedLabel.textContent = label;
+	}
+	updateVars();
+}
+
 function updateVars()
 {
 	document.getElementsByName("fleet_group")[0].value = 0;
@@ -80,6 +103,9 @@ function setTarget(galaxy, solarsystem, planet, type) {
 	document.getElementsByName("system")[0].value = solarsystem;
 	document.getElementsByName("planet")[0].value = planet;
 	document.getElementsByName("type")[0].value = type;
+	if (window.CoordQuick) {
+		window.CoordQuick.dismiss();
+	}
 }
 
 function FleetTime(){ 
@@ -148,10 +174,19 @@ function calculateTransportCapacity() {
 	return transportCapacity;
 }
 
+function syncShipField(input) {
+	if (!input) {
+		return;
+	}
+	input.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
 function maxShip(id) {
 	if (document.getElementsByName(id)[0]) {
 		var amount = document.getElementById(id + "_value").innerHTML;
-		document.getElementsByName(id)[0].value = amount.replace(/\./g, "");
+		var input = document.getElementsByName(id)[0];
+		input.value = amount.replace(/\./g, "");
+		syncShipField(input);
 	}
 }
 
@@ -165,7 +200,9 @@ function maxShips() {
 
 function noShip(id) {
 	if (document.getElementsByName(id)[0]) {
-		document.getElementsByName(id)[0].value = 0;
+		var input = document.getElementsByName(id)[0];
+		input.value = 0;
+		syncShipField(input);
 	}
 }
 
@@ -179,7 +216,9 @@ function noShips() {
 
 function setNumber(name, number) {
 	if (typeof document.getElementsByName("ship" + name)[0] != "undefined") {
-		document.getElementsByName("ship" + name)[0].value = number;
+		var input = document.getElementsByName("ship" + name)[0];
+		input.value = number;
+		syncShipField(input);
 	}
 }
 

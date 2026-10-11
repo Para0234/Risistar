@@ -2,17 +2,18 @@
 {block name="content"}
 <form action="game.php?page=fleetStep3" method="post">
 <input type="hidden" name="token" value="{$token}">
-   	<table class="table519">
-        <tr>
+   	<table class="table519 fleet-send">
+        <tr class="fleet-send-title">
         	<th colspan="2">{$galaxy}:{$system}:{$planet} - {$LNG["type_planet_{$type}"]}</th>
         </tr>
-		<tr>
+		<tr class="fleet-split fleet-send-heads">
 			<th>{$LNG.fl_mission}</th>
         	<th>{$LNG.fl_resources}</th>
         </tr>
-		<tr>
-			<td class="left top" style="width:50%;margin:0;padding:0;"{if $StaySelector} rowspan="3"{/if}>
-        		<table border="0" cellpadding="0" cellspacing="0" width="259" style="margin:0;padding:0;">
+		<tr class="fleet-split">
+			<td class="left top fleet-missions" style="width:50%;margin:0;padding:0;"{if $StaySelector} rowspan="3"{/if}>
+				<div class="fleet-col-title">{$LNG.fl_mission}</div>
+        		<table class="fleet-mission-list" border="0" cellpadding="0" cellspacing="0" width="259" style="margin:0;padding:0;">
         			{foreach $MissionSelector as $MissionID} 
 					<tr style="height:20px;">
 						<td class="transparent left">
@@ -24,8 +25,9 @@
 					{/foreach}
         		</table>
         	</td>
-        	<td class="top">
-				<table border="0" cellpadding="0" cellspacing="0" width="259">
+        	<td class="top fleet-res">
+				<div class="fleet-col-title">{$LNG.fl_resources}</div>
+				<table class="fleet-res-list" border="0" cellpadding="0" cellspacing="0" width="259">
                     <tr style="height:20px;">
         				<td class="transparent">{$LNG.tech.901}</td>
         				<td class="transparent"><a href="javascript:maxResource('metal');">{$LNG.fl_max}</a></th>
@@ -55,16 +57,16 @@
 			</td>
 		</tr>
 		{if $StaySelector}
-		<tr style="height:20px;">
+		<tr class="fleet-stay" style="height:20px;">
 			<th>{$LNG.fl_hold_time}</th>
 		</tr>
-		<tr style="height:20px;">
+		<tr class="fleet-stay" style="height:20px;">
 			<td>
 			{html_options name=staytime options=$StaySelector} {$LNG.fl_hours}
 			</td>
 		</tr>
 		{/if}
-        <tr style="height:20px;">
+        <tr class="fleet-go" style="height:20px;">
         	<td colspan="2"><input value="{$LNG.fl_continue}" type="submit" /></td>
         </tr>
     </table>

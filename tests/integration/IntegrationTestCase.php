@@ -89,7 +89,7 @@ abstract class IntegrationTestCase extends TestCase
             $version = $pdo->query('SELECT dbVersion FROM `' . $prefix . 'system` LIMIT 1')->fetchColumn();
         } catch (\Throwable $e) {
             return sprintf(
-                '%s (database "%s" on %s:%s; run scripts/reset_test_database.php to create it)',
+                '%s (database "%s" on %s:%s; run tests/bin/reset_test_database.php to create it)',
                 $e->getMessage(),
                 $database['databasename'] ?? '?',
                 $database['host'] ?? '?',
@@ -101,7 +101,7 @@ abstract class IntegrationTestCase extends TestCase
         $version = (int) $version;
         if ($required > 0 && $version < $required) {
             return sprintf(
-                'schema version %d is older than required %d (run scripts/reset_test_database.php)',
+                'schema version %d is older than required %d (run tests/bin/reset_test_database.php)',
                 $version,
                 $required
             );

@@ -31,7 +31,7 @@ background:rgba(13, 16, 20, 0.95);
 	width:100%
 }
 </style>
-<div style="min-width:569px;width:569px; margin: auto;">
+<div class="tt-wrap" style="width:100%;max-width:569px;margin:auto;">
 <div id="tabse">
 {foreach $TechTreeList as $elementID => $requireList}
 {if $elementID == 0}
@@ -50,10 +50,10 @@ background:rgba(13, 16, 20, 0.95);
 {if !is_array($requireList)}
 </table><table id="tab{$elementID}" class="inactivetab">
 {else}
-<tr>
-	<td><a href="#" onclick="return Dialog.info({$elementID})"><img src="{$dpath}gebaeude/{$elementID}.{if $elementID >=600 && $elementID <= 699}jpg{else}gif{/if}" width="50" height="50"></a></td>
-	<td  style="width:30%"><a href="#" onclick="return Dialog.info({$elementID})">{$LNG.tech.$elementID}</a></td>
-	<td style="width:60%">
+<tr class="tt-row">
+	<td class="tt-icon" style="width:20%"><a href="#" onclick="return Dialog.info({$elementID})"><img src="{$dpath}gebaeude/{$elementID}.{if $elementID >=600 && $elementID <= 699}jpg{else}gif{/if}" width="50" height="50"></a></td>
+	<td class="tt-name" style="width:30%"><a href="#" onclick="return Dialog.info({$elementID})">{$LNG.tech.$elementID}</a></td>
+	<td class="tt-req" style="width:50%">
 	{if $requireList}
 		{foreach $requireList as $requireID => $NeedLevel}
 			<a href="#" onclick="return Dialog.info({$elementID})"><span style="color:{if $NeedLevel.own < $NeedLevel.count}red{else}lime{/if};">{$LNG.tech.$requireID} ({$LNG.tt_lvl} {min($NeedLevel.count, $NeedLevel.own)}/{$NeedLevel.count})</span></a>{if !$NeedLevel@last}<br>{/if}

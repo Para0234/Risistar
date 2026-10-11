@@ -4,10 +4,15 @@
  * Drop, recreate, import schema, and seed the integration-test database (2moons_test).
  * Does NOT touch the game database (2moons).
  *
- * Usage: docker exec -w /app risistar-web-1 php scripts/reset_test_database.php
+ * Usage: docker exec -w /app risistar-web-1 php tests/bin/reset_test_database.php
  */
 
-define('ROOT_PATH', dirname(__DIR__) . '/');
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit("This script can only be run from the command line.\n");
+}
+
+define('ROOT_PATH', dirname(__DIR__, 2) . '/');
 
 $database = [];
 require ROOT_PATH . 'includes/config.test.php';
@@ -56,6 +61,6 @@ echo "    {$statementCount} statements executed.\n";
 
 echo "==> Seeding test users and planets...\n";
 define('SEED_TEST_DB_INCLUDED', true);
-require ROOT_PATH . 'scripts/seed_test_database.php';
+require ROOT_PATH . 'tests/bin/seed_test_database.php';
 
 echo "==> Done. Integration tests use {$testDb}; browser game still uses 2moons.\n";

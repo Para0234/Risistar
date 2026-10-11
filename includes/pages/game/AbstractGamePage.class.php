@@ -126,6 +126,7 @@ abstract class AbstractGamePage
 				'hasBoard'			=> filter_var($config->forum_url, FILTER_VALIDATE_URL),
 				'hasAdminAccess'	=> !empty(Session::load()->adminAccess),
 				'hasGate'			=> false,
+				'spy_unseen'		=> 0,
 			));
 			return;
 		}
@@ -186,7 +187,8 @@ abstract class AbstractGamePage
 			'closed'			=> !$config->game_disable,
 			'hasBoard'			=> filter_var($config->forum_url, FILTER_VALIDATE_URL),
 			'hasAdminAccess'	=> !empty(Session::load()->adminAccess),
-			'hasGate'			=> $PLANET[$resource[43]] > 0
+			'hasGate'			=> $PLANET[$resource[43]] > 0,
+			'spy_unseen'		=> SpyReportStore::countUnviewed((int) $USER['id']),
 		));
 	}
 
