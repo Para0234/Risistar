@@ -7,11 +7,10 @@ var Gate	= {
 	
 	submit: function() {
 		$.getJSON('?page=information&mode=sendFleet&'+$('.jumpgate').serialize(), function(data) {
-			alert(data.message);
-			if(!data.error)
-			{
+			RisistarDialog.alert(data.message).then(function() {
+				if(!data.error)
 				parent.$.fancybox.close();
-			}
+			});
 		});		
 	}
 }
@@ -27,10 +26,11 @@ var Gate = {
 
     submit: function() {
         $.getJSON('?page=information&mode=sendFleet&' + $('.jumpgate').serialize(), function(data) {
-            alert(data.message);
-            if (!data.error) {
-                parent.$.fancybox.close();
-            }
+            RisistarDialog.alert(data.message).then(function() {
+                if (!data.error) {
+                    parent.$.fancybox.close();
+                }
+            });
         });
     },
 

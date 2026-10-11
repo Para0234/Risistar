@@ -164,9 +164,9 @@ class ShowResourcesPage extends AbstractGamePage
 		}
 				
 		$storage	= array(
-			901 => shortly_number($PLANET[$resource[901].'_max']),
-			902 => shortly_number($PLANET[$resource[902].'_max']),
-			903 => shortly_number($PLANET[$resource[903].'_max']),
+			901 => $PLANET[$resource[901].'_max'],
+			902 => $PLANET[$resource[902].'_max'],
+			903 => $PLANET[$resource[903].'_max'],
 		);
 		
 		$basicProduction	= array(

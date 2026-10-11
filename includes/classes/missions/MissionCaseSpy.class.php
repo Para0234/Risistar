@@ -48,8 +48,6 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 			':planetId'	=> $this->_fleet['fleet_start_id']
 		), 'name');
 
-		$LNG			= $this->getLanguage($senderUser['lang']);
-
 		$senderUser['factor']	= getFactors($senderUser, 'basic', $this->_fleet['fleet_start_time']);
 		$targetUser['factor']	= getFactors($targetUser, 'basic', $this->_fleet['fleet_start_time']);
 
@@ -129,41 +127,31 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 					$spyData[$classID][$elementID]	= $targetPlanet[$resource[$elementID]];
 				}
 			}
-		
-			if($senderUser['spyMessagesMode'] == 1)
-			{
-				$spyData[$classID]	= array_filter($spyData[$classID]);
-			}
 		}
-		
-		// I'm use template class here, because i want to exclude HTML in PHP.
-		
-		require_once 'includes/classes/class.template.php';
-		
-		$template	= new template;
-		
-		$template->caching		= true;
-		$template->compile_id	= $senderUser['lang'];
-		$template->loadFilter('output', 'trimwhitespace');
-		list($tplDir)	= $template->getTemplateDir();
-		$template->setTemplateDir($tplDir.'game/');
-		$template->assign_vars(array(
-			'spyData'		=> $spyData,
-			'targetPlanet'	=> $targetPlanet,
-			'targetChance'	=> $targetChance,
-			'spyChance'		=> $spyChance,
-			'isBattleSim'	=> ENABLE_SIMULATOR_LINK == true && isModuleAvailable(MODULE_SIMULATOR),
-			'title'			=> sprintf($LNG['sys_mess_head'], $targetPlanet['name'], $targetPlanet['galaxy'], $targetPlanet['system'], $targetPlanet['planet'], _date($LNG['php_tdformat'], $this->_fleet['fleet_end_time'], $targetUser['timezone'], $LNG)),
-		));
-		
-		$template->assign_vars(array(
-			'LNG'			=> $LNG
-		), false);
-				
-		$spyReport	= $template->fetch('shared.mission.spyReport.tpl');
 
-		PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_mess_qg'], 0, $LNG['sys_mess_spy_report'],
-			$spyReport, $this->_fleet['fleet_start_time'], NULL, 1, $this->_fleet['fleet_universe']);
+		$spyDestroyed	= $targetChance >= $spyChance;
+
+		try {
+			SpyReportStore::insert(array(
+				'owner_id'			=> $this->_fleet['fleet_owner'],
+				'universe'			=> $this->_fleet['fleet_universe'],
+				'report_time'		=> $this->_fleet['fleet_start_time'],
+				'viewed'			=> 0,
+				'galaxy'			=> $targetPlanet['galaxy'],
+				'system'			=> $targetPlanet['system'],
+				'planet'			=> $targetPlanet['planet'],
+				'planet_type'		=> $targetPlanet['planet_type'],
+				'planet_id'			=> $targetPlanet['id'],
+				'planet_name'		=> $targetPlanet['name'],
+				'target_user_id'	=> $targetUser['id'],
+				'target_username'	=> $targetUser['username'],
+				'target_chance'		=> $targetChance,
+				'spy_destroyed'		=> $spyDestroyed ? 1 : 0,
+				'payload'			=> $spyData,
+			));
+		} catch (\Throwable $e) {
+			error_log('[SPY ERROR] insert failed fleet=' . $this->_fleet['fleet_id'] . ' ' . $e->getMessage());
+		}
 		
 		$LNG			= $this->getLanguage($targetUser['lang']);
 		$isFromMoon		= $this->_fleet['fleet_start_type'] == 3;
@@ -192,7 +180,7 @@ class MissionCaseSpy extends MissionFunctions implements Mission
 		PlayerUtil::sendMessage($this->_fleet['fleet_target_owner'], 0, $LNG['sys_mess_spy_control'], 0,
 			$LNG['sys_mess_spy_activity'], $targetMessage, $this->_fleet['fleet_start_time'], NULL, 1, $this->_fleet['fleet_universe']);
 
-		if ($targetChance >= $spyChance)
+		if ($spyDestroyed)
 		{
 			$config		= Config::get($this->_fleet['fleet_universe']);
 			$whereCol	= $this->_fleet['fleet_end_type'] == 3 ? "id_luna" : "id";

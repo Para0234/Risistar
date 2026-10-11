@@ -740,6 +740,15 @@ body.popup {
 	min-height: 100%;
 }
 
+body#logout.popup,
+body#notes.popup {
+	background:url("img/bkd_page.jpg") no-repeat fixed center center #0d0d0d;
+}
+
+body#raport.popup {
+	background:url("img/bkd_page.jpg") no-repeat center center #0d0d0d;
+}
+
 .ppopup#content {
 	margin: 17px 0 0;
     padding: 0;

@@ -88,6 +88,7 @@ class ShowGalaxyPage extends AbstractGamePage
 		$galaxyRows->setSystem($system);
 		$Result	= $galaxyRows->getGalaxyData();
 
+        $this->tplObj->loadscript('coordQuick.js');
         $this->tplObj->loadscript('galaxy.js');
         $this->assign(array(
 			'GalaxyRows'				=> $Result,

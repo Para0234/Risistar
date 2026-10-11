@@ -1,78 +1,50 @@
 <div id="page">
 	
 	<div id="header">
-		<table id="headerTable">
-			<tbody>
-				<tr>
-					<td id="planetImage">
-                       <img src="{$dpath}planeten/small/s_{$image}.jpg" alt="">
-					</td>
-					<td id="planetSelectorWrapper">
-                        <label for="planetSelector"></label>
-						<select id="planetSelector">
-							{html_options options=$PlanetSelect selected=$current_pid}
-						</select>
-					</td>
-					<td id="resourceWrapper">
-						<table id="resourceTable">
-							<tbody>
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									<td><img src="{$dpath}images/{$resourceData.name}.gif" alt=""></td>
-									{/foreach}
-								</tr>
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									<td class="res_name">{$LNG.tech.$resourceID}</td>
-									{/foreach}
-								</tr>
-								{if $shortlyNumber}
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									{if !isset($resourceData.current)}
-									{$resourceData.current = $resourceData.max + $resourceData.used}
-									<td class="res_current tooltip" data-tooltip-content="{$resourceData.current|number}&nbsp;/&nbsp;{$resourceData.max|number}"><span{if $resourceData.current < 0} style="color:red"{/if}>{shortly_number($resourceData.current)}&nbsp;/&nbsp;{shortly_number($resourceData.max)}</span></td>
-									{else}
-									<td class="res_current tooltip" id="current_{$resourceData.name}" data-real="{$resourceData.current}" data-tooltip-content="{$resourceData.current|number}">{shortly_number($resourceData.current)}</td>
-									{/if}
-									{/foreach}
-								</tr>
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									{if !isset($resourceData.current) || !isset($resourceData.max)}
-									<td>&nbsp;</td>
-									{else}
-									<td class="res_max tooltip" id="max_{$resourceData.name}" data-real="{$resourceData.max}" data-tooltip-content="{$resourceData.max|number}">{shortly_number($resourceData.max)}</td>
-									{/if}
-									{/foreach}
-								</tr>
-								{else}
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									{if !isset($resourceData.current)}
-									{$resourceData.current = $resourceData.max + $resourceData.used}
-									<td class="res_current"><span{if $resourceData.current < 0} style="color:red"{/if}>{$resourceData.current|number}&nbsp;/&nbsp;{$resourceData.max|number}</span></td>
-									{else}
-									<td class="res_current" id="current_{$resourceData.name}" data-real="{$resourceData.current}">{$resourceData.current|number}</td>
-									{/if}
-									{/foreach}
-								</tr>
-								<tr>
-									{foreach $resourceTable as $resourceID => $resourceData}
-									{if !isset($resourceData.current) || !isset($resourceData.max)}
-									<td>&nbsp;</td>
-									{else}
-									<td class="res_max" id="max_{$resourceData.name}" data-real="{$resourceData.current}">{$resourceData.max|number}</td>
-									{/if}
-									{/foreach}
-								</tr>
-								{/if}
-							</tbody>
-						</table>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div id="headerTable">
+			<div class="header-planet">
+				<div id="planetImage">
+					<img src="{$dpath}planeten/small/s_{$image}.jpg" alt="">
+				</div>
+				<div id="planetSelectorWrapper">
+					<label for="planetSelector"></label>
+					<select id="planetSelector">
+						{html_options options=$PlanetSelect selected=$current_pid}
+					</select>
+				</div>
+			</div>
+			<div id="resourceWrapper">
+				<div id="resourceTable">
+					{foreach $resourceTable as $resourceID => $resourceData}
+					<div class="res-chip">
+						<img src="{$dpath}images/{$resourceData.name}.gif" alt="">
+						<span class="res_name">{$LNG.tech.$resourceID}</span>
+						{if $shortlyNumber}
+							{if !isset($resourceData.current)}
+							{$resourceData.current = $resourceData.max + $resourceData.used}
+							<span class="res_current tooltip" data-tooltip-content="{$resourceData.current|number}&nbsp;/&nbsp;{$resourceData.max|number}"><span{if $resourceData.current < 0} style="color:red"{/if}>{shortly_number($resourceData.current)}&nbsp;/&nbsp;{shortly_number($resourceData.max)}</span></span>
+							{else}
+							<span class="res_current tooltip" id="current_{$resourceData.name}" data-real="{$resourceData.current}" data-tooltip-content="{$resourceData.current|number}">{shortly_number($resourceData.current)}</span>
+							{/if}
+							{if isset($resourceData.current) && isset($resourceData.max)}
+							<span class="res_max tooltip" id="max_{$resourceData.name}" data-real="{$resourceData.max}" data-tooltip-content="{$resourceData.max|number}">{shortly_number($resourceData.max)}</span>
+							{/if}
+						{else}
+							{if !isset($resourceData.current)}
+							{$resourceData.current = $resourceData.max + $resourceData.used}
+							<span class="res_current"><span{if $resourceData.current < 0} style="color:red"{/if}>{$resourceData.current|number}&nbsp;/&nbsp;{$resourceData.max|number}</span></span>
+							{else}
+							<span class="res_current" id="current_{$resourceData.name}" data-real="{$resourceData.current}">{$resourceData.current|number}</span>
+							{/if}
+							{if isset($resourceData.current) && isset($resourceData.max)}
+							<span class="res_max" id="max_{$resourceData.name}" data-real="{$resourceData.max}">{$resourceData.max|number}</span>
+							{/if}
+						{/if}
+					</div>
+					{/foreach}
+				</div>
+			</div>
+		</div>
 		{if !$vmode}
 		<script type="text/javascript">
 		var viewShortlyNumber	= {$shortlyNumber|json};

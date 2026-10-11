@@ -1,0 +1,971 @@
+/* Battle simulator and combat reports. */
+/* --- Battle simulator --- */
+
+body#battleSimulator form.battlesim-page {
+	display: block;
+	width: 80%;
+	max-width: 95%;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+html:has(body#battleSimulator),
+body#battleSimulator,
+body#battleSimulator #page {
+	overflow-x: clip;
+	overflow-y: visible;
+}
+
+body#battleSimulator form.battlesim-page > table,
+body#battleSimulator .battlesim-shell {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.battlesim-steal {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 8px 16px;
+}
+
+.battlesim-steal-label {
+	flex: 0 1 auto;
+}
+
+.battlesim-field {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+.battlesim-qty {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 8.5em;
+	min-width: 0;
+}
+
+.battlesim-tabs-cell {
+	padding: 0 !important;
+}
+
+body#battleSimulator .ui-tabs {
+	width: 100%;
+	padding: 0;
+	box-sizing: border-box;
+	background: transparent;
+}
+
+body#battleSimulator .ui-tabs .ui-tabs-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2px;
+	margin: 0;
+	padding: 4px 4px 0;
+}
+
+body#battleSimulator .ui-tabs .ui-tabs-nav li {
+	float: none;
+	top: 0;
+	margin: 0;
+}
+
+body#battleSimulator .ui-tabs .ui-tabs-nav li a {
+	float: none;
+	display: block;
+	padding: 8px 12px;
+}
+
+body#battleSimulator .ui-tabs .ui-tabs-panel {
+	padding: 8px 4px;
+	box-sizing: border-box;
+}
+
+.battlesim-slot {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+}
+
+.battlesim-cols {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+	align-items: start;
+}
+
+.battlesim-grid {
+	width: min(100%, 520px);
+	max-width: 100%;
+	margin: 0 auto;
+	table-layout: fixed;
+	border-collapse: separate;
+	border-spacing: 1px;
+	background: #050708;
+}
+
+.battlesim-cols .battlesim-grid {
+	width: min(100%, 520px);
+	flex: 1 1 360px;
+	max-width: 520px;
+	margin: 0;
+}
+
+.battlesim-grid th,
+.battlesim-grid td {
+	box-sizing: border-box;
+	padding: 5px 7px;
+	border: 0;
+	border-right: 1px solid rgba(49, 54, 57, 0.38);
+	border-bottom: 1px solid rgba(58, 64, 67, 0.34);
+	background: rgba(7, 9, 11, 0.96);
+	word-wrap: break-word;
+}
+
+.battlesim-grid tr:nth-child(even):not(:first-child) td {
+	background: rgba(12, 15, 17, 0.96);
+}
+
+.battlesim-grid tr:hover td {
+	background: rgba(24, 28, 31, 0.98);
+}
+
+.battlesim-grid tr:first-child th {
+	position: sticky;
+	top: 0;
+	z-index: 5;
+	background: linear-gradient(180deg, #101418, #07090b) !important;
+	border-top: 1px solid #3a4449;
+	border-bottom-color: #050708;
+	color: #f0f3f5;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.85);
+}
+
+.battlesim-grid th:first-child,
+.battlesim-grid td:first-child {
+	width: 46%;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.battlesim-grid th:nth-child(n+2),
+.battlesim-grid td:nth-child(n+2) {
+	width: 27%;
+	white-space: nowrap;
+}
+
+.battlesim-grid tr:first-child th:first-child,
+.battlesim-grid td:first-child {
+	border-right-color: #4a5962;
+	background: #1a242b;
+	box-shadow: inset -1px 0 0 rgba(186, 206, 216, 0.18);
+	color: #f0f3f5;
+}
+
+.battlesim-grid tr:first-child th:first-child {
+	background: linear-gradient(180deg, #222c34, #1a242b) !important;
+}
+
+.battlesim-label-cell {
+	overflow: hidden;
+}
+
+.battlesim-name {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.battlesim-name.is-overflowing {
+	text-overflow: clip;
+}
+
+.battlesim-name.is-overflowing .spy-label-scroll {
+	animation: spy-label-marquee var(--marquee-duration, 4s) ease-in-out var(--marquee-delay, 0s) infinite alternate;
+}
+
+.battlesim-label-cell:hover .is-overflowing .spy-label-scroll,
+.battlesim-label-cell:focus-within .is-overflowing .spy-label-scroll {
+	animation-play-state: paused;
+}
+
+.battlesim-grid .battlesim-qty {
+	max-width: 100%;
+}
+
+.battlesim-actions,
+.battlesim-wait {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	margin: 8px 0 0;
+	padding: 8px;
+	text-align: center;
+}
+
+.battlesim-wait {
+	display: none;
+}
+
+.battlesim-actions input {
+	margin: 4px;
+}
+
+.battlesim-cols-single .battlesim-label-cell {
+	font-size: 12px;
+}
+
+@media (min-width: 1101px) {
+	.battlesim-cols .battlesim-grid {
+		min-width: 0;
+		flex-basis: calc((100% - 10px) / 2);
+	}
+
+	.battlesim-cols-single .battlesim-grid {
+		width: calc((100% - 10px) / 2);
+		max-width: 520px;
+		flex: 0 1 calc((100% - 10px) / 2);
+		margin: 0 auto;
+	}
+}
+
+/* --- Combat reports --- */
+
+body#raport.popup {
+	min-width: 0;
+	overflow-x: hidden;
+}
+
+body#raport #content {
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow-x: hidden;
+}
+
+.combat-report {
+	--spy-label-col: 220px;
+	box-sizing: border-box;
+	width: max-content;
+	min-width: min(66vw, 100%);
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 0 0 16px;
+	text-align: center;
+	overflow-wrap: break-word;
+}
+
+.combat-report-vs {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 4px 16px;
+	margin: 0 0 8px;
+	padding: 4px 0 8px;
+}
+
+.combat-report-vs-side {
+	flex: 1 1 140px;
+	min-width: 0;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.combat-report-vs-side.is-win {
+	color: lime;
+}
+
+.combat-report-vs-side.is-lose {
+	color: red;
+}
+
+.combat-report-vs-label {
+	flex: 0 0 auto;
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.combat-result-winner,
+.combat-result-line,
+.combat-destroyed {
+	margin: 0 0 6px;
+	line-height: 1.4;
+}
+
+.combat-report-intro {
+	margin: 0 0 12px;
+	padding: 10px 12px;
+	border: 1px solid #2a3138;
+	background: rgba(8, 10, 13, 0.95);
+	color: #eee;
+	line-height: 1.35;
+}
+
+.combat-report-intro-title {
+	display: block;
+	font-size: 18px;
+	font-weight: 700;
+	color: #fff;
+}
+
+.combat-report-intro-time {
+	display: block;
+	margin-top: 4px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #d4d8dc;
+	font-variant-numeric: tabular-nums;
+}
+
+.combat-round {
+	margin: 0 0 8px;
+	border: 1px solid #1c1f23;
+	background: rgba(13, 16, 20, 0.95);
+	text-align: left;
+}
+
+.combat-round-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 6px 8px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	list-style: none;
+	background: rgba(8, 10, 13, 0.9);
+}
+
+.combat-round-title::-webkit-details-marker {
+	display: none;
+}
+
+.combat-round-title::before {
+	content: "\25B8";
+	flex: 0 0 auto;
+	width: 1em;
+	color: #888;
+}
+
+.combat-round[open] > .combat-round-title::before {
+	content: "\25BE";
+}
+
+.combat-round-fire-mini {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 4px 16px;
+	margin-left: auto;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	font-size: 13px;
+}
+
+.combat-round-fire-mini .is-att,
+.combat-round-fire-mini .is-def {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+.combat-round-fire-label {
+	font-weight: 600;
+}
+
+.combat-round-fire-value {
+	font-weight: 700;
+}
+
+.combat-round-fire-mini .is-att {
+	color: #7ec8ff;
+}
+
+.combat-round-fire-mini .is-def {
+	color: #f0a27a;
+}
+
+.combat-round-body {
+	padding: 6px 8px 8px;
+}
+
+.combat-compare-scroll {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.combat-compare {
+	width: max-content;
+	min-width: 100%;
+	max-width: none;
+	margin: 0;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.combat-col-label {
+	width: var(--spy-label-col);
+}
+
+.combat-compare.is-duel .combat-col-att,
+.combat-compare.is-duel .combat-col-def {
+	width: auto;
+}
+
+.combat-compare th,
+.combat-compare td {
+	padding: 3px 8px;
+	border: 1px solid #111;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.combat-compare thead th {
+	background: #15191e;
+	font-weight: 700;
+	text-align: center;
+	vertical-align: bottom;
+}
+
+.combat-compare thead th.is-att {
+	color: #7ec8ff;
+	background: rgba(80, 140, 200, 0.12);
+}
+
+.combat-compare thead th.is-def {
+	color: #f0a27a;
+	background: rgba(200, 110, 60, 0.12);
+}
+
+.combat-label-col {
+	width: var(--spy-label-col);
+	min-width: var(--spy-label-col);
+	max-width: var(--spy-label-col);
+	box-sizing: border-box;
+	overflow: hidden;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.combat-label-col.is-start {
+	position: sticky;
+	left: 0;
+	z-index: 2;
+}
+
+.combat-label-col.is-start.is-defense .combat-ship {
+	display: none;
+}
+
+.combat-label-col.is-end {
+	position: sticky;
+	right: 0;
+	z-index: 2;
+}
+
+.combat-compare thead .combat-label-col.is-start,
+.combat-compare thead .combat-label-col.is-end {
+	z-index: 3;
+}
+
+.combat-player {
+	min-width: 0;
+	white-space: normal;
+	font-weight: 400;
+	color: #ddd;
+}
+
+.combat-player-name {
+	font-size: 14px;
+	font-weight: 700;
+	color: inherit;
+	white-space: nowrap;
+}
+
+.combat-compare.is-crowded {
+	width: max-content;
+	max-width: 100%;
+	table-layout: auto;
+}
+
+.combat-compare.is-crowded thead th.is-att,
+.combat-compare.is-crowded thead th.is-def {
+	white-space: normal;
+}
+
+/* The bonus row wraps under the name. It must not set the column width,
+   otherwise every participant stays as wide as the three icons in a row. */
+.combat-compare.is-crowded .combat-player-tech {
+	width: 0;
+	min-width: 100%;
+}
+
+.combat-player-coords {
+	color: #c5c9ce;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 1.25;
+	white-space: nowrap;
+}
+
+.combat-player-tech {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 4px 8px;
+	margin-top: 4px;
+	color: #f2f4f6;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2;
+	white-space: normal;
+}
+
+.combat-tech {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	white-space: nowrap;
+}
+
+.combat-tech-icon {
+	flex: 0 0 22px;
+	width: 22px;
+	height: 22px;
+	object-fit: cover;
+	border-radius: 2px;
+}
+
+.combat-player.is-destroyed .combat-player-name {
+	text-decoration: line-through;
+	color: #888;
+}
+
+.combat-destroyed {
+	color: #f66;
+	font-weight: 700;
+	font-size: 11px;
+	margin: 2px 0 0;
+}
+
+.combat-compare tbody .combat-label-col {
+	background: #0d1014;
+	font-weight: 400;
+	vertical-align: middle;
+}
+
+.combat-compare td.combat-label-col {
+	text-align: left;
+	font-weight: 400;
+}
+
+.combat-compare thead .combat-label-col {
+	background: #15191e;
+}
+
+.combat-ship {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	max-width: 100%;
+	overflow: hidden;
+}
+
+.combat-ship-icon {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	margin-right: 6px;
+}
+
+.combat-ship-label {
+	flex: 1 1 auto;
+	display: block;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.combat-compare td {
+	text-align: right;
+	font-weight: 700;
+	min-width: 4.5em;
+}
+
+.combat-compare.is-duel td.is-att,
+.combat-compare.is-duel td.is-def {
+	text-align: center;
+}
+
+.combat-compare td.is-att {
+	background: rgba(80, 140, 200, 0.08);
+}
+
+.combat-compare td.is-def {
+	background: rgba(200, 110, 60, 0.08);
+}
+
+.combat-compare td.is-empty {
+	color: #555;
+	font-weight: 400;
+}
+
+.combat-compare tbody tr {
+	cursor: pointer;
+}
+
+.combat-compare tbody tr:hover > .combat-label-col {
+	background: #1e2a33;
+}
+
+.combat-compare tbody tr:hover > td.is-att {
+	background: #183246;
+}
+
+.combat-compare tbody tr:hover > td.is-def {
+	background: #3a271f;
+}
+
+.combat-compare tbody tr.is-selected > .combat-label-col {
+	background: #263b4a;
+}
+
+.combat-compare tbody tr.is-selected > td.is-att {
+	background: #1e4865;
+}
+
+.combat-compare tbody tr.is-selected > td.is-def {
+	background: #583528;
+}
+
+.combat-compare tbody tr.is-selected > * {
+	border-top-color: #6aa8d8;
+	border-bottom-color: #6aa8d8;
+}
+
+.combat-result {
+	margin-top: 10px;
+	padding: 8px;
+	border: 1px solid #1c1f23;
+	background: rgba(13, 16, 20, 0.95);
+}
+
+.combat-result-winner {
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.combat-result-winner.is-win {
+	color: lime;
+}
+
+.combat-result-winner.is-lose {
+	color: red;
+}
+
+.combat-result-extra {
+	margin-top: 8px;
+}
+
+.combat-report-close-wrap {
+	margin-top: 14px;
+	padding: 4px 0 0;
+	text-align: center;
+}
+
+.combat-report-close {
+	display: inline-block;
+	min-width: 8em;
+	min-height: 36px;
+	padding: 8px 18px;
+	border: 1px solid #3a434c;
+	background: #1a2026;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1.2;
+	cursor: pointer;
+}
+
+.combat-report-close:hover,
+.combat-report-close:focus {
+	border-color: #6aa8d8;
+	background: #24303a;
+	color: #fff;
+}
+
+.raportMessage {
+	max-width: 100%;
+	overflow-wrap: break-word;
+}
+
+.raportMessage table {
+	width: 100%;
+	max-width: 100%;
+	margin: 0;
+}
+
+.raportMessage td {
+	word-break: break-word;
+}
+
+.raportMessage span {
+	display: inline-block;
+}
+
+
+@media (max-width: 1100px) {
+	body#battleSimulator form.battlesim-page {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.battlesim-grid,
+	.battlesim-cols .battlesim-grid {
+		width: 100%;
+		flex: 1 1 100%;
+	}
+
+	.battlesim-cols {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.battlesim-field {
+		flex: 1 1 160px;
+		justify-content: space-between;
+	}
+
+	.battlesim-grid th:first-child,
+	.battlesim-grid td:first-child {
+		white-space: nowrap;
+	}
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.battlesim-name.is-overflowing .spy-label-scroll {
+		animation: none;
+	}
+
+	.battlesim-name.is-overflowing {
+		text-overflow: ellipsis;
+	}
+}
+
+@media (max-width: 899px) {
+	.combat-report {
+		width: 100%;
+		min-width: 0;
+	}
+
+	.combat-col-label.is-end,
+	.combat-label-col.is-end {
+		display: none !important;
+		visibility: collapse;
+		width: 0 !important;
+		min-width: 0 !important;
+		max-width: 0 !important;
+		padding: 0 !important;
+		border: 0 !important;
+		overflow: hidden;
+	}
+
+	.combat-label-col.is-start.is-defense .combat-ship {
+		display: flex;
+	}
+}
+
+@media (max-width: 1199px) {
+	.combat-player-tech {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		align-items: center;
+		gap: 2px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.combat-report {
+		min-width: 0;
+	}
+
+	.combat-compare {
+		min-width: 0;
+		margin-right: auto;
+		margin-left: auto;
+	}
+}
+
+
+@media (max-width: 640px) {
+	.battlesim-steal-label {
+		flex: 1 0 100%;
+		text-align: center;
+	}
+
+	.battlesim-field .battlesim-qty {
+		width: 8em;
+		max-width: none;
+	}
+
+	.battlesim-add,
+	.battlesim-actions input,
+	.battlesim-grid .reset {
+		min-height: 36px;
+		padding: 6px 10px;
+	}
+
+	.battlesim-actions {
+		position: sticky;
+		bottom: 0;
+		z-index: 6;
+		margin: 0;
+		background: #0d1014;
+		border-top: 1px solid #1c1f23;
+	}
+
+	body#battleSimulator .ui-tabs .ui-tabs-nav li a {
+		padding: 8px 10px;
+	}
+
+	body#raport,
+	body#raport td,
+	body#raport th {
+		font-size: 12px;
+	}
+
+	body#raport #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	.combat-report {
+		--spy-label-col: 100px;
+		padding-bottom: 72px;
+	}
+
+	.combat-report-intro {
+		padding: 12px 10px;
+	}
+
+	.combat-report-intro-title {
+		font-size: 17px;
+	}
+
+	.combat-report-intro-time {
+		font-size: 14px;
+	}
+
+	.combat-report-vs {
+		flex-direction: column;
+		gap: 2px;
+		padding: 2px 0 6px;
+	}
+
+	.combat-report-vs-side,
+	.combat-report-vs-label {
+		flex: 0 0 auto;
+		width: 100%;
+		font-size: 15px;
+	}
+
+	.combat-round-title {
+		min-height: 32px;
+		flex-wrap: wrap;
+		align-items: flex-start;
+	}
+
+	.combat-round-fire-mini {
+		flex: 1 1 100%;
+		margin-left: 1.15em;
+		justify-content: flex-end;
+		gap: 2px 12px;
+	}
+
+	.combat-compare,
+	.combat-compare.is-crowded {
+		width: max-content;
+		min-width: 100%;
+		max-width: none;
+		table-layout: auto;
+	}
+
+	.combat-label-col.is-start {
+		position: sticky;
+		left: 0;
+	}
+
+	.combat-compare td.is-att,
+	.combat-compare td.is-def,
+	.combat-compare thead th.is-att,
+	.combat-compare thead th.is-def {
+		min-width: 88px;
+		box-sizing: border-box;
+	}
+
+	.combat-compare.is-duel td.is-att,
+	.combat-compare.is-duel td.is-def,
+	.combat-compare.is-duel thead th.is-att,
+	.combat-compare.is-duel thead th.is-def {
+		min-width: 88px;
+	}
+
+	.combat-compare.is-duel td.is-att,
+	.combat-compare.is-duel td.is-def {
+		text-align: right;
+	}
+
+	.combat-compare th,
+	.combat-compare td {
+		padding: 4px 5px;
+	}
+
+	.combat-report-close-wrap {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 8;
+		margin: 0;
+		padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+		background: rgba(13, 16, 20, 0.96);
+		border-top: 1px solid #2a3138;
+	}
+
+	.combat-report-close {
+		width: 100%;
+		max-width: 360px;
+		min-height: 44px;
+		font-size: 16px;
+	}
+
+	.raportMessage table,
+	.raportMessage tbody,
+	.raportMessage tr {
+		display: block;
+		width: 100%;
+	}
+
+	.raportMessage td {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: left;
+	}
+}

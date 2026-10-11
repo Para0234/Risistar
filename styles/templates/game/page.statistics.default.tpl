@@ -1,25 +1,26 @@
 {block name="title" prepend}{$LNG.lm_statistics}{/block}
 {block name="content"}
-<form class="container-fluid" name="stats" id="stats" method="post" action="">
-	<table class="container-fluid" class="table519">
+<div class="stats-page">
+	<form class="stats-filters" name="stats" id="stats" method="post" action="" hidden>
+		<label for="who">{$LNG.st_show}</label>
+		<select name="who" id="who" onchange="$('#stats').submit();">{html_options options=$Selectors.who selected=$who}</select>
+		<label for="type">{$LNG.st_per}</label>
+		<select name="type" id="type" onchange="$('#stats').submit();">{html_options options=$Selectors.type selected=$type}</select>
+		<label for="range">{$LNG.st_in_the_positions}</label>
+		<select name="range" id="range" onchange="$('#stats').submit();">{html_options options=$Selectors.range selected=$range}</select>
+	</form>
+	<table class="stats-table{if $who == 2} is-alliance{/if}">
 		<tr>
-			<th>{$LNG.st_statistics} ({$LNG.st_updated}: {$stat_date})</th>
+			<th class="stats-title" colspan="5">
+				<span class="stats-title-text">{$LNG.st_statistics}</span>
+				<span class="stats-title-date">{$LNG.st_updated}: {$stat_date}</span>
+			</th>
 		</tr>
-		<tr>
-			<td style="display:none"> Enlever le display none en bas pour ravoir un selecteur </td>
-			<td style="display:none">
-				<label class="container-fluid" for="who">{$LNG.st_show}</label> <select name="who" id="who" onchange="$('#stats').submit();">{html_options options=$Selectors.who selected=$who}</select>
-				<label class="container-fluid" for="type">{$LNG.st_per}</label> <select name="type" id="type" onchange="$('#stats').submit();">{html_options options=$Selectors.type selected=$type}</select>
-				<label class="container-fluid" for="range">{$LNG.st_in_the_positions}</label> <select name="range" id="range" onchange="$('#stats').submit();">{html_options options=$Selectors.range selected=$range}</select>
-			</td>
-		</tr>
+		{if $who == 1}
+			{include file="shared.statistics.playerTable.tpl"}
+		{elseif $who == 2}
+			{include file="shared.statistics.allianceTable.tpl"}
+		{/if}
 	</table>
-</form>
-<table class="container-fluid" class="table519">
-{if $who == 1}
-	{include file="shared.statistics.playerTable.tpl"}
-{elseif $who == 2}
-	{include file="shared.statistics.allianceTable.tpl"}
-{/if}
-</table>
+</div>
 {/block}
