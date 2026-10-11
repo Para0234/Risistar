@@ -1029,6 +1029,10 @@ html.nav-expanded .spy-planet-sticky {
 	background: #0d1014 !important;
 }
 
+.spy-planet-sticky .empire-table thead > tr.empire-colhead > th {
+	text-align: center;
+}
+
 .spy-planet-sticky th:first-child {
 	position: sticky;
 	left: 0;
@@ -1556,6 +1560,7 @@ html.spy-resize-hover * {
 }
 
 .spy-col-user,
+.spy-col-coords,
 .spy-col-time,
 .spy-col-counter {
 	font-size: 11px;
@@ -1564,7 +1569,14 @@ html.spy-resize-hover * {
 }
 
 .spy-col-counter {
+	font-size: 9px;
 	white-space: nowrap;
+}
+
+.spy-counter-tooltip {
+	display: block;
+	max-width: 300px;
+	line-height: 1.4;
 }
 
 .spy-col-counter.is-destroyed {

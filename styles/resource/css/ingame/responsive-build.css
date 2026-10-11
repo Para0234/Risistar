@@ -218,7 +218,7 @@
 .ov-planet-row {
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: space-around;
 	gap: 12px;
 	width: 100%;

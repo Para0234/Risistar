@@ -54,6 +54,7 @@
 					<span class="spy-planet-label">{$column.name}</span>
 				</span>
 				{if $column.username}<div class="spy-col-user">{$column.username}</div>{/if}
+				<div class="spy-col-coords"><a href="game.php?page=galaxy&amp;galaxy={$column.galaxy}&amp;system={$column.system}">[{$column.galaxy}:{$column.system}:{$column.planet}]</a></div>
 			</th>
 			{/foreach}
 		</tr>
@@ -61,7 +62,6 @@
 		<tr class="empire-colhead spy-coord-head">
 			{foreach $columns as $column}
 			<th{if $column.is_new} class="spy-col-new"{/if}>
-				<a href="game.php?page=galaxy&amp;galaxy={$column.galaxy}&amp;system={$column.system}">[{$column.galaxy}:{$column.system}:{$column.planet}]</a>
 				<div class="spy-col-time" title="{$column.time}">
 					<span class="spy-col-date">{$column.time_date}</span>
 					<span class="spy-col-clock">{$column.time_clock}</span>
@@ -69,7 +69,7 @@
 				{if $column.spy_destroyed}
 				<div class="spy-col-counter is-destroyed">{$LNG.spy_destroyed_short}</div>
 				{else}
-				<div class="spy-col-counter" title="{$LNG.spy_counter_hint}">{$column.counter_label}</div>
+				<div class="spy-col-counter tooltip" data-tooltip-content="<span class='spy-counter-tooltip'>{$LNG.spy_counter_hint}</span>">{$column.counter_label}</div>
 				{/if}
 			</th>
 			{/foreach}

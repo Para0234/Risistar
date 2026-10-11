@@ -300,7 +300,7 @@ $LNG['spy_purge_old_confirm']				= 'Supprimer les rapports d\'espionnage de plus
 $LNG['spy_purge_old_yes']					= 'Oui, supprimer ces rapports';
 $LNG['spy_destroyed_short']					= 'Sondes détruites';
 $LNG['spy_counter']							= 'Contre-esp. : %d %%';
-$LNG['spy_counter_hint']					= 'Probabilité de destruction des sondes (contre-espionnage)';
+$LNG['spy_counter_hint']					= 'Risque que vos sondes soient détectées et détruites. Il augmente avec le nombre de sondes envoyées et le niveau d\'espionnage de la cible par rapport au vôtre. Le rapport est transmis même si les sondes sont détruites.';
 
 //----------------------------------------------------------------------------//
 //FLEET - FLEET1 - FLEET2 - FLEET3 - FLEETACS - FLEETSHORTCUTS
