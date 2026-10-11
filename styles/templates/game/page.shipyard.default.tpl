@@ -48,7 +48,9 @@
 			
 					{if $Element.AlreadyBuild}<div class="build-card-action" style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px; background-color: rgba(200, 0, 0, 1);"><span style="color:#fff">{$LNG.bd_protection_shield_only_one}</span></div>
 					{elseif $NotBuilding && $Element.buyable} 
-					<div class="build-card-action" style="text-align:center;"><input type="text" style="padding:0px; width:70px" name="fmenge[{$ID}]" id="input_{$ID}" size="{$maxlength}" maxlength="{$maxlength}" value="0" tabindex="{$smarty.foreach.FleetList.iteration}"><input style="width:90px" type="button" value="{$LNG.bd_max_ships} {$Element.maxBuildable|number}" onclick="$('#input_{$ID}').val('{$Element.maxBuildable}')">
+					<div class="build-card-action build-card-order" style="text-align:center;">
+						<div class="build-card-quantity-head"><label for="input_{$ID}">{$LNG.rs_amount}</label><span>{$LNG.bd_max_ships}. {$Element.maxBuildable|number}</span></div>
+						<div class="build-card-quantity-control"><span class="build-card-quantity-field"><input class="build-card-quantity-input" type="text" name="fmenge[{$ID}]" id="input_{$ID}" size="{$maxlength}" maxlength="{$maxlength}" value="0" placeholder="(max: {$Element.maxBuildable})" inputmode="numeric" tabindex="{$smarty.foreach.FleetList.iteration}"><span class="build-card-quantity-placeholder" aria-hidden="true">(max: {$Element.maxBuildable})</span></span><input class="build-card-quantity-max" type="button" value="{$LNG.bd_max_ships}" title="{$LNG.bd_max_ships_long}: {$Element.maxBuildable|number}" aria-label="{$LNG.bd_max_ships_long}: {$Element.maxBuildable|number}" onclick="$('#input_{$ID}').val('{$Element.maxBuildable}')"></div>
 					<input type="submit" value="{$LNG.bd_build_ships}" class="build_submit" style="color:#fff; font-weight:bold; min-width:100%; margin:0px; text-align:center; border:1px solid #000; border-radius: 5px; height:19px; background-color:rgba(0, 0, 200, 1); vertical-align:center; "></div>
 					{/if}
 
