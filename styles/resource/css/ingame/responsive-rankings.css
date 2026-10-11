@@ -1,0 +1,684 @@
+/* Achievements, statistics, and Hall of Fame. */
+/* --- Achievements --- */
+
+.achievements-page {
+	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+body#achievements .achievements-block,
+body#achievements .achievements-list,
+body#achievements .achievements-items {
+	width: 100% !important;
+	max-width: 100% !important;
+	min-width: 0 !important;
+	table-layout: auto;
+}
+
+.achievements-badges-cell {
+	padding: 8px 6px !important;
+}
+
+.achievements-badges {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 4px;
+}
+
+.achievements-badge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	box-sizing: border-box;
+}
+
+.achievements-badge img {
+	display: block;
+	width: 80px;
+	height: 80px;
+	max-width: 100%;
+	object-fit: contain;
+}
+
+.achievements-intro {
+	text-align: left;
+	padding: 10px 12px !important;
+}
+
+.achievements-intro p {
+	margin: 0 0 10px;
+	text-align: left;
+}
+
+.achievements-intro p:last-child {
+	margin-bottom: 0;
+}
+
+.achievements-highlight {
+	color: yellow;
+}
+
+.achievements-cat-row > td {
+	padding: 0 !important;
+	text-align: left;
+}
+
+.achievements-cat {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px 12px;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 36px;
+	padding: 8px 12px;
+	color: inherit;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.achievements-cat:hover,
+.achievements-cat:focus {
+	color: inherit;
+	text-decoration: none;
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.achievements-cat-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	text-align: left;
+	font-weight: 700;
+}
+
+.achievements-cat-count {
+	flex: 0 1 auto;
+	text-align: right;
+	font-weight: 700;
+}
+
+.achievements-panel {
+	padding: 0 10px 10px;
+	text-align: left;
+}
+
+.achievements-reqs {
+	margin: 8px 0;
+	text-align: left;
+	font-weight: 700;
+	word-break: break-word;
+}
+
+.achievements-items {
+	width: 100%;
+}
+
+.achievements-item-art {
+	width: 80px;
+	vertical-align: top;
+	padding: 6px !important;
+}
+
+.achievements-item-art img {
+	display: block;
+	width: 80px;
+	height: 80px;
+	max-width: 100%;
+	object-fit: contain;
+}
+
+.achievements-item-body {
+	text-align: left;
+	vertical-align: top;
+	padding: 6px 8px !important;
+	word-break: break-word;
+}
+
+.achievements-item-title {
+	margin: 0 0 4px;
+	text-align: left;
+}
+
+@media (max-width: 1100px) {
+	body#achievements .achievements-page {
+		width: 100%;
+	}
+}
+
+@media (max-width: 640px) {
+	body#achievements #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	.achievements-badge img,
+	.achievements-item-art img {
+		width: 56px;
+		height: 56px;
+	}
+
+	.achievements-item-art {
+		width: 56px;
+		padding: 6px 4px !important;
+	}
+
+	.achievements-cat {
+		min-height: 44px;
+		padding: 10px;
+		align-items: flex-start;
+	}
+
+	.achievements-cat-count {
+		flex: 1 1 100%;
+		text-align: left;
+	}
+
+	.achievements-items,
+	.achievements-items tbody,
+	.achievements-items tr.achievements-item {
+		display: block;
+		width: 100%;
+	}
+
+	.achievements-items tr.achievements-item {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		padding: 8px 0;
+		border-bottom: 1px solid #1c1f23;
+		box-sizing: border-box;
+	}
+
+	.achievements-item-art,
+	.achievements-item-body {
+		display: block;
+		border: 0 !important;
+		background: transparent;
+	}
+
+	.achievements-item-art {
+		flex: 0 0 auto;
+		width: auto;
+	}
+
+	.achievements-item-body {
+		flex: 1 1 auto;
+		min-width: 0;
+		padding: 0 !important;
+	}
+
+	.achievements-intro,
+	.achievements-panel,
+	.achievements-reqs,
+	.achievements-item-body {
+		font-size: 12px;
+		line-height: 1.35;
+	}
+}
+
+/* --- Statistics / Hall of Fame --- */
+
+.stats-page,
+.hof-page {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+body#statistics .stats-table,
+body#battleHall .hof-table,
+.full .stats-page > table,
+.full .hof-page > table {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	table-layout: auto;
+	box-sizing: border-box;
+}
+
+.stats-title,
+.hof-title,
+.hof-intro,
+.hof-legend td {
+	height: auto;
+	text-align: left;
+}
+
+.stats-title-text,
+.stats-title-date {
+	display: inline-block;
+}
+
+.stats-title-date {
+	margin-left: 8px;
+	font-weight: 400;
+	opacity: 0.85;
+}
+
+.stats-rank,
+.hof-rank {
+	width: 48px;
+	font-variant-numeric: tabular-nums;
+}
+
+.stats-pm {
+	width: 28px;
+}
+
+.stats-pm a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	min-height: 24px;
+}
+
+.stats-pm img {
+	display: block;
+}
+
+.stats-points,
+.stats-per,
+.hof-units {
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.stats-name,
+.stats-ally,
+.hof-owners {
+	word-wrap: break-word;
+	overflow-wrap: anywhere;
+}
+
+.hof-intro,
+.hof-legend td {
+	text-align: left;
+	word-wrap: break-word;
+}
+
+.hof-legend span {
+	margin-left: 6px;
+}
+
+.hof-fight {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0 6px;
+	max-width: 100%;
+}
+
+.hof-side.is-win {
+	color: #00FF00;
+}
+
+.hof-side.is-loss {
+	color: #FF0000;
+}
+
+.hof-vs {
+	font-weight: 700;
+}
+
+.hof-cols .hof-date a,
+.hof-cols .hof-units a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+}
+
+.hof-sort {
+	position: relative;
+	display: inline-block;
+	width: 8px;
+	height: 12px;
+	flex: 0 0 8px;
+}
+
+.hof-sort::before,
+.hof-sort::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	opacity: 0.35;
+}
+
+.hof-sort::before {
+	top: 0;
+	border-bottom: 4px solid currentColor;
+}
+
+.hof-sort::after {
+	bottom: 0;
+	border-top: 4px solid currentColor;
+}
+
+.hof-cols th.is-sorted.is-asc .hof-sort::before,
+.hof-cols th.is-sorted.is-desc .hof-sort::after {
+	opacity: 1;
+}
+
+.hof-cols th.is-sorted.is-asc .hof-sort::after,
+.hof-cols th.is-sorted.is-desc .hof-sort::before {
+	opacity: 0.2;
+}
+
+@media (max-width: 1100px) {
+	body#statistics .stats-page,
+	body#battleHall .hof-page {
+		width: 100%;
+	}
+}
+
+@media (max-width: 640px) {
+	body#statistics #content,
+	body#battleHall #content {
+		margin: 8px 6px 0;
+		padding: 8px 4px 12px;
+	}
+
+	.stats-table,
+	.stats-table > tbody,
+	.hof-table,
+	.hof-table > tbody {
+		display: block;
+		width: 100%;
+	}
+
+	.stats-table > tbody > tr:has(.stats-title),
+	.hof-table > tbody > tr:has(.hof-title),
+	.hof-table > tbody > tr:has(.hof-intro),
+	.hof-table > tbody > tr.hof-legend {
+		display: flow-root;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.stats-title,
+	.hof-title,
+	.hof-intro,
+	.hof-legend td {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+		text-align: left;
+	}
+
+	.stats-title {
+		padding: 6px 8px;
+	}
+
+	.stats-title-text,
+	.stats-title-date {
+		display: block;
+		margin-left: 0;
+	}
+
+	.hof-title,
+	.hof-intro {
+		padding: 6px 8px;
+	}
+
+	.hof-intro {
+		border-bottom: 0;
+	}
+
+	.stats-table > tbody > tr.stats-cols {
+		display: none;
+	}
+
+	.stats-table > tbody > tr.stats-row {
+		display: grid;
+		grid-template-columns: 2.1em minmax(0, 1fr) auto 18px;
+		grid-template-areas:
+			"rank name name pm"
+			"rank ally points pm";
+		align-items: center;
+		column-gap: 6px;
+		row-gap: 0;
+		margin: 0;
+		padding: 3px 6px;
+		border: 0;
+		border-bottom: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	.stats-table.is-alliance > tbody > tr.stats-row {
+		grid-template-columns: 2.1em minmax(0, 1fr) auto;
+		grid-template-areas:
+			"rank name points"
+			"rank members members";
+	}
+
+	.stats-row > td {
+		display: block;
+		height: auto;
+		border: 0;
+		background: transparent;
+		padding: 0;
+		text-align: left;
+		min-width: 0;
+		max-width: 100%;
+		width: auto;
+		line-height: 1.2;
+	}
+
+	.stats-rank {
+		grid-area: rank;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: auto;
+		font-weight: 700;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.stats-name,
+	.stats-ally {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow-wrap: normal;
+		word-wrap: normal;
+	}
+
+	.stats-name {
+		grid-area: name;
+		font-weight: 700;
+	}
+
+	.stats-pm {
+		grid-area: pm;
+		width: auto;
+		justify-self: end;
+	}
+
+	.stats-pm a {
+		min-width: 22px;
+		min-height: 22px;
+	}
+
+	.stats-ally {
+		grid-area: ally;
+		opacity: 0.85;
+		font-size: 11px;
+	}
+
+	.stats-points {
+		grid-area: points;
+		text-align: right;
+		justify-self: end;
+		white-space: nowrap;
+	}
+
+	.stats-members {
+		grid-area: members;
+		opacity: 0.85;
+		font-size: 11px;
+		white-space: nowrap;
+	}
+
+	.stats-per {
+		display: none;
+	}
+
+	.stats-members::before {
+		content: attr(data-label) "\00a0";
+		opacity: 0.7;
+		font-weight: 400;
+	}
+
+	.stats-row.is-self {
+		box-shadow: inset 3px 0 0 #38b1cc;
+	}
+
+	.hof-table > tbody > tr.hof-cols {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: stretch;
+		gap: 4px;
+		margin: 4px 0 2px;
+		padding: 0;
+		border: 0;
+		height: auto;
+		background: transparent;
+		background-image: none;
+	}
+
+	.hof-cols .hof-rank,
+	.hof-cols .hof-owners {
+		display: none;
+	}
+
+	.hof-cols .hof-date,
+	.hof-cols .hof-units {
+		display: flex;
+		flex: 1 1 50%;
+		min-width: 0;
+		height: auto;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		background-image: none;
+		font-weight: 700;
+	}
+
+	.hof-cols a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 26px;
+		padding: 3px 6px;
+		border: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.hof-table > tbody > tr.hof-row {
+		display: grid;
+		grid-template-columns: 2.1em minmax(0, 1fr) auto;
+		grid-template-areas:
+			"rank owners owners"
+			"rank date units";
+		align-items: center;
+		column-gap: 6px;
+		row-gap: 0;
+		margin: 0;
+		padding: 3px 6px;
+		border: 0;
+		border-bottom: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	.hof-row > td {
+		display: block;
+		height: auto;
+		border: 0;
+		background: transparent;
+		padding: 0;
+		text-align: left;
+		min-width: 0;
+		max-width: 100%;
+		width: auto;
+		line-height: 1.2;
+		white-space: nowrap;
+	}
+
+	.hof-row .hof-rank {
+		grid-area: rank;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: auto;
+		font-weight: 700;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.hof-row .hof-owners {
+		grid-area: owners;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.hof-row .hof-date {
+		grid-area: date;
+		opacity: 0.85;
+		font-size: 11px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.hof-row .hof-units {
+		grid-area: units;
+		text-align: right;
+		justify-self: end;
+		white-space: nowrap;
+	}
+
+	.hof-fight {
+		display: block;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		min-width: 0;
+		text-align: left;
+	}
+
+	.hof-vs {
+		margin: 0 4px;
+	}
+
+	.hof-legend {
+		margin-top: 4px;
+	}
+
+	.hof-legend td {
+		padding: 6px 8px;
+		white-space: normal;
+		border: 1px solid #1c1f23;
+		background: rgba(13, 16, 20, 0.95);
+	}
+}
+

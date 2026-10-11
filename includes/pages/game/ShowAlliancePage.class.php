@@ -199,12 +199,13 @@ class ShowAlliancePage extends AbstractGamePage
 		$db	= Database::get();
 		$sql	= "SELECT a.ally_tag FROM %%ALLIANCE_REQUEST%% r INNER JOIN %%ALLIANCE%% a ON a.id = r.allianceId WHERE r.userId = :userId;";
 		$allianceResult = $db->selectSingle($sql, array(
-			':userId'	=> $USER['id_planet']
+			':userId'	=> $USER['id']
 		));
-		if(empty($allianceResult['ally_tag'])) { $allianceResult['ally_tag'] = 0; }
+		if(empty($allianceResult['ally_tag'])) { $allianceResult['ally_tag'] = $LNG['al_unknown_alliance']; }
 		
 		$this->assign(array(
 			'request_text'	=> sprintf($LNG['al_request_wait_message'], $allianceResult['ally_tag']),
+			'cancel_request_confirm' => sprintf($LNG['al_cancel_request_confirm'], $allianceResult['ally_tag']),
 		));
 
 		$this->display('page.alliance.applyWait.tpl');
@@ -1125,9 +1126,14 @@ class ShowAlliancePage extends AbstractGamePage
 		$applyDetail['kbcrystal']   = pretty_number($applyDetail['kbcrystal']);
 		$applyDetail['lostunits']   = pretty_number($applyDetail['lostunits']);
 		$applyDetail['desunits']    = pretty_number($applyDetail['desunits']);
+		foreach (array('tech', 'build', 'defs', 'fleet', 'total') as $statKey) {
+			$applyDetail[$statKey.'_points'] = pretty_number($applyDetail[$statKey.'_points'] ?? 0);
+			$applyDetail[$statKey.'_rank']   = pretty_number($applyDetail[$statKey.'_rank'] ?? 0);
+		}
 
 		$this->assign(array(
 			'applyDetail'	=> $applyDetail,
+			'request_from'  => sprintf($LNG['al_request_from'], $applyDetail['username']),
 			'apply_time'    => _date($LNG['php_tdformat'], $applyDetail['time'], $USER['timezone']),
 			'register_time' => _date($LNG['php_tdformat'], $applyDetail['register_time'], $USER['timezone']),
 			'onlinetime'    => _date($LNG['php_tdformat'], $applyDetail['onlinetime'], $USER['timezone']),

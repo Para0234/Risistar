@@ -1,5 +1,5 @@
 {include file="overall_header.tpl"}
-<form action="" method="post" onsubmit="return confirm('{$re_reset_universe_confirmation}');">
+<form action="" method="post" data-rs-confirm="{$re_reset_universe_confirmation|escape:'html'}">
 <table width="40%">
 <tr><th colspan="2">{$re_player_and_planets}</th></tr>
 <tr><td style="text-align:left">{$re_reset_player}</td><td style="text-align:right"><input type="checkbox" name="players"></td></tr>

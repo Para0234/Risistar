@@ -80,6 +80,8 @@ class ShowShipyardPage extends AbstractGamePage
 			503	=> $PLANET[$resource[503]],
 		);
 
+		$maxBuildQueue	= Config::get()->max_elements_ships;
+
 		foreach($fmenge as $Element => $Count)
 		{
 			if(empty($Count)
@@ -89,12 +91,17 @@ class ShowShipyardPage extends AbstractGamePage
 				continue;
 			}
 			
+			$BuildArray    	= !empty($PLANET['b_hangar_id']) ? unserialize($PLANET['b_hangar_id']) : array();
+			if ($maxBuildQueue != 0 && count($BuildArray) >= $maxBuildQueue)
+			{
+				break;
+			}
+
 			$MaxElements 	= BuildFunctions::getMaxConstructibleElements($USER, $PLANET, $Element);
 			$Count			= is_numeric($Count) ? round($Count) : 0;
 			$Count 			= max(min($Count, Config::get()->max_fleet_per_build), 0);
 			$Count 			= min($Count, $MaxElements);
 			
-			$BuildArray    	= !empty($PLANET['b_hangar_id']) ? unserialize($PLANET['b_hangar_id']) : array();
 			if (in_array($Element, $reslist['missile']))
 			{
 				$MaxMissiles		= BuildFunctions::getMaxConstructibleRockets($USER, $PLANET, $Missiles);
@@ -112,9 +119,6 @@ class ShowShipyardPage extends AbstractGamePage
 				
 				if ($InBuild)
 					continue;
-
-				if($Count != 0 && $PLANET[$resource[$Element]] == 0 && $InBuild === false)
-					$Count =  1;
 			}
 
 			if(empty($Count))
@@ -141,6 +145,11 @@ class ShowShipyardPage extends AbstractGamePage
 			$this->printMessage($LNG['bd_shipyard_required']);
 		}
 
+
+		$mode		= HTTP::_GP('mode', 'fleet');
+		if ($mode !== 'defense') {
+			$mode	= 'fleet';
+		}
 
 		$buildTodo	= HTTP::_GP('fmenge', array());
 		$action		= HTTP::_GP('action', '');
@@ -183,10 +192,16 @@ class ShowShipyardPage extends AbstractGamePage
 				$this->CancelAuftr();
 			}
 		}
-		
+
 		if ($telemetryBefore !== $PLANET['b_hangar_id']) {
 			PlayerTelemetry::action('queue.shipyard');
 		}
+
+		if ($_SERVER['REQUEST_METHOD'] === 'POST')
+		{
+			$this->redirectTo('game.php?page=shipyard&mode='.$mode);
+		}
+		
 		$elementInQueue	= array();
 		$ElementQueue 	= unserialize($PLANET['b_hangar_id']);
 		$buildList		= array();
@@ -214,8 +229,6 @@ class ShowShipyardPage extends AbstractGamePage
 			);
 		}
 		
-		
-		$mode		= HTTP::_GP('mode', 'fleet');
 		
 		if($mode == 'defense') {
 			$elementIDs	= array_merge($reslist['defense'], $reslist['missile']);

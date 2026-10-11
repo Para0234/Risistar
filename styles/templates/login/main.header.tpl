@@ -5,9 +5,12 @@
 <!--[if IE 9 ]>    <html lang="{$lang}" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="{$lang}" class="no-js"> <!--<![endif]-->
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="styles/resource/css/login/styles.css">
+	<link rel="stylesheet" type="text/css" href="styles/resource/css/login/responsive.css?v={$REV}">
 	<link rel="stylesheet" href="styles/resource/font-awesome/4.5.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" type="text/css" href="styles/resource/css/base/jquery.fancybox.css">
+	<link rel="stylesheet" type="text/css" href="styles/resource/css/base/dialog.css?v={$REV}">
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 	<title>{block name="title"} - {$gameName}{/block}</title>
 	<meta name="generator" content="2Moons {$VERSION}">
@@ -29,6 +32,7 @@
 	<script src="scripts/base/jquery.js"></script>
 	<script src="scripts/base/jquery.cookie.js"></script>
 	<script src="scripts/base/jquery.fancybox.js?v={$REV}"></script>
+	<script src="scripts/base/dialog.js?v={$REV}"></script>
 	<script src="scripts/login/main.js"></script>
 	<script>{if isset($code)}var loginError = {$code|json};{/if}</script>
 	{block name="script"}{/block}	

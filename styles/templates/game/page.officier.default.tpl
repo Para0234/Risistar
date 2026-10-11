@@ -34,16 +34,16 @@ background:rgba(13, 16, 20, 0.95);
 {if !empty($darkmatterList)}
 	<div style="display:none" onclick="tabse(this,'tab0');" id="but0" class="inactive">{$of_dm_trade}</div>
 	{if $officierList}<div onclick="tabse(this,'tab1');"  class="active">{$LNG.of_offi}</div>{/if}<br></br>
-	<div id="tab0" class="inactivetab">	
+	<div id="tab0" class="inactivetab build-grid">	
 	{foreach $darkmatterList as $ID => $Element}
-	<div style=" border-radius: 5px; width:172px; margin:5px; border:1px solid #000;  float:left; background:rgba(0,0,0,0.95);">
-		<div  onclick="return Dialog.info({$ID})" style=" width:172px; height:172px; background:url('{$dpath}gebaeude/{$ID}.gif'); background-size:100% 100%;"><div style="background:rgba(13, 16, 20, 0.95); width:100%;"><a class="tooltip" data-tooltip-content="<div style='max-width:200px;'>
+	<div class="build-card" style=" border-radius: 5px; width:172px; margin:5px; border:1px solid #000;  float:left; background:rgba(0,0,0,0.95);">
+		<div class="build-card-art" onclick="return Dialog.info({$ID})" style=" width:172px; height:172px; background:url('{$dpath}gebaeude/{$ID}.gif'); background-size:100% 100%;"><div style="background:rgba(13, 16, 20, 0.95); width:100%;"><a class="tooltip" data-tooltip-content="<div style='max-width:200px;'>
 				{$LNG.shortDescription.{$ID}|replace:'"':'\''}<br><br>
 					{foreach $Element.elementBonus as $BonusName => $Bonus}{if $Bonus@iteration % 3 === 1}<p>{/if}{if $Bonus[0] < 0}-{else}+{/if}{if $Bonus[1] == 0}{abs($Bonus[0] * 100)}%{else}{$Bonus[0]}{/if} {$LNG.bonus.$BonusName}{if $Bonus@iteration % 3 === 0 || $Bonus@last}</p>{else}&nbsp;{/if}{/foreach}
 				</div>" style="font-weight:bold; font-size:1.1em;" href="#" onclick="return Dialog.info({$ID})">{$LNG.tech.{$ID}}<br>
 </a></div></div>
-			<div>{$LNG.in_dest_durati}:<span style="float:right;">{$Element.time|time}</span></div><br>
-									<div style="; height:20px; text-align:right;" >
+			<div class="build-card-time">{$LNG.in_dest_durati}:<span style="float:right;">{$Element.time|time}</span></div><br>
+									<div class="build-card-costs" style="; height:20px; text-align:right;" >
 					<span>{foreach $Element.costResources as $RessID => $RessAmount}
 					<b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number}</span></b> <img src="{$dpath}images/{$RessID}.gif" alt="{$LNG.tech.{$RessID}}" width="20" height="20"><br>
 					{/foreach}</span>
@@ -51,7 +51,7 @@ background:rgba(13, 16, 20, 0.95);
 							
 						
 						
-						<div style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px;
+						<div class="build-card-action" style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px;
 						{if $Element.timeLeft > 0}
 							{$LNG.of_still}
 							background:green;"><span style="color:#fff" id="time_{$ID}">-</span>
@@ -79,22 +79,23 @@ background:rgba(13, 16, 20, 0.95);
 
 {/if}
 {if $officierList}
-<div id="tab1"  class="activetab">
+<div id="tab1"  class="activetab build-grid">
 
 	{foreach $officierList as $ID => $Element}
-<div style=" border-radius: 5px; width:172px; margin:5px; border:1px solid #000;  float:left; background:rgba(0,0,0,0.95);">
-		<div  onclick="return Dialog.info({$ID})" style=" width:172px; height:172px; background:url('{$dpath}gebaeude/{$ID}.jpg'); background-size:100% 100%;"><div style="background:rgba(13, 16, 20, 0.95); width:100%;"><a class="tooltip" data-tooltip-content="<div style='max-width:200px;'>
+<div class="build-card" style=" border-radius: 5px; width:172px; margin:5px; border:1px solid #000;  float:left; background:rgba(0,0,0,0.95);">
+		<div class="build-card-art" onclick="return Dialog.info({$ID})" style=" width:172px; height:172px; background:url('{$dpath}gebaeude/{$ID}.jpg'); background-size:100% 100%;"><div style="background:rgba(13, 16, 20, 0.95); width:100%;"><a class="tooltip" data-tooltip-content="<div style='max-width:200px;'>
 				{$LNG.shortDescription.{$ID}|replace:'"':'\''}<br><br>
-				{foreach $Element.elementBonus as $BonusName => $Bonus}{if $Bonus[0] < 0}-{else}+{/if}{if $Bonus[1] == 0}{abs($Bonus[0] * 100)}%{else}{floatval($Bonus[0])}{/if} {$LNG.bonus.$BonusName|replace:'"':'\''}<br>{/foreach}</p></div>" style="font-weight:bold; font-size:1.1em;" href="#" onclick="return Dialog.info({$ID})">{$LNG.tech.{$ID}|replace:'"':'\''}<br>
-			({$LNG.of_lvl} {$Element.level}/{$Element.maxLevel})
-		</a></div></div>	<div><span style="float:right;"></span></div>
-									<div style="; height:20px; text-align:right;" >
+				{foreach $Element.elementBonus as $BonusName => $Bonus}{if $Bonus[0] < 0}-{else}+{/if}{if $Bonus[1] == 0}{abs($Bonus[0] * 100)}%{else}{floatval($Bonus[0])}{/if} {$LNG.bonus.$BonusName|replace:'"':'\''}<br>				{/foreach}</p></div>" style="font-weight:bold; font-size:1.1em;" href="#" onclick="return Dialog.info({$ID})">{$LNG.tech.{$ID}|replace:'"':'\''}</a></div></div>	<div class="build-card-time"><span style="float:right;"></span></div>
+		<div class="build-card-meta">
+			<div class="build-card-costs" style="; height:20px; text-align:right;" >
 					<span>{foreach $Element.costResources as $RessID => $RessAmount}
 					<b><span style="color:{if $Element.costOverflow[$RessID] == 0}lime{else}red{/if}">{$RessAmount|number}</span></b> <img src="{$dpath}images/{$RessID}.gif" alt="{$LNG.tech.{$RessID}}" width="20" height="20"><br>
 					{/foreach}</span>
 					</div>
+			<div class="build-card-subwrap"><span class="build-card-sub"><span class="build-card-sub-full">{$LNG.bd_lvl}</span><span class="build-card-sub-short">{$LNG.bd_lvl_short}</span> {$Element.level}/{$Element.maxLevel}</span></div>
+		</div>
 						
-						<div style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px;
+						<div class="build-card-action" style="text-align:center; border:1px solid #000; border-radius: 5px; height:34px;
 						{if $Element.maxLevel <= $Element.level}
 							background-color: rgba(200, 0, 0, 1);"><span style="color:#fff">{$LNG.bd_maxlevel}</span>
 						{elseif $Element.buyable}
@@ -116,11 +117,11 @@ var aclass = document.getElementById('but0');
 var atab = document.getElementById('tab0');
 function tabse(geklickt,etab){
 	aclass.className ="inactive";
-	atab.className = "inactivetab";
+	atab.className = "inactivetab build-grid";
 	aclass = geklickt;
 	atab = document.getElementById(etab);	
 	aclass.className = "active";
-	atab.className = 'activetab';	
+	atab.className = 'activetab build-grid';	
 	}
 </script>
 {/block}
