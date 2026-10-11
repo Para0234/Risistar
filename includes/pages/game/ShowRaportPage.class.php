@@ -101,9 +101,14 @@ class ShowRaportPage extends AbstractGamePage
 			) as defender
 			FROM %%RW%%
 			WHERE rid = :reportID
-			AND EXISTS (SELECT 1 FROM %%TOPKB%% WHERE %%TOPKB%%.rid = %%RW%%.rid);";
+			AND EXISTS (
+				SELECT 1 FROM %%TOPKB%%
+				WHERE %%TOPKB%%.rid = %%RW%%.rid
+				AND %%TOPKB%%.universe = :universe
+			);";
 		$reportData = $db->selectSingle($sql, array(
-			':reportID'	=> $RID
+			':reportID'	=> $RID,
+			':universe'	=> Universe::current(),
 		));
 
 		if(empty($reportData)) {

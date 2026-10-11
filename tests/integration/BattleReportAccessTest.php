@@ -53,6 +53,17 @@ class BattleReportAccessTest extends GamePageTestCase
         $this->assertSame('a', $this->assigned['Raport']['result']);
     }
 
+    public function testReportFromAnotherUniverseIsNotShown(): void
+    {
+        $otherUniverse = Universe::current() === 1 ? 2 : 1;
+        self::$db->insert('INSERT INTO %%TOPKB%% (rid, units, result, time, universe) VALUES (:id, 100, :result, :time, :universe);',
+            [':id' => $this->reportId, ':result' => 'a', ':time' => TIMESTAMP, ':universe' => $otherUniverse]);
+
+        $this->openFromBattleHall();
+
+        $this->assertArrayNotHasKey('Raport', $this->assigned);
+    }
+
     public function testMissingReportIsNotShown(): void
     {
         $GLOBALS['_REQUEST']['raport'] = md5('missing-report');
