@@ -159,16 +159,22 @@ class ShowRaportPage extends AbstractGamePage
 				WHERE id IN (SELECT uid FROM %%TOPKB_USERS%% WHERE %%TOPKB_USERS%%.rid = %%RW%%.rid AND role = 2)
 			) as defender
 			FROM %%RW%%
-			WHERE rid = :reportID;";
+			WHERE rid = :reportID
+			AND EXISTS (
+				SELECT 1 FROM %%TOPKB%%
+				WHERE %%TOPKB%%.rid = %%RW%%.rid
+				AND %%TOPKB%%.universe = :universe
+			);";
 		$reportData = $db->selectSingle($sql, array(
-			':reportID'	=> $RID
+			':reportID'	=> $RID,
+			':universe'	=> Universe::current(),
 		));
 
-		$Info		= array($reportData["attacker"], $reportData["defender"]);
-		
-		if(!isset($reportData)) {
+		if(empty($reportData)) {
 			$this->printMessage($LNG['sys_raport_not_found']);
 		}
+
+		$Info		= array($reportData["attacker"], $reportData["defender"]);
 		
 		$combatReport			= unserialize($reportData['raport']);
 		$combatReport['time']	= _date($LNG['php_tdformat'], $combatReport['time'], $USER['timezone']);
