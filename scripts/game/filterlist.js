@@ -24,5 +24,5 @@ return;}
 for(loop=0;loop<this.optionscopy.length;loop++){var option=this.optionscopy[loop];if((this.match_text&&regexp.test(option.text))||(this.match_value&&regexp.test(option.value))){this.selectobj.options[index++]=new Option(option.text,option.value,false);}}
 if(typeof this.hook=='function'){this.hook();}}
 this.set_ignore_case=function(value){if(value){this.flags='i';}else{this.flags='';}}
-this.debug=function(msg){if(this.show_debug){alert('FilterList: '+msg);}}
+this.debug=function(msg){if(this.show_debug){RisistarDialog.alert('FilterList: '+msg);}}
 this.init();}

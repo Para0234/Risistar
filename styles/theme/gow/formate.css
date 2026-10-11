@@ -11,6 +11,15 @@ body {
 	background:url("img/bkd_page.jpg") no-repeat fixed center center #0d0d0d;
 }
 
+body#logout.popup,
+body#notes.popup {
+	background:url("img/bkd_page.jpg") no-repeat fixed center center #0d0d0d;
+}
+
+body#raport.popup {
+	background:url("img/bkd_page.jpg") no-repeat center center #0d0d0d;
+}
+
 body,input,select,button,textarea,a,td,th,tr,table,a:visited{
 	color:#DDD;
 }

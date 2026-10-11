@@ -36,13 +36,17 @@
 </form>
 <script type="text/javascript">
 function Rename(){
-	var Name = prompt("{$LNG.fl_acs_change_name}", "{$acsData.acsName}");
-	$.getJSON('?page=fleetTable&action=acs&fleetID={$acsData.mainFleetID}&acsName='+Name, function(data) {
-		if(data != "") {
-			alert(data);
+	RisistarDialog.prompt({$LNG.fl_acs_change_name|json}, {$acsData.acsName|json}).then(function(Name) {
+		if(Name === null) {
 			return;
 		}
-		$('#acsName').text(Name);
+		$.getJSON('?page=fleetTable&action=acs&fleetID={$acsData.mainFleetID}&acsName='+encodeURIComponent(Name), function(data) {
+			if(data != "") {
+				RisistarDialog.alert(data);
+				return;
+			}
+			$('#acsName').text(Name);
+		});
 	});
 }
 </script>
