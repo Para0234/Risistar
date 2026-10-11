@@ -33,15 +33,16 @@
 <script type="text/javascript">
 function check(){
 	if(document.message.text.value == '') {
-		alert('{$LNG.mg_empty_text}');
+		RisistarDialog.alert('{$LNG.mg_empty_text|escape:'javascript'}');
 		return false;
 	} else {
 		$.post('game.php?page=alliance&mode=circular&action=send&ajax=1', $('#message').serialize(), function(data){
 			data = $.parseJSON(data);
-			alert(data.message);
-			if(!data.error) {
-				parent.$.fancybox.close();
-			}
+			RisistarDialog.alert(data.message).then(function() {
+				if(!data.error) {
+					parent.$.fancybox.close();
+				}
+			});
 		});
 		return true;
 	}

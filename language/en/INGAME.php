@@ -249,6 +249,9 @@ $LNG['lv_technology']						= 'Technologies';
 $LNG['lv_ships']							= 'Ships';
 $LNG['lv_defenses']							= 'Defenses';
 $LNG['lv_total']							= 'Total';
+$LNG['spy_destroyed_short']					= 'Probes destroyed';
+$LNG['spy_counter']							= 'Counter-esp.: %d %%';
+$LNG['spy_counter_hint']					= 'Chance that the probes were destroyed (counter-espionage)';
 
 //----------------------------------------------------------------------------//
 // Fleet

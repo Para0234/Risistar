@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS `%PREFIX%spy_reports` (
+  `report_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `message_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `owner_id` int(11) UNSIGNED NOT NULL,
+  `universe` tinyint(3) UNSIGNED NOT NULL,
+  `report_time` int(11) NOT NULL DEFAULT '0',
+  `viewed` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `galaxy` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `system` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
+  `planet` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `planet_type` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
+  `planet_id` int(11) UNSIGNED DEFAULT NULL,
+  `planet_name` varchar(64) NOT NULL DEFAULT '',
+  `target_user_id` int(11) UNSIGNED DEFAULT NULL,
+  `target_username` varchar(32) NOT NULL DEFAULT '',
+  `target_chance` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `spy_destroyed` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `payload` mediumtext NOT NULL,
+  PRIMARY KEY (`report_id`),
+  UNIQUE KEY `message_id` (`message_id`),
+  KEY `owner_viewed` (`owner_id`, `viewed`),
+  KEY `owner_target_time` (`owner_id`, `galaxy`, `system`, `planet`, `planet_type`, `report_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+INSERT INTO `%PREFIX%cronjobs` (name,isActive,min,hours,dom,month,dow,class,nextTime)
+SELECT 'Spy report import',1,'*','*','*','*','*','SpyReportImportCronjob',0 FROM DUAL
+WHERE NOT EXISTS (SELECT 1 FROM `%PREFIX%cronjobs` WHERE class='SpyReportImportCronjob');

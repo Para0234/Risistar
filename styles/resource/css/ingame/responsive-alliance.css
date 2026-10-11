@@ -1,0 +1,225 @@
+/* Alliance pages: keep forms and data tables usable without widening the page. */
+
+body#alliance #content {
+	min-width: 0;
+	overflow-x: hidden;
+}
+
+body#alliance #content > table,
+body#alliance #content > form > table,
+body#alliance .alliance-table {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: 760px;
+}
+
+body#alliance #content img {
+	max-width: 100%;
+	height: auto;
+}
+
+body#alliance #content input[type="text"],
+body#alliance #content input[type="number"],
+body#alliance #content select,
+body#alliance #content textarea {
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+body#alliance #content textarea {
+	width: 100%;
+}
+
+body#alliance #content .mceEditor,
+body#alliance #content .mceLayout,
+body#alliance #content .mceIframeContainer iframe {
+	width: 100% !important;
+}
+
+.alliance-table-scroll {
+	box-sizing: border-box;
+	width: min(100%, 760px);
+	margin: 0 auto;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.alliance-table-scroll:focus-visible {
+	outline: 1px solid #5d899d;
+	outline-offset: 2px;
+}
+
+.alliance-ranks-table {
+	width: 100%;
+	min-width: 760px;
+}
+
+.alliance-new-rank-table {
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.alliance-members-table {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0 !important;
+	max-width: 960px;
+}
+
+.alliance-sensitive-actions td {
+	padding: 10px;
+}
+
+.alliance-sensitive-actions form {
+	display: inline-block;
+	margin: 3px;
+}
+
+.alliance-sensitive-actions input[type="submit"],
+.alliance-sensitive-actions button {
+	box-sizing: border-box;
+	min-height: 30px;
+	padding: 4px 12px;
+	white-space: normal;
+}
+
+@media (max-width: 900px) {
+	body#alliance #content {
+		margin-right: 6px;
+		margin-left: 6px;
+		padding-right: 4px;
+		padding-left: 4px;
+	}
+
+	body#alliance #content td,
+	body#alliance #content th {
+		overflow-wrap: anywhere;
+	}
+
+	.alliance-admin-links td a {
+		display: block;
+		padding: 7px 5px;
+	}
+
+	.alliance-texts-table > tbody > tr:nth-child(2) {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.alliance-texts-table > tbody > tr:nth-child(2) > td {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	.alliance-texts-table > tbody > tr:nth-child(2) a {
+		display: block;
+		padding: 6px 4px;
+	}
+
+	.alliance-options-table > tbody > tr:not(:first-child) {
+		display: grid;
+		grid-template-columns: minmax(105px, 42%) minmax(0, 1fr);
+	}
+
+	.alliance-options-table > tbody > tr:not(:first-child) > td {
+		display: block;
+		box-sizing: border-box;
+		width: auto;
+	}
+
+	.alliance-options-table > tbody > tr > td[colspan] {
+		grid-column: 1 / -1;
+	}
+
+	.alliance-options-table input[type="text"],
+	.alliance-options-table input[type="number"],
+	.alliance-options-table select {
+		width: 100%;
+	}
+
+	.alliance-form-table > tbody > tr:not(:first-child):not(:last-child) {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.alliance-form-table > tbody > tr:not(:first-child):not(:last-child) > td {
+		display: block;
+		box-sizing: border-box;
+		width: 100% !important;
+	}
+
+	.alliance-apply-table,
+	.alliance-apply-table > tbody,
+	.alliance-apply-table > tbody > tr {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	.alliance-apply-table > tbody > tr > th,
+	.alliance-apply-table > tbody > tr > td {
+		display: block;
+		box-sizing: border-box;
+		width: 100% !important;
+	}
+
+	.alliance-apply-table input[type="submit"],
+	.alliance-apply-wait-table input[type="submit"] {
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 30px;
+		white-space: normal;
+	}
+
+	.alliance-sensitive-actions form,
+	.alliance-sensitive-actions input[type="submit"],
+	.alliance-sensitive-actions button {
+		display: block;
+		width: 100%;
+		margin: 4px 0;
+	}
+
+	.alliance-members-table thead tr:nth-child(2) {
+		display: none;
+	}
+
+	.alliance-members-table,
+	.alliance-members-table tbody,
+	.alliance-members-table tbody tr,
+	.alliance-members-table tbody td {
+		display: block;
+	}
+
+	.alliance-members-table tbody {
+		display: grid;
+		gap: 8px;
+		padding: 6px 0;
+	}
+
+	.alliance-members-table tbody tr {
+		border: 1px solid #263d49;
+		background: rgba(8, 18, 24, 0.45);
+	}
+
+	.alliance-members-table tbody td {
+		display: grid;
+		grid-template-columns: minmax(90px, 42%) minmax(0, 1fr);
+		align-items: center;
+		box-sizing: border-box;
+		min-height: 28px;
+		text-align: left;
+	}
+
+	.alliance-members-table tbody td::before {
+		padding-right: 8px;
+		color: #8faab8;
+		font-weight: bold;
+		content: attr(data-label);
+	}
+
+	.alliance-members-table .rankSelect {
+		width: 100%;
+	}
+}

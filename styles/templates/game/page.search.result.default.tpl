@@ -1,5 +1,5 @@
 {block name="content"}
-<table style="width:760px" id="resulttable">
+<table style="width:100%;max-width:760px" id="resulttable">
 	<tr>
 		<th>{$LNG.sh_name}</th>
 		<th>&nbsp;</th>

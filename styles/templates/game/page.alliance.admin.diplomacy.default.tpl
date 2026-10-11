@@ -16,7 +16,7 @@
 		<tr>
 			<td style="width:90%">{$diploName}</td>
 			<td>
-				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" onclick="return confirm('{$LNG.al_diplo_confirm_delete}');"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
+				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" data-rs-confirm="{$LNG.al_diplo_confirm_delete|escape:'html'}"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
 			</td>
 		</tr>
 		{foreachelse}
@@ -47,8 +47,8 @@
 		<tr>
 			<td style="width:90%">{$diploName}</td>
 			<td>
-				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyAccept&amp;id={$diploID}" onclick="return confirm('{$LNG.al_diplo_accept_yes_confirm}');"><img src="styles/resource/images/true.png" alt="" width="16" height="16"></a>
-				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" onclick="return confirm('{$LNG.al_diplo_accept_no_confirm}');"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
+				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyAccept&amp;id={$diploID}" data-rs-confirm="{$LNG.al_diplo_accept_yes_confirm|escape:'html'}"><img src="styles/resource/images/true.png" alt="" width="16" height="16"></a>
+				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" data-rs-confirm="{$LNG.al_diplo_accept_no_confirm|escape:'html'}"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
 			</td>
 		</tr>
 		{/foreach}
@@ -76,7 +76,7 @@
 		<tr>
 			<td style="width:90%">{$diploName}</td>
 			<td>
-				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" onclick="return confirm('{$LNG.al_diplo_confirm_delete}');"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
+				<a href="game.php?page=alliance&amp;mode=admin&amp;action=diplomacyDelete&amp;id={$diploID}" data-rs-confirm="{$LNG.al_diplo_confirm_delete|escape:'html'}"><img src="styles/resource/images/false.png" alt="" width="16" height="16"></a>
 			</td>
 		</tr>
 		{/foreach}

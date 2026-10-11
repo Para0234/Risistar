@@ -1,0 +1,174 @@
+/* Public login shell. Desktop nav stays on one row from 1200px. */
+
+.login-hero {
+	margin-top: 60px;
+}
+
+.login-actions {
+	text-align: right;
+}
+
+.login-links {
+	margin-top: 12px;
+	text-align: center;
+}
+
+.fb_login img {
+	max-width: 100%;
+	height: auto;
+}
+
+.navbar-nav > li.nav-signup:before,
+.navbar-nav > li.nav-lang:before {
+	display: none;
+}
+
+@media (min-width: 1200px) {
+	.navbar-nav > li.nav-signup > a.navbar-btn,
+	.navbar-nav > li.nav-lang > .navbar-btn {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 5px 10px;
+		line-height: 1.5;
+	}
+
+	.navbar-nav > li.nav-lang {
+		margin-right: -15px;
+	}
+}
+
+@media (max-width: 1199px) {
+	.navbar-header {
+		float: none;
+	}
+
+	.navbar-toggle {
+		display: block;
+	}
+
+	.navbar-collapse.collapse {
+		display: none !important;
+	}
+
+	.navbar-collapse.collapse.in {
+		display: block !important;
+		overflow-y: auto !important;
+		max-height: calc(100vh - 52px);
+	}
+
+	.navbar-inverse .navbar-collapse {
+		background: rgba(8, 12, 18, 0.98);
+		border-top: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.navbar-nav,
+	.navbar-left,
+	.navbar-right,
+	.navbar-nav > li {
+		float: none !important;
+	}
+
+	.navbar-nav {
+		margin: 0 -15px;
+	}
+
+	.navbar-nav > li > a {
+		padding-top: 12px;
+		padding-bottom: 12px;
+	}
+
+	.navbar-nav > li.nav-signup > a.navbar-btn,
+	.navbar-nav > li.nav-lang > .navbar-btn {
+		display: block;
+		float: none;
+		width: calc(100% - 30px);
+		box-sizing: border-box;
+		margin: 8px 15px;
+		padding: 10px 12px;
+		text-align: center;
+		line-height: 1.4;
+	}
+
+	.nav-lang .dropdown-menu {
+		position: static;
+		float: none;
+		width: auto;
+		margin: 0;
+		background: rgba(255, 255, 255, 0.06);
+		border: 0;
+		box-shadow: none;
+	}
+
+	.nav-lang .dropdown-menu:before {
+		display: none;
+	}
+
+	.nav-lang .dropdown-menu > li > a {
+		color: #fff;
+		padding: 10px 24px;
+	}
+}
+
+@media (max-width: 991px) {
+	.jumbotron {
+		padding: 20px 15px;
+		margin-bottom: 16px;
+		font-size: 16px;
+		line-height: 1.45;
+	}
+
+	.jumbotron h1,
+	.login-hero h1 {
+		font-size: 28px;
+		margin-top: 0;
+	}
+
+	.panel h1.page-header {
+		font-size: 22px;
+	}
+
+	.panel {
+		overflow-x: auto;
+	}
+}
+
+@media (max-width: 767px) {
+	.login-hero {
+		margin-top: 58px;
+	}
+
+	.login-hero .btn {
+		white-space: normal;
+	}
+
+	.login-actions {
+		text-align: stretch;
+	}
+
+	.login-actions .btn {
+		display: block;
+		width: 100%;
+		min-height: 44px;
+	}
+
+	.form-control {
+		font-size: 16px;
+		min-height: 44px;
+	}
+
+	footer {
+		text-align: center;
+		padding-bottom: 24px;
+	}
+
+	footer .pull-right {
+		float: none !important;
+		display: block;
+		margin-bottom: 8px;
+	}
+
+	body {
+		background-size: cover;
+		background-position: center top;
+	}
+}

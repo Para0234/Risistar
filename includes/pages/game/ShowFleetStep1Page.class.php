@@ -41,7 +41,7 @@ class ShowFleetStep1Page extends AbstractGamePage
 		{
 			$amount		 				= max(0, round(HTTP::_GP('ship'.$ShipID, 0.0, 0.0)));
 			
-			if ($amount < 1 || $ShipID == 212) continue;
+			if ($amount < 1 || FleetFunctions::GetFleetMaxSpeed($ShipID, $USER) <= 0) continue;
 
 			$Fleet[$ShipID]				= $amount;
 			$FleetRoom			   	   += $pricelist[$ShipID]['capacity'] * $amount;
@@ -80,6 +80,7 @@ class ShowFleetStep1Page extends AbstractGamePage
 			$shortcutAmount	= 0;
 		}
 		
+		$this->tplObj->loadscript('coordQuick.js');
 		$this->tplObj->loadscript('flotten.js');
 		$this->tplObj->execscript('updateVars();FleetTime();window.setInterval("FleetTime()", 1000);');
 		$this->assign(array(
@@ -93,7 +94,6 @@ class ShowFleetStep1Page extends AbstractGamePage
 			'system' 		=> $targetSystem,
 			'planet' 		=> $targetPlanet,
 			'type'			=> $targetType,
-			'speedSelect'	=> FleetFunctions::$allowedSpeed,
 			'typeSelect'   	=> array(1 => $LNG['type_planet_1'], 2 => $LNG['type_planet_2'], 3 => $LNG['type_planet_3']),
 			'fleetdata'		=> $FleetData,
 		));
