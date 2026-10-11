@@ -32,14 +32,15 @@
 <script type="text/javascript">
 function check(){
 	if(document.message.text.value == '') {
-		alert('{$LNG.mg_empty_text}');
+		RisistarDialog.alert('{$LNG.mg_empty_text|escape:'javascript'}');
 		return false;
 	} else {
 		$.getJSON('game.php?page=alliance&mode=admin&action=diplomacyCreateProcessor&ajax=1&'+$('#message').serialize(), function(data) {
-			alert(data.message);
-			if(!data.error) {
-				parent.location.reload();
-			}
+			RisistarDialog.alert(data.message).then(function() {
+				if(!data.error) {
+					parent.location.reload();
+				}
+			});
 		});
 		return true;
 	}

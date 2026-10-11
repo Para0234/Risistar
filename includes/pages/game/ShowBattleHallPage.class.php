@@ -30,7 +30,9 @@ class ShowBattleHallPage extends AbstractGamePage
 		$order  = HTTP::_GP('order', 'units');
 		$sort   = HTTP::_GP('sort', 'desc');
 		$sort   = strtoupper($sort) === "DESC" ? "DESC" : "ASC";
-
+		if ($order !== 'date' && $order !== 'units') {
+			$order = 'units';
+		}
 
 		switch($order)
 		{

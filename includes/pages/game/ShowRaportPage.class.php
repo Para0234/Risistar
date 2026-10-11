@@ -73,6 +73,65 @@ class ShowRaportPage extends AbstractGamePage
 		
 		return $combatReport;
 	}
+
+	private function decorateCombatReport(array $combatReport): array
+	{
+		if (empty($combatReport['rounds']) || !is_array($combatReport['rounds'])) {
+			$combatReport['rounds'] = array();
+			return $combatReport;
+		}
+
+		foreach ($combatReport['rounds'] as &$round) {
+			$shipIds = array();
+			foreach (array('attacker', 'defender') as $side) {
+				if (empty($round[$side]) || !is_array($round[$side])) {
+					$round[$side] = array();
+					continue;
+				}
+				foreach ($round[$side] as $player) {
+					if (empty($player['ships']) || !is_array($player['ships'])) {
+						continue;
+					}
+					foreach ($player['ships'] as $shipId => $shipData) {
+						$shipIds[(int) $shipId] = true;
+					}
+				}
+			}
+			ksort($shipIds, SORT_NUMERIC);
+			$round['shipIds'] = array_keys($shipIds);
+			$round['attackLabels'] = array();
+			foreach ($round['shipIds'] as $shipId) {
+				if (self::isAttackerCombatLabel((int) $shipId)) {
+					$round['attackLabels'][$shipId] = true;
+				}
+			}
+		}
+		unset($round);
+
+		return $combatReport;
+	}
+
+	/**
+	 * Attack fleets cannot carry planetary defenses or orbital stations.
+	 * shipclass 3 in uni1_vars: solar satellite and orbital stations.
+	 */
+	public static function isAttackerCombatLabel(int $shipId): bool
+	{
+		global $reslist;
+
+		$defense = isset($reslist['defense']) ? $reslist['defense'] : array();
+		$missile = isset($reslist['missile']) ? $reslist['missile'] : array();
+		if (in_array($shipId, $defense, false) || in_array($shipId, $missile, false)) {
+			return false;
+		}
+
+		static $orbitalIds = array(212, 227, 228, 229, 230, 231);
+		if (in_array($shipId, $orbitalIds, true)) {
+			return false;
+		}
+
+		return true;
+	}
 	
 	function battlehall() 
 	{
@@ -113,7 +172,7 @@ class ShowRaportPage extends AbstractGamePage
 		
 		$combatReport			= unserialize($reportData['raport']);
 		$combatReport['time']	= _date($LNG['php_tdformat'], $combatReport['time'], $USER['timezone']);
-		$combatReport			= $this->BCWrapperPreRev2321($combatReport);
+		$combatReport			= $this->decorateCombatReport($this->BCWrapperPreRev2321($combatReport));
 		
 		$this->assign(array(
 			'Raport'	=> $combatReport,
@@ -166,7 +225,7 @@ class ShowRaportPage extends AbstractGamePage
 		}
 		
 		$combatReport['time']	= _date($LNG['php_tdformat'], $combatReport['time'], $USER['timezone']);
-		$combatReport			= $this->BCWrapperPreRev2321($combatReport);
+		$combatReport			= $this->decorateCombatReport($this->BCWrapperPreRev2321($combatReport));
 		
 		$this->assign(array(
 			'Raport'	=> $combatReport,

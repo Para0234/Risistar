@@ -18,9 +18,21 @@ function BuildlistShipyard() {
 	var h = 0;
 	if (s <= 0) {
 		Amount.sub('1');
-		$('#val_'+Shipyard[0][3]).text(function(i, old){
-			return ' ('+bd_available+NumberGetHumanReadable(parseInt(old.replace(/.* (.*)\)/, '$1').replace(/\./g, ''))+1)+')';
-		})
+		$('#val_'+Shipyard[0][3]).each(function(){
+			var $val = $(this);
+			var $qty = $val.find('.build-card-sub-qty');
+			var raw = $qty.length ? $qty.text() : String($val.text());
+			var n = parseInt(raw.replace(/\./g, '').replace(/.*?(\d+)\s*$/, '$1'), 10);
+			if (isNaN(n)) {
+				n = 0;
+			}
+			var readable = NumberGetHumanReadable(n + 1);
+			if ($qty.length) {
+				$qty.text(readable);
+				return;
+			}
+			$val.html('<span class="build-card-sub-full">' + $.trim(bd_available) + '</span><span class="build-card-sub-short">' + bd_available_short + '</span> <span class="build-card-sub-qty">' + readable + '</span>');
+		});
 		if (Amount.toString() == '0') {
 			Shipyard.shift();
 			if (Shipyard.length == 0) {

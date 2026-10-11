@@ -18,12 +18,41 @@
 	<meta http-equiv="refresh" content="{$gotoinsec};URL={$goto}">
 	{/if}
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript">
+	(function() {
+		var stored = null;
+		try { stored = localStorage.getItem('risistar.nav'); } catch (e) {}
+		var collapsed = stored === 'collapsed' ? true : (stored === 'expanded' ? false : window.matchMedia('(max-width: 1100px)').matches);
+		document.documentElement.classList.add(collapsed ? 'nav-collapsed' : 'nav-expanded');
+	})();
+	</script>
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/boilerplate.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/main.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/jquery.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/jquery.fancybox.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/validationEngine.jquery.css?v={$REV}">
 	<link rel="stylesheet" type="text/css" href="{$dpath}formate.css?v={$REV}">
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive.css?v={$REV}">
+	{assign var=responsivePage value=$smarty.get.page|default:'overview'}
+	{if $responsivePage == 'overview' || $responsivePage == 'buildings' || $responsivePage == 'research' || $responsivePage == 'shipyard' || $responsivePage == 'officier'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-build.css?v={$REV}">
+	{elseif $responsivePage == 'imperium' || $responsivePage == 'spyReports' || $responsivePage == 'resources'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-empire.css?v={$REV}">
+	{elseif $responsivePage == 'galaxy'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-galaxy.css?v={$REV}">
+	{elseif $responsivePage == 'fleetTable' || $responsivePage == 'fleetStep1' || $responsivePage == 'fleetStep2' || $responsivePage == 'fleetStep3'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-fleet.css?v={$REV}">
+	{elseif $responsivePage == 'battleSimulator' || $responsivePage == 'raport'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-combat.css?v={$REV}">
+	{elseif $responsivePage == 'messages' || $responsivePage == 'notes'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-messages.css?v={$REV}">
+	{elseif $responsivePage == 'achievements' || $responsivePage == 'statistics' || $responsivePage == 'battleHall'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-rankings.css?v={$REV}">
+	{elseif $responsivePage == 'alliance'}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/ingame/responsive-alliance.css?v={$REV}">
+	{/if}
+	<link rel="stylesheet" type="text/css" href="./styles/resource/css/base/dialog.css?v={$REV}">
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 	<script type="text/javascript">
 	var ServerTimezoneOffset = {$Offset};
@@ -42,6 +71,16 @@
 	var tdformat	= "{$LNG.js_tdformat}";
 	var queryString	= "{$queryString|escape:'javascript'}";
 	var isPlayerCardActive	= "{$isPlayerCardActive|json}";
+	var LayoutLNG = {
+		navExpand: {$LNG.nav_expand|default:'Afficher le menu'|json},
+		navCollapse: {$LNG.nav_collapse|default:'Réduire le menu'|json},
+		favoriteAdd: {$LNG.nav_favorite_add|default:'Ajouter aux favoris'|json},
+		favoriteRemove: {$LNG.nav_favorite_remove|default:'Retirer des favoris'|json},
+		favoritesOpen: {$LNG.nav_favorites_open|default:'Afficher les favoris'|json},
+		favoritesClose: {$LNG.nav_favorites_close|default:'Masquer les favoris'|json},
+		zeroShow: {$LNG.zero_show|default:'Afficher les lignes à 0'|json},
+		zeroHide: {$LNG.zero_hide|default:'Masquer les lignes à 0'|json}
+	};
 
 	setInterval(function() {
 		serverTime.setSeconds(serverTime.getSeconds()+1);
@@ -54,7 +93,9 @@
 	<script type="text/javascript" src="./scripts/base/jquery.validationEngine.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/l18n/validationEngine/jquery.validationEngine-{$lang}.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/base/tooltip.js?v={$REV}"></script>
+	<script type="text/javascript" src="./scripts/base/dialog.js?v={$REV}"></script>
 	<script type="text/javascript" src="./scripts/game/base.js?v={$REV}"></script>
+	<script type="text/javascript" src="./scripts/game/layout.js?v={$REV}"></script>
 	{foreach item=scriptname from=$scripts}
 	<script type="text/javascript" src="./scripts/game/{$scriptname}.js?v={$REV}"></script>
 	{/foreach}

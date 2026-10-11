@@ -1,7 +1,7 @@
 <?php
 /**
  * Integration-test database configuration (committed, shareable).
- * Used by PHPUnit integration suite and scripts/seed_test_database.php.
+ * Used by PHPUnit integration suite and tests/bin/seed_test_database.php.
  * Does NOT affect the local game DB (2moons) used by the browser.
  */
 

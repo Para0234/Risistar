@@ -1,28 +1,34 @@
 {block name="title" prepend}{$LNG.lm_messages}{/block}
 {block name="content"}
-<table style="width:760px;table-layout:fixed;">
-	<tr>
-		<th colspan="6">{$LNG.mg_overview}<span id="loading" style="display:none;"> ({$LNG.loading})</span></th>
-	</tr>
-		{foreach $CategoryList as $CategoryID => $CategoryRow}
-		{if ($CategoryRow@iteration % 6) === 1}<tr>{/if}
-		{if $CategoryRow@last && ($CategoryRow@iteration % 6) !== 0}<td>&nbsp;</td>{/if}
-		<td style="word-wrap: break-word;color:{$CategoryRow.color};"><a href="#" onclick="Message.getMessages({$CategoryID});return false;" style="color:{$CategoryRow.color};">{$LNG.mg_type.{$CategoryID}}</a>
-		<br><span id="unread_{$CategoryID}">{$CategoryRow.unread}</span>/<span id="total_{$CategoryID}">{$CategoryRow.total}</span>
-		</td>
-		{if $CategoryRow@last || ($CategoryRow@iteration % 6) === 0}</tr>{/if}
+<div class="messages-page">
+	<table class="messages-cats">
+		<tr>
+			<th>{$LNG.mg_overview}<span id="loading" style="display:none;"> ({$LNG.loading})</span></th>
+		</tr>
+		<tr>
+			<td class="messages-cats-cell">
+				<div class="messages-cats-grid">
+					{foreach $CategoryList as $CategoryID => $CategoryRow}
+					<a class="messages-cat" href="#" onclick="Message.getMessages({$CategoryID});return false;" style="color:{$CategoryRow.color};">
+						<span class="messages-cat-name">{$LNG.mg_type.{$CategoryID}}</span>
+						<span class="messages-cat-counts"><span id="unread_{$CategoryID}">{$CategoryRow.unread}</span>/<span id="total_{$CategoryID}">{$CategoryRow.total}</span></span>
+					</a>
+					{/foreach}
+				</div>
+			</td>
+		</tr>
+	</table>
+	<table class="messages-ops">
+		<tr>
+			<th>{$LNG.mg_game_operators}</th>
+		</tr>
+		{foreach $OperatorList as $OperatorName => $OperatorEmail}
+		<tr>
+			<td>{$OperatorName}<a href="mailto:{$OperatorEmail}" title="{$LNG.mg_write_mail_to_ops} {{$OperatorName}}"><img src="{$dpath}img/m.gif" alt=""></a></td>
+		</tr>
 		{/foreach}
-</table>
-<table style="width:760px;table-layout:fixed;">
-	<tr>
-		<th>{$LNG.mg_game_operators}</th>
-	</tr>
-	{foreach $OperatorList as $OperatorName => $OperatorEmail}
-	<tr>
-		<td>{$OperatorName}<a href="mailto:{$OperatorEmail}" title="{$LNG.mg_write_mail_to_ops} {{$OperatorName}}"><img src="{$dpath}img/m.gif" alt=""></a></td>
-	</tr>
-	{/foreach}
-</table>
+	</table>
+</div>
 {/block}
 {block name="script" append}
 {if !empty($category)}
