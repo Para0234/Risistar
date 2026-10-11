@@ -1,6 +1,6 @@
 {block name="title" prepend}{$LNG.lm_alliance}{/block}
 {block name="content"}
-<table style="width:760px">
+<table class="alliance-table alliance-admin-links">
 	<tr>
 		<th>{$LNG.al_manage_alliance}</th>
 	</tr>
@@ -19,7 +19,7 @@
 <form action="game.php?page=alliance&mode=admin" method="post">
 <input type="hidden" name="textMode" value="{$textMode}">
 <input type="hidden" name="send" value="1">
-<table style="width:760px">
+<table class="alliance-table alliance-texts-table">
 	<tr>
 		<th colspan="3">{$LNG.al_texts}</th>
 	</tr>
@@ -40,7 +40,7 @@
 		</td>
 	</tr>
 </table>
-<table style="width:760px">
+<table class="alliance-table alliance-options-table">
 	<tr>
 		<th colspan="2">{$LNG.al_manage_options}</th>
 	</tr>
@@ -111,23 +111,19 @@
 			<input type="submit" value="{$LNG.al_save}">
 		</td>
 	</tr>
-	<tr></form>
-{if $AllianceOwner}
-<table style="width:760px">
-	<tr>
-		<th>{$LNG.al_disolve_alliance}</th>
-	</tr>
-	<tr>
-		<td><form action="game.php?page=alliance&amp;mode=admin&amp;action=close" method="post"><input type="submit" value="{$LNG.al_continue}" onclick="return confirm('{$LNG.al_close_ally}');"></form></td>
-	</tr>  
 </table>
-<table style="width:760px">
+</form>
+{if $AllianceOwner}
+<table class="alliance-table alliance-sensitive-actions">
 	<tr>
-		<th>{$LNG.al_transfer_alliance}</th>
+		<th>{$LNG.al_sensitive_actions}</th>
 	</tr>
 	<tr>
-		<td><form action="game.php?page=alliance&amp;mode=admin&amp;action=transfer" method="post"><input type="submit" value="{$LNG.al_continue}"></form></td>
-	</tr>  
+		<td>
+			<form action="game.php?page=alliance&amp;mode=admin&amp;action=close" method="post" data-rs-confirm="{$LNG.al_close_ally|escape:'html'}"><input type="submit" value="{$LNG.al_disolve_alliance}"></form>
+			<form action="game.php?page=alliance&amp;mode=admin&amp;action=transfer" method="post"><input type="submit" value="{$LNG.al_transfer_alliance}"></form>
+		</td>
+	</tr>
 </table>
 {/if}
 {/block}

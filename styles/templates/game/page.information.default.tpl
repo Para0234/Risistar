@@ -7,10 +7,10 @@
 	</tr>
 	<tr>
 		<td>
-			<table>
+			<table class="info-hero">
 				<tr>
-					<td class="transparent" style="width:120px"><img width="120" height="120" src="{$dpath}gebaeude/{$elementID}.{if $elementID >=600 && $elementID <= 699}jpg{else}gif{/if}" alt=""></td>
-					<td class="transparent left"><p>{$LNG.longDescription.$elementID}</p>
+					<td class="transparent info-hero-art" style="width:120px"><img width="120" height="120" src="{$dpath}gebaeude/{$elementID}.{if $elementID >=600 && $elementID <= 699}jpg{else}gif{/if}" alt=""></td>
+					<td class="transparent left info-hero-text"><p>{$LNG.longDescription.$elementID}</p>
 					{if !empty($Bonus)}<p>
 					<b>{$LNG.in_bonus}</b><br>
 					{foreach $Bonus as $BonusName => $elementBouns}{if $elementBouns[0] < 0}-{else}+{/if}{if $elementBouns[1] == 0}{abs($elementBouns[0] * 100)}%{else}{floatval($elementBouns[0])}{/if} {$LNG.bonus.$BonusName}<br>{/foreach}

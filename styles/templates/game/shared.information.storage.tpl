@@ -1,28 +1,28 @@
 {$count = $productionTable.usedResource}
 
-<table style="width:100%;">
-	<tbody>
-		<tr>
-			<td colspan="2">
-				<table>
+<div class="info-level-scroll">
+				<table class="info-level-table">
+				<thead>
 				<tr>
-					<th>{$LNG.in_level}</th>
+					<th class="info-level-col">{$LNG.in_level}</th>
 				{if $count > 1}
 					{foreach $productionTable.usedResource as $resourceID}
 					<th colspan="2">{$LNG.tech.$resourceID}</th>
 					{/foreach}
 				</tr>
 				<tr>
-					<th>&nbsp;</th>
+					<th class="info-level-col">&nbsp;</th>
 				{/if}
 					{foreach $productionTable.usedResource as $resourceID}
 					<th>{$LNG.in_storage}</th>
 					<th>{$LNG.in_difference}</th>
 					{/foreach}
 				</tr>
+				</thead>
+				<tbody>
 				{foreach $productionTable.storage as $elementLevel => $productionData}
 				<tr>
-					<td><span{if $CurrentLevel == $elementLevel} style="color:#ff0000"{/if}>{$elementLevel}</span></td>
+					<td class="info-level-col"><span{if $CurrentLevel == $elementLevel} style="color:#ff0000"{/if}>{$elementLevel}</span></td>
 					{foreach $productionData as $resourceID => $storage}
 					{$storageDiff = $storage - $productionTable.storage.$CurrentLevel.$resourceID}
 					<td><span style="color:{if $storage > 0}lime{elseif $storage < 0}red{else}white{/if}">{$storage|number}</span></td>
@@ -30,8 +30,6 @@
 					{/foreach}
 				</tr>
 				{/foreach}
+				</tbody>
 				</table>
-			</td>
-		</tr>
-	</tbody>
-</table>
+</div>
