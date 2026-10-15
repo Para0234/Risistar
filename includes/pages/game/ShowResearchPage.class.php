@@ -122,17 +122,19 @@ class ShowResearchPage extends AbstractGamePage
 						continue;
 
 					if($ListIDArray[4] != $PLANET['id']) {
-						$sql = "SELECT :resource6, :resource31, id FROM %%PLANETS%% WHERE id = :id;";
+						$sql = "SELECT ".$resource[6].", ".$resource[31].", id FROM %%PLANETS%% WHERE id = :id;";
 						$CPLANET = $db->selectSingle($sql, array(
-							':resource6'	=> $resource[6],
-							':resource31'	=> $resource[31],
 							':id'			=> $ListIDArray[4]
 						));
 					} else
 						$CPLANET		= $PLANET;
 
+					// The planet was deleted: its order is dropped once it is next
+					if(empty($CPLANET))
+						$CPLANET		= $PLANET;
+
 					$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
-					$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
+					$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, $ListIDArray[0]);
 					$ListIDArray[3]						= $BuildEndTime;
 					$NewCurrentQueue[]					= $ListIDArray;
 				}
@@ -198,18 +200,20 @@ class ShowResearchPage extends AbstractGamePage
 				if($ListIDArray[4] != $PLANET['id']) {
 					$db = Database::get();
 
-					$sql = "SELECT :resource6, :resource31 FROM %%PLANETS%% WHERE id = :id;";
+					$sql = "SELECT ".$resource[6].", ".$resource[31].", id FROM %%PLANETS%% WHERE id = :id;";
 					$CPLANET = $db->selectSingle($sql, array(
-						':resource6'	=> $resource[6],
-						':resource31'	=> $resource[31],
 						':id'			=> $ListIDArray[4]
 					));
 				} else
 					$CPLANET				= $PLANET;
+
+				// The planet was deleted: its order is dropped once it is next
+				if(empty($CPLANET))
+					$CPLANET				= $PLANET;
 				
 				$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
 				
-				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
+				$BuildEndTime       += BuildFunctions::getBuildingTime($USER, $CPLANET, $ListIDArray[0]);
 				$ListIDArray[3]		= $BuildEndTime;
 				$NewCurrentQueue[]	= $ListIDArray;				
 			}
@@ -330,7 +334,7 @@ class ShowResearchPage extends AbstractGamePage
 			$quickinfo[$BuildArray[0]]	= $BuildArray[1];
 			
 			if($BuildArray[4] != $PLANET['id'])
-				$PlanetName		= $USER['PLANETS'][$BuildArray[4]]['name'];
+				$PlanetName		= $USER['PLANETS'][$BuildArray[4]]['name'] ?? '';
 				
 			$scriptData[] = array(
 				'element'	=> $BuildArray[0], 
