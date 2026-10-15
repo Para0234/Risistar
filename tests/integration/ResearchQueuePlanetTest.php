@@ -2,6 +2,7 @@
 
 namespace Risistar\Tests\Integration;
 
+use Config;
 use ReflectionMethod;
 use ReflectionProperty;
 use ResourceUpdate;
@@ -132,6 +133,49 @@ class ResearchQueuePlanetTest extends GamePageTestCase
 
         $this->assertEquals(108, $GLOBALS['USER']['b_tech_id']);
         $this->assertSame([108], array_column(unserialize($GLOBALS['USER']['b_tech_queue']), 0));
+    }
+
+    public function testCancellingAnOrderRecalculatesTheTimesOfLaterOrders(): void
+    {
+        $GLOBALS['USER']['factor'] = getFactors($GLOBALS['USER']);
+        $GLOBALS['USER']['b_tech'] = TIMESTAMP + 3600;
+        $GLOBALS['USER']['b_tech_id'] = 106;
+        $GLOBALS['USER']['b_tech_planet'] = $GLOBALS['PLANET']['id'];
+        $GLOBALS['USER']['b_tech_queue'] = serialize([
+            [106, (int) $GLOBALS['USER']['spy_tech'] + 1, 3600, TIMESTAMP + 3600, $GLOBALS['PLANET']['id']],
+            [108, (int) $GLOBALS['USER']['computer_tech'] + 1, 3600, TIMESTAMP + 7200, $this->otherPlanet['id']],
+            [109, (int) $GLOBALS['USER']['military_tech'] + 1, 3600, TIMESTAMP + 10800, $GLOBALS['PLANET']['id']],
+        ]);
+
+        $page = $this->page(ShowResearchPage::class, ['save']);
+        $eco = new ResourceUpdate();
+        $eco->setData($GLOBALS['USER'], $GLOBALS['PLANET']);
+        (new ReflectionProperty(ShowResearchPage::class, 'ecoObj'))->setValue($page, $eco);
+        (new ReflectionMethod(ShowResearchPage::class, 'CancelBuildingFromQueue'))->invoke($page);
+
+        $queue = unserialize($GLOBALS['USER']['b_tech_queue']);
+        $this->assertSame([108, 109], array_column($queue, 0));
+        $this->assertGreaterThan(Config::get()->min_build_time, $queue[1][3] - $queue[0][3]);
+    }
+
+    public function testRemovingAnOrderRecalculatesTheTimesOfLaterOrders(): void
+    {
+        $GLOBALS['USER']['intergalactic_tech'] = 1;
+        $GLOBALS['USER']['factor'] = getFactors($GLOBALS['USER']);
+        $GLOBALS['USER']['b_tech'] = TIMESTAMP + 3600;
+        $GLOBALS['USER']['b_tech_queue'] = serialize([
+            [106, (int) $GLOBALS['USER']['spy_tech'] + 1, 3600, TIMESTAMP + 3600, $GLOBALS['PLANET']['id']],
+            [108, (int) $GLOBALS['USER']['computer_tech'] + 1, 3600, TIMESTAMP + 7200, $GLOBALS['PLANET']['id']],
+            [109, (int) $GLOBALS['USER']['military_tech'] + 1, 3600, TIMESTAMP + 10800, $this->otherPlanet['id']],
+        ]);
+
+        $page = $this->page(ShowResearchPage::class);
+        (new ReflectionProperty(ShowResearchPage::class, 'ecoObj'))->setValue($page, new ResourceUpdate());
+        (new ReflectionMethod(ShowResearchPage::class, 'RemoveBuildingFromQueue'))->invoke($page, 2);
+
+        $queue = unserialize($GLOBALS['USER']['b_tech_queue']);
+        $this->assertSame([106, 109], array_column($queue, 0));
+        $this->assertGreaterThan(Config::get()->min_build_time, $queue[1][3] - $queue[0][3]);
     }
 
     private function nextResearch(array $orders): array
