@@ -683,10 +683,32 @@ class ResourceUpdate
 			$isAnotherPlanet	= $ListIDArray[4] != $this->PLANET['id'];
 			if($isAnotherPlanet)
 			{
-				$sql	= 'SELECT * FROM %%PLANETS%% WHERE id = :planetId;';
+				$sql	= 'SELECT * FROM %%PLANETS%% WHERE id = :planetId AND destruyed = 0 FOR UPDATE;';
 				$PLANET	= Database::get()->selectSingle($sql, array(
 					':planetId'	=> $ListIDArray[4],
 				));
+
+				// The planet was abandoned or deleted: drop its order and later orders of the same research, like a cancel
+				if(empty($PLANET))
+				{
+					$NewQueue	= array();
+					foreach($CurrentQueue as $entry) {
+						if($entry[0] != $ListIDArray[0]) {
+							$NewQueue[]	= $entry;
+						}
+					}
+					$CurrentQueue	= $NewQueue;
+
+					if(empty($CurrentQueue)) {
+						$this->USER['b_tech'] 			= 0;
+						$this->USER['b_tech_id']		= 0;
+						$this->USER['b_tech_planet']	= 0;
+						$this->USER['b_tech_queue']		= '';
+						return false;
+					}
+					continue;
+				}
+
 				$RPLANET 		= new ResourceUpdate(true, false);
 				list(, $PLANET)	= $RPLANET->CalcResource($this->USER, $PLANET, false, $this->USER['b_tech']);
 			}

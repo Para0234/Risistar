@@ -131,6 +131,10 @@ class ShowResearchPage extends AbstractGamePage
 					} else
 						$CPLANET		= $PLANET;
 
+					// The planet was deleted: its order is dropped once it is next
+					if(empty($CPLANET))
+						$CPLANET		= $PLANET;
+
 					$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
 					$BuildEndTime       				+= BuildFunctions::getBuildingTime($USER, $CPLANET, NULL, $ListIDArray[0]);
 					$ListIDArray[3]						= $BuildEndTime;
@@ -205,6 +209,10 @@ class ShowResearchPage extends AbstractGamePage
 						':id'			=> $ListIDArray[4]
 					));
 				} else
+					$CPLANET				= $PLANET;
+
+				// The planet was deleted: its order is dropped once it is next
+				if(empty($CPLANET))
 					$CPLANET				= $PLANET;
 				
 				$CPLANET[$resource[31].'_inter']	= $this->ecoObj->getNetworkLevel($USER, $CPLANET);
@@ -330,7 +338,7 @@ class ShowResearchPage extends AbstractGamePage
 			$quickinfo[$BuildArray[0]]	= $BuildArray[1];
 			
 			if($BuildArray[4] != $PLANET['id'])
-				$PlanetName		= $USER['PLANETS'][$BuildArray[4]]['name'];
+				$PlanetName		= $USER['PLANETS'][$BuildArray[4]]['name'] ?? '';
 				
 			$scriptData[] = array(
 				'element'	=> $BuildArray[0], 
