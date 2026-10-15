@@ -96,6 +96,21 @@ class ShowTraderPage extends AbstractGamePage
 		
 		$tradeResources		= array_values(array_diff(array_keys(self::$Charge[$resourceID]), array($resourceID)));
 		$tradeSum 			= 0;
+		$tradeCost			= 0;
+		foreach($tradeResources as $tradeRessID)
+		{
+			if(isset($getTradeResources[$tradeRessID]))
+			{
+				$tradeCost += max(0, round((float) $getTradeResources[$tradeRessID])) * self::$Charge[$resourceID][$tradeRessID];
+			}
+		}
+		if($tradeCost > $PLANET[$resource[$resourceID]])
+		{
+			$this->printMessage(sprintf($LNG['tr_not_enought'], $LNG['tech'][$resourceID]), array(array(
+				'label'	=> $LNG['sys_back'],
+				'url'	=> 'game.php?page=trader'
+			)));
+		}
 		
 		foreach($tradeResources as $tradeRessID)
 		{
