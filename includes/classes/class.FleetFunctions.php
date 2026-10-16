@@ -373,20 +373,23 @@ class FleetFunctions
 		} else {
 			$fleetEndTime	= (TIMESTAMP - $fleetResult['start_time']) + TIMESTAMP;
 		}
+		// In a recalled group, each fleet flies back as long as it has flown
+		$returnTimeQuery	= $sqlWhere == 'fleet_group' ? '(:endTime - start_time)' : ':endTime';
+		$returnTime			= $sqlWhere == 'fleet_group' ? 2 * TIMESTAMP : $fleetEndTime;
 		
 		$sql	= 'UPDATE %%FLEETS%%, %%FLEETS_EVENT%% SET
 		fleet_group			= :fleetGroup,
 		fleet_end_stay		= :endStayTime,
-		fleet_end_time		= :endTime,
+		fleet_end_time		= '.$returnTimeQuery.',
 		fleet_mess			= :fleetState,
 		hasCanceled			= :hasCanceled,
-		time				= :endTime
+		time				= '.$returnTimeQuery.'
 		WHERE '.$sqlWhere.' = :id AND fleet_id = fleetID;';
 
 		$db->update($sql, array(
 			':id'			=> $FleetID,
 			':endStayTime'	=> TIMESTAMP,
-			':endTime'		=> $fleetEndTime,
+			':endTime'		=> $returnTime,
 			':fleetGroup'	=> 0,
 			':hasCanceled'	=> 1,
 			':fleetState'	=> FLEET_RETURN
@@ -394,7 +397,7 @@ class FleetFunctions
 
 		$sql	= 'UPDATE %%LOG_FLEETS%% SET
 		fleet_end_stay	= :endStayTime,
-		fleet_end_time	= :endTime,
+		fleet_end_time	= '.$returnTimeQuery.',
 		fleet_mess		= :fleetState,
 		fleet_state		= 2,
 		hasCanceled			= :hasCanceled
@@ -403,7 +406,7 @@ class FleetFunctions
 		$db->update($sql, array(
 			':id'			=> $FleetID,
 			':endStayTime'	=> TIMESTAMP,
-			':endTime'		=> $fleetEndTime,
+			':endTime'		=> $returnTime,
 			':fleetState'	=> FLEET_RETURN,
 			':hasCanceled'	=> 1
 		));
