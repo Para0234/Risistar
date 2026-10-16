@@ -43,7 +43,6 @@ class MissionCaseDestruction extends MissionFunctions implements Mission
 		);
 
 		$debris			= array();
-		$planetDebris	= array();
 
 		$debrisResource	= array(901, 902);
 
@@ -445,20 +444,19 @@ HTML;
 			$stealResource = calculateSteal($fleetAttack, $targetPlanet);
 		}
 
+		$debrisPlanetId = $targetPlanet['id'];
 		if($this->_fleet['fleet_end_type'] == 3)
 		{
-			// Use planet debris, if attack on moons
-			$sql			= "SELECT der_metal, der_crystal FROM %%PLANETS%% WHERE id_luna = :moonId;";
-			$targetDebris	= $db->selectSingle($sql, array(
+			// The debris of a moon goes to its planet
+			$sql			= "SELECT id FROM %%PLANETS%% WHERE id_luna = :moonId;";
+			$debrisPlanetId	= $db->selectSingle($sql, array(
 				':moonId'	=> $this->_fleet['fleet_end_id']
-			));
-			$targetPlanet 	+= $targetDebris;
+			), 'id');
 		}
 
 		foreach($debrisResource as $elementID)
 		{
 			$debris[$elementID]			= $combatResult['debris']['attacker'][$elementID] + $combatResult['debris']['defender'][$elementID];
-			$planetDebris[$elementID]	= $targetPlanet['der_'.$resource[$elementID]] + $debris[$elementID];
 		}
 
 		$reportInfo	= array(
@@ -519,9 +517,9 @@ HTML;
 
 					$sql		= 'UPDATE %%FLEETS%% SET
 					fleet_end_type	= 1,
-					fleet_end_id	= :moonId,
+					fleet_end_id	= :planetId,
 					fleet_mission	= IF(fleet_mission = 9, 1, fleet_mission)
-					WHERE fleet_end_id = :planetId
+					WHERE fleet_end_id = :moonId
 					AND fleet_id != :fleetId;';
 
 					$db->update($sql, array(
@@ -660,24 +658,15 @@ HTML;
 			$i++;
 		}
 
-		if($this->_fleet['fleet_end_type'] == 3)
-		{
-			$debrisType	= 'id_luna';
-		}
-		else
-		{
-			$debrisType	= 'id';
-		}
-
 		$sql = 'UPDATE %%PLANETS%% SET
-		der_metal	= :metal,
-		der_crystal	= :crystal
-		WHERE '.$debrisType.' = :planetId;';
+		der_metal	= der_metal + :metal,
+		der_crystal	= der_crystal + :crystal
+		WHERE id = :planetId;';
 
 		$db->update($sql, array(
-			':metal'	=> $planetDebris[901],
-			':crystal'	=> $planetDebris[902],
-			':planetId'	=> $this->_fleet['fleet_end_id']
+			':metal'	=> $debris[901],
+			':crystal'	=> $debris[902],
+			':planetId'	=> $debrisPlanetId
 		));
 
 		$sql = 'UPDATE %%PLANETS%% SET

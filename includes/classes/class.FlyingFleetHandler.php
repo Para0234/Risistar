@@ -126,7 +126,7 @@ class FlyingFleetHandler
 
 		$db	= Database::get();
 
-		$sql = 'SELECT %%FLEETS%%.*
+		$sql = 'SELECT fleet_id
 		FROM %%FLEETS_EVENT%%
 		INNER JOIN %%FLEETS%% ON fleetID = fleet_id
 		WHERE `lock` = :token;';
@@ -137,6 +137,15 @@ class FlyingFleetHandler
 
 		foreach($fleetResult as $fleetRow)
 		{
+			// Read the fleet again: an earlier fleet of this run may have changed or removed it
+			$sql = 'SELECT * FROM %%FLEETS%% WHERE fleet_id = :fleetId;';
+			$fleetRow = $db->selectSingle($sql, array(
+				':fleetId'	=> $fleetRow['fleet_id']
+			));
+			if(empty($fleetRow)) {
+				continue;
+			}
+
 			if(!isset(self::$missionObjPattern[$fleetRow['fleet_mission']])) {
 				$sql = 'DELETE FROM %%FLEETS%% WHERE fleet_id = :fleetId;';
 
@@ -153,6 +162,23 @@ class FlyingFleetHandler
 			require_once $path;
 			/** @var $missionObj Mission */
 			$missionObj	= new $missionName($fleetRow);
+			
+			// Send the fleet home if its target planet was deleted (attacks check this themselves)
+			$sql	= 'SELECT id FROM %%PLANETS%% WHERE id = :planetId;';
+			if($fleetRow['fleet_mess'] == FLEET_OUTWARD
+				&& in_array($fleetRow['fleet_mission'], array(3, 4, 6, 9, 10))
+				&& !$db->selectSingle($sql, array(
+					':planetId'	=> $fleetRow['fleet_end_id']
+				))) {
+				// Missiles do not come back
+				if($fleetRow['fleet_mission'] == 10) {
+					$missionObj->KillFleet();
+				} else {
+					$missionObj->setState(FLEET_RETURN);
+					$missionObj->SaveFleet();
+				}
+				continue;
+			}
 			
 			switch($fleetRow['fleet_mess'])
 			{
