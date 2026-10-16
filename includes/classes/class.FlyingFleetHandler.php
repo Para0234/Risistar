@@ -126,7 +126,7 @@ class FlyingFleetHandler
 
 		$db	= Database::get();
 
-		$sql = 'SELECT %%FLEETS%%.*
+		$sql = 'SELECT fleet_id
 		FROM %%FLEETS_EVENT%%
 		INNER JOIN %%FLEETS%% ON fleetID = fleet_id
 		WHERE `lock` = :token;';
@@ -137,6 +137,15 @@ class FlyingFleetHandler
 
 		foreach($fleetResult as $fleetRow)
 		{
+			// Read the fleet again: an earlier fleet of this run may have changed or removed it
+			$sql = 'SELECT * FROM %%FLEETS%% WHERE fleet_id = :fleetId;';
+			$fleetRow = $db->selectSingle($sql, array(
+				':fleetId'	=> $fleetRow['fleet_id']
+			));
+			if(empty($fleetRow)) {
+				continue;
+			}
+
 			if(!isset(self::$missionObjPattern[$fleetRow['fleet_mission']])) {
 				$sql = 'DELETE FROM %%FLEETS%% WHERE fleet_id = :fleetId;';
 
