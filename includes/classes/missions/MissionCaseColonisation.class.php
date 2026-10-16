@@ -120,9 +120,15 @@ class MissionCaseColonisation extends MissionFunctions implements Mission
 									}
 							}
 						}
-						else
+						elseif($eventSize>=2)
 						{
 							$message = sprintf($LNG['sys_colo_badluck'], GetTargetAddressLink($this->_fleet, ''));
+						}
+						else
+						{
+							// The fleet is lost
+							$message = sprintf($LNG['sys_colo_reallybadluck'], GetTargetAddressLink($this->_fleet, ''));
+							$this->KillFleet();
 						}
 					}
 				}
@@ -131,11 +137,8 @@ class MissionCaseColonisation extends MissionFunctions implements Mission
 
 		PlayerUtil::sendMessage($this->_fleet['fleet_owner'], 0, $LNG['sys_colo_mess_from'], 4, $LNG['sys_colo_mess_report'],
 			$message, $this->_fleet['fleet_start_time'], NULL, 1, $this->_fleet['fleet_universe']);
-		if($eventSize>=2)
-		{
-			$this->setState(FLEET_RETURN);
-			$this->SaveFleet();
-		}
+		$this->setState(FLEET_RETURN);
+		$this->SaveFleet();
 	}
 	
 	function EndStayEvent()
