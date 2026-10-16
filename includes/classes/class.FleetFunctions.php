@@ -545,7 +545,7 @@ class FleetFunctions
 			':canceled'		=> 0,
 			':fleetStartTime'	=> (TIMESTAMP - BASH_TIME),
 		), 'state');
-		if($Count >= 6)
+		if($Count >= BASH_COUNT)
 		{
 			return true;
 		}
